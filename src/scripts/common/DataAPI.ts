@@ -81,15 +81,11 @@ export default class DataAPI {
     }
   }
 
-  public static async getNewToken(token: string, userId: string) {
-    /*
-      It seems that this method does not work in the API
-      Always the same mistake '401 (Unauthorized)'
-    */
+  public static async getNewToken(refreshToken: string, userId: string) {
     if (userId) {
       const params = `${this.paths.users}/${userId}/${this.paths.tokens}`;
       const options = {
-        headers: { Authorization: `${this.tokenPrefix} ${token}` },
+        headers: { Authorization: `${this.tokenPrefix} ${refreshToken}` },
       };
       return this.getResponseToRequest(params, options);
     }
