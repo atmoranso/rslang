@@ -110,7 +110,7 @@ export default class DataAPI {
       const params = `${this.paths.users}/${userId}/${this.paths.words}/${wordId}`;
       const options = {
         method: 'POST',
-        headers: { Authorization: `${this.tokenPrefix} ${token}` },
+        headers: Object.assign({}, { Authorization: `${this.tokenPrefix} ${token}` }, this.contentType),
         body: JSON.stringify(userWord),
       };
       return this.getResponseToRequest(params, options);
@@ -132,7 +132,7 @@ export default class DataAPI {
       const params = `${this.paths.users}/${userId}/${this.paths.words}/${wordId}`;
       const options = {
         method: 'PUT',
-        headers: { Authorization: `${this.tokenPrefix} ${token}` },
+        headers: Object.assign({}, { Authorization: `${this.tokenPrefix} ${token}` }, this.contentType),
         body: JSON.stringify(userWord),
       };
       return this.getResponseToRequest(params, options);
@@ -188,7 +188,7 @@ export default class DataAPI {
       const params = `${this.paths.users}/${userId}/${this.paths.statistics}`;
       const options = {
         method: 'PUT',
-        headers: { Authorization: `${this.tokenPrefix} ${token}` },
+        headers: Object.assign({}, { Authorization: `${this.tokenPrefix} ${token}` }, this.contentType),
         body: JSON.stringify(userStatistic),
       };
       return this.getResponseToRequest(params, options);
@@ -210,7 +210,7 @@ export default class DataAPI {
       const params = `${this.paths.users}/${userId}/${this.paths.settings}`;
       const options = {
         method: 'PUT',
-        headers: { Authorization: `${this.tokenPrefix} ${token}` },
+        headers: Object.assign({}, { Authorization: `${this.tokenPrefix} ${token}` }, this.contentType),
         body: JSON.stringify(userSetting),
       };
       return this.getResponseToRequest(params, options);
