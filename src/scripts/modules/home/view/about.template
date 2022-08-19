@@ -1,0 +1,23 @@
+                <h2 class="about__subtitle subtitle">О проекте</h2>
+                <ul class="about__list list">
+                    <li class="list__item item">
+                        <h3 class="item__subtitle">Словарь</h3>
+                        <img src="https://via.placeholder.com/250" alt="" class="item__img">
+                        <p class="item__content">Коллекция содержит 3600 часто употребляемых английских слов</p>
+                    </li>
+                    <li class="list__item item">
+                        <h3 class="item__subtitle">Мини-игра Аудиовызов</h3>
+                        <img src="https://via.placeholder.com/250" alt="" class="item__img">
+                        <p class="item__content">Качаем навык перевода на слух</p>
+                    </li>
+                    <li class="list__item item">
+                        <h3 class="item__subtitle">Мини-игра Спринт</h3>
+                        <img src="https://via.placeholder.com/250" alt="" class="item__img">
+                        <p class="item__content">Тренировка на скорость, угадай как можно больше слов за 1 минуту</p>
+                    </li>
+                    <li class="list__item item">
+                        <h3 class="item__subtitle">Статистика</h3>
+                        <img src="https://via.placeholder.com/250" alt="" class="item__img">
+                        <p class="item__content">Статистика, прогресс изучения</p>
+                    </li>
+                </ul>
