@@ -4,7 +4,6 @@ export default class Greetings extends ElementTemplate {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'section', 'section greet');
     const sectionContainer = new ElementTemplate(this.node, 'div', 'section__container');
-    this.node.append(sectionContainer.node);
     const greetTextContainer = new ElementTemplate(sectionContainer.node, 'div', 'greet__text-container');
     const image = new ElementTemplate<HTMLImageElement>(greetTextContainer.node, 'img', 'greet__img');
     image.node.src = 'https://via.placeholder.com/77x77/FFFF00';

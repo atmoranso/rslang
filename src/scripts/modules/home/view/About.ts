@@ -5,7 +5,6 @@ export default class About extends ElementTemplate {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'section', 'section about');
     const sectionContainer = new ElementTemplate(this.node, 'div', 'section__container');
-    this.node.append(sectionContainer.node);
     new ElementTemplate(
       sectionContainer.node,
       'h2',

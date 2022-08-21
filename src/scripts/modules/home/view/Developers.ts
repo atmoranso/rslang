@@ -5,7 +5,6 @@ export default class Developers extends ElementTemplate {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'section', 'section developers');
     const sectionContainer = new ElementTemplate(this.node, 'div', 'section__container');
-    this.node.append(sectionContainer.node);
     new ElementTemplate(sectionContainer.node, 'h2', 'developers__subtitle subtitle', 'Наша команда');
     const developersContainer = new ElementTemplate(sectionContainer.node, 'ul', 'developers__list list');
 

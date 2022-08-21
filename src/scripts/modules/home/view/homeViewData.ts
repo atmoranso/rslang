@@ -1,3 +1,5 @@
+// TODO: Refactor ts object to JSON
+
 export const developersData = [
   {
     title: 'Артем',
