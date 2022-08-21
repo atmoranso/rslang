@@ -1,5 +1,5 @@
-import ElementTemplate from '../../../common/ElementTemplate';
-import svg from '../../../../assets/svg/rs-school-logo.svg';
+import ElementTemplate from './ElementTemplate';
+import svg from '../../assets/svg/rs-school-logo.svg';
 
 class FooterView extends ElementTemplate {
   constructor(parentNode: HTMLElement) {
