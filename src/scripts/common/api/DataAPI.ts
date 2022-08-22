@@ -4,7 +4,7 @@ import UserStatistic from './models/UserStatistic.model';
 import UserSetting from './models/UserSetting.model';
 
 export default class DataAPI {
-  private static baseURL = 'https://dt-learnwords-app.herokuapp.com/';
+  public static baseURL = 'https://dt-learnwords-app.herokuapp.com/';
 
   private static paths = {
     words: 'words',
