@@ -18,7 +18,9 @@ export default class Router {
   router = () => {
     const path = window.location.hash.slice(1);
     const route = this.routes[path] ? this.routes[path] : this.routes['404'];
-    new route().start();
+    const module = new route();
+    module.start();
+    this.view.update(module.view);
   };
 
   init() {

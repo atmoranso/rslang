@@ -1,4 +1,5 @@
 import ElementTemplate from '../../common/ElementTemplate';
+import FooterView from '../../common/FooterView';
 
 export default class AppView {
   node = document.body;
@@ -8,17 +9,20 @@ export default class AppView {
 
   main: ElementTemplate;
 
-  //   footer: FooterView;
+  module: ElementTemplate;
+
+  footer: FooterView;
 
   constructor() {
     // this.header = new HeaderView(this.node);
     this.main = new ElementTemplate(this.node, 'main', 'main');
-    // this.footer = new FooterView(this.node);
+    this.module = new ElementTemplate(this.main.node, 'div');
+    this.footer = new FooterView(this.node);
   }
 
   update(module: ElementTemplate) {
-    this.main.delete();
-    this.main = module;
-    this.header.node.after(module.node);
+    this.module.delete();
+    this.module = module;
+    this.main.node.append(module.node);
   }
 }
