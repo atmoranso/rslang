@@ -1,0 +1,21 @@
+.footer__container {
+  max-width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer__logo {
+  width: 110px;
+  height: 50px;
+}
+
+.github-members {
+  display: flex;
+  column-gap: 20px;
+}
+
+.github-members__member {
+  text-decoration: none;
+}
