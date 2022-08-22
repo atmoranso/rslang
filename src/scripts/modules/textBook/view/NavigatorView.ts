@@ -1,4 +1,4 @@
-import ElementTemplate from '../../../../common/ElementTemplate';
+import ElementTemplate from '../../../common/ElementTemplate';
 
 export default class NavigatorView extends ElementTemplate {
   private state = { group: 1, page: 1 };
