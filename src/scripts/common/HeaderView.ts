@@ -6,12 +6,12 @@ class HeaderView extends ElementTemplate {
     super(parentNode, 'header', 'header');
     const headerContainer = new ElementTemplate(this.node, 'div', 'header__container');
     const mainLogo = new ElementTemplate<HTMLAnchorElement>(headerContainer.node, 'a', 'header__logo');
-    mainLogo.node.href = '#home';
+    mainLogo.node.href = '/';
     new ElementTemplate(mainLogo.node, 'h1', 'header__title', 'RSLang');
     const nav = new ElementTemplate(headerContainer.node, 'nav', 'header__nav nav');
     const navMenu = new ElementTemplate(nav.node, 'ul', 'nav__list nav-menu');
     navMenu.node.innerHTML = `
-      <li class="nav-menu__item"><a class="nav-menu__link" href="#home">Главная</a></li>
+      <li class="nav-menu__item"><a class="nav-menu__link" href="/">Главная</a></li>
       <li class="nav-menu__item"><a class="nav-menu__link" href="#textbook">Учебник</a></li>
       <li class="nav-menu__item dropdown">
         <div class="dropdown__container">
