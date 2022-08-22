@@ -6,7 +6,7 @@ export default class Textbook implements Module {
   view: ElementTemplate;
 
   constructor() {
-    this.view = new TextbookView(document.body);
+    this.view = new TextbookView(null);
   }
 
   start() {}
