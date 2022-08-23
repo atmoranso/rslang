@@ -14,7 +14,7 @@ export default class CardView extends ElementTemplate {
     const image = new ElementTemplate(this.node, 'div', 'card__image');
     image.node.style.backgroundImage = `url(${baseURL}${data.image})`;
     const listenButton = new ElementTemplate(this.node, 'button', 'card__listen-button', 'Listen');
-    listenButton.node.addEventListener('click', async () => {
+    listenButton.node.addEventListener('click', () => {
       const audio = new Audio(`${baseURL}${data.audio}`);
       audio.play();
       audio.addEventListener('ended', () => {
