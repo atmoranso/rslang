@@ -1,6 +1,7 @@
 import { Module } from '../../common/types';
 import ErrorPage from '../../modules/errorPage/ErrorPage';
 import Home from '../../modules/home/Home';
+import Textbook from '../../modules/textBook/TextBook';
 import AppView from '../view/AppView';
 
 export default class Router {
@@ -9,6 +10,7 @@ export default class Router {
   private routes: Record<string, new () => Module> = {
     '404': ErrorPage,
     '': Home,
+    textbook: Textbook,
   };
 
   constructor(view: AppView) {

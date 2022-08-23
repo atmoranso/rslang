@@ -1,11 +1,11 @@
 import ElementTemplate from '../../common/ElementTemplate';
 import FooterView from '../../common/FooterView';
+import HeaderView from '../../common/HeaderView';
 
 export default class AppView {
   node = document.body;
 
-  //   header: HeaderView;
-  header = new ElementTemplate(this.node, 'header', 'header');
+  header: HeaderView;
 
   main: ElementTemplate;
 
@@ -14,7 +14,7 @@ export default class AppView {
   footer: FooterView;
 
   constructor() {
-    // this.header = new HeaderView(this.node);
+    this.header = new HeaderView(this.node);
     this.main = new ElementTemplate(this.node, 'main', 'main');
     this.module = new ElementTemplate(this.main.node, 'div');
     this.footer = new FooterView(this.node);
