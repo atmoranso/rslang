@@ -9,6 +9,8 @@ export default class TextbookView extends ElementTemplate {
 
   private cards: ElementTemplate;
 
+  private currentSpeaker: Card | null = null;
+
   constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'section', 'textbook');
     this.cards = new ElementTemplate(this.node, 'div', 'cards');
@@ -21,7 +23,12 @@ export default class TextbookView extends ElementTemplate {
       this.cards.delete();
       this.cards = new ElementTemplate(this.node, 'div', 'cards');
       res.forEach((el: Word) => {
-        new Card(this.cards.node, el, DataAPI.baseURL);
+        new Card(this.cards.node, el, DataAPI.baseURL, (newSpeaker: Card) => {
+          if (this.currentSpeaker) {
+            this.currentSpeaker.pauseSpeech();
+          }
+          this.currentSpeaker = newSpeaker;
+        });
       });
     } catch (error) {
       if (error instanceof Error) {
