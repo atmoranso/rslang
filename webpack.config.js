@@ -17,7 +17,22 @@ const baseConfig = {
       { test: /\.ts$/i, use: 'ts-loader' },
       {
         test: /\.svg$/i,
+        exclude: /assets.+\.svg$/i,
         type: 'asset/source',
+      },
+      {
+        test: /assets.+\.svg$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/svg/[hash][ext][query]',
+        },
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[hash][ext][query]',
+        },
       },
     ],
   },

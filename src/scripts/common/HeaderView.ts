@@ -1,5 +1,5 @@
 import ElementTemplate from './ElementTemplate';
-import svg from '../../assets/svg/person-svg.svg';
+import svg from './person-svg.svg';
 
 class HeaderView extends ElementTemplate {
   constructor(parentNode: HTMLElement) {
