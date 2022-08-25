@@ -3,7 +3,7 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import User from '../../../common/api/models/User.model';
 import DataAPI from '../../../common/api/DataAPI';
-import store from '../../../common/store';
+import state from '../../../common/state';
 
 export default class AuthorizationView extends ElementTemplate {
   signIn: SignIn;
@@ -49,14 +49,16 @@ export default class AuthorizationView extends ElementTemplate {
       if (user) {
         const res = await this.logInUser(user);
         if (!res.status) {
-          store.isAuth = true;
-          store.name = res.name;
-          store.token = res.token;
-          store.refreshToken = res.refreshToken;
-          store.userId = res.userId;
-          store.data = new Date();
-          localStorage.setItem('user', JSON.stringify(store));
+          state.isAuth = true;
+          state.name = res.name;
+          state.token = res.token;
+          state.refreshToken = res.refreshToken;
+          state.userId = res.userId;
+          state.data = new Date();
+          localStorage.setItem('user', JSON.stringify(state));
           this.node.remove();
+          this.updateToken();
+          // this.checkToken();
         }
         if (res.status == 404) {
           this.errorMessage.node.textContent = 'Пользователь с таким email не существует';
@@ -66,6 +68,8 @@ export default class AuthorizationView extends ElementTemplate {
         }
       }
     });
+
+    this.checkToken();
   }
 
   getNewUser() {
@@ -126,5 +130,63 @@ export default class AuthorizationView extends ElementTemplate {
       this.signUp.regForm.node.reset();
       this.node.append(this.signUp.node);
     });
+  }
+
+  updateToken() {
+    const limitTokenTime = 0.003 * 3600000;
+    const userId = state.userId;
+    const timeoutId = setInterval(async () => {
+      const res = await DataAPI.getNewToken(state.refreshToken, userId);
+      state.token = res.token;
+      state.refreshToken = res.refreshToken;
+      localStorage.setItem('user', JSON.stringify(state));
+      const getU = await DataAPI.getUser(state.token, state.userId);
+      console.log('получен польз после setInterval', getU);
+    }, limitTokenTime);
+  }
+
+  // обновление токена после перезагрузки страницы или входе в приложение 1
+  // async checkToken() {
+  //   if (state.isAuth) {
+  //     const userId = state.userId;
+  //     const res = await DataAPI.getNewToken(state.refreshToken, userId);
+  //     state.token = res.token;
+  //     state.refreshToken = res.refreshToken;
+  //     localStorage.setItem('user', JSON.stringify(state));
+  //     const getU = await DataAPI.getUser(state.token, state.userId);
+  //     console.log('получен польз после перезагрузки страницы', getU);
+  //     this.updateToken();
+  //   }
+  // }
+
+  async checkToken() {
+    if (state.isAuth) {
+      const limitTokenTime = 0.002 * 3600000;
+
+      let startTokenData = JSON.parse(<string>localStorage.getItem('user')).data;
+      const userId = state.userId;
+
+      startTokenData = new Date(startTokenData);
+      const currentData = new Date();
+      const diffTime = Math.floor((+currentData - +startTokenData) * 100) / 100;
+      console.log('limitTokenTime', limitTokenTime, 'diffTime', diffTime);
+
+      if (diffTime >= limitTokenTime) {
+        const res = await DataAPI.getNewToken(state.refreshToken, userId);
+        state.token = res.token;
+        state.refreshToken = res.refreshToken;
+        localStorage.setItem('user', JSON.stringify(state));
+        this.updateToken();
+      } else {
+        setTimeout(async () => {
+          const res = await DataAPI.getNewToken(state.refreshToken, userId);
+          state.token = res.token;
+          state.refreshToken = res.refreshToken;
+          localStorage.setItem('user', JSON.stringify(state));
+          console.log('сработал setTimeout');
+          this.updateToken();
+        }, limitTokenTime - diffTime);
+      }
+    }
   }
 }
