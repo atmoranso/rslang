@@ -24,7 +24,9 @@ export default class CardView extends ElementTemplate {
     image.node.style.backgroundImage = `url(${baseURL}${data.image})`;
     const listenButton = new ElementTemplate(this.node, 'button', 'card__listen-button');
     const difficultButton = new ElementTemplate(this.node, 'button', 'card__difficult-button');
+    const difficultButtonAction = new ElementTemplate(difficultButton.node, 'div', 'card__difficult-button-plus');
     const learnedButton = new ElementTemplate(this.node, 'button', 'card__learned-button');
+    const learnedButtonAction = new ElementTemplate(learnedButton.node, 'div', 'card__learned-button-plus');
     listenButton.node.addEventListener('click', () => {
       setNewSpeaker(this);
       this.loadSpeech();
