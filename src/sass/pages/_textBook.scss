@@ -98,17 +98,35 @@ button {
   background-position: center;
 }
 
-.card__listen-button {
+.card__listen-button,
+.card__difficult-button,
+.card__learned-button {
   z-index: 1;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   position: absolute;
-  right: 25px;
-  top: 25px;
-  background-image: url(../assets/svg/listen.svg);
+  top: 10px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   background-color: transparent;
   border: none;
+}
+
+.card__listen-button {
+  width: 50px;
+  height: 50px;
+  top: 60px;
+  right: 35px;
+  background-image: url(../assets/svg/listen.svg);
+}
+
+.card__difficult-button {
+  right: 70px;
+  background-image: url(../assets/svg/difficult.svg);
+}
+
+.card__learned-button {
+  right: 10px;
+  background-image: url(../assets/svg/learned.svg);
 }
