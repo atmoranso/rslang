@@ -17,21 +17,27 @@ export default class SignIn extends ElementTemplate {
 
   authButton: ElementTemplate<HTMLButtonElement>;
 
+  emailError: ElementTemplate;
+
+  passError: ElementTemplate;
+
   constructor(parentNode: HTMLElement | null) {
-    super(parentNode, 'div', 'authorization');
-    this.authForm = new ElementTemplate(this.node, 'form', 'auth-form');
-    this.emailContainer = new ElementTemplate(this.authForm.node, 'div', 'auth-form__container email');
-    this.emailLabel = new ElementTemplate(this.emailContainer.node, 'label', 'email__label', 'Email');
+    super(parentNode, 'div', 'account__authorization');
+    this.authForm = new ElementTemplate(this.node, 'form', 'form');
+    this.emailContainer = new ElementTemplate(this.authForm.node, 'div', 'form__container');
+    this.emailLabel = new ElementTemplate(this.emailContainer.node, 'label', 'form__label', 'Email');
     this.emailLabel.node.htmlFor = 'email';
-    this.emailInput = new ElementTemplate(this.emailContainer.node, 'input', 'email__input');
+    this.emailInput = new ElementTemplate(this.emailContainer.node, 'input', 'form__input');
     this.emailInput.node.type = 'email';
     this.emailInput.node.id = 'email';
-    this.passContainer = new ElementTemplate(this.authForm.node, 'div', 'auth-form__container pass');
-    this.passLabel = new ElementTemplate(this.passContainer.node, 'label', 'pass__label', 'Пароль');
+    this.emailError = new ElementTemplate(this.emailContainer.node, 'div', 'form__error-message');
+    this.passContainer = new ElementTemplate(this.authForm.node, 'div', 'form__container');
+    this.passLabel = new ElementTemplate(this.passContainer.node, 'label', 'form__label', 'Пароль');
     this.passLabel.node.htmlFor = 'pass';
-    this.passInput = new ElementTemplate(this.passContainer.node, 'input', 'pass__input');
+    this.passInput = new ElementTemplate(this.passContainer.node, 'input', 'form__input');
     this.passInput.node.type = 'pass';
     this.passInput.node.id = 'pass';
-    this.authButton = new ElementTemplate(this.authForm.node, 'button', 'auth-form__button', 'Войти');
+    this.passError = new ElementTemplate(this.passContainer.node, 'div', 'form__error-message');
+    this.authButton = new ElementTemplate(this.authForm.node, 'button', 'form__button', 'Войти');
   }
 }
