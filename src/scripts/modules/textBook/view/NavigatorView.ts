@@ -7,11 +7,15 @@ export default class NavigatorView extends ElementTemplate {
 
   private pagesCount = 30;
 
+  private pageButtonFirst: ElementTemplate<HTMLButtonElement>;
+
   private pageButtonPrev: ElementTemplate<HTMLButtonElement>;
 
   private pageCurrent: ElementTemplate;
 
   private pageButtonNext: ElementTemplate<HTMLButtonElement>;
+
+  private pageButtonLast: ElementTemplate<HTMLButtonElement>;
 
   public navigatorOnChange: (state: { group: number; page: number }) => void;
 
@@ -21,16 +25,18 @@ export default class NavigatorView extends ElementTemplate {
 
     const groupsCount = 6;
     const groupNumbers = [...Array(groupsCount).keys()].map((x) => (x += 1));
-    const groups = new ElementTemplate(this.node, 'div', 'navigator__groups');
+    const groups = new ElementTemplate(this.node, 'div', 'navigator__groups', 'Группы:');
     groupNumbers.forEach((el, i) => {
       const groupButton = new ElementTemplate(groups.node, 'button', `navigator__group-button-${i + 1}`, `${i + 1}`);
       this.groupButtons.push(groupButton);
     });
 
-    const pages = new ElementTemplate(this.node, 'div', 'navigator__pages');
+    const pages = new ElementTemplate(this.node, 'div', 'navigator__pages', 'Страницы:');
+    this.pageButtonFirst = new ElementTemplate(pages.node, 'button', 'navigator__page-button-first', 'First');
     this.pageButtonPrev = new ElementTemplate(pages.node, 'button', 'navigator__page-button-prev', 'Prev');
     this.pageCurrent = new ElementTemplate(pages.node, 'span', 'navigator__page-current');
     this.pageButtonNext = new ElementTemplate(pages.node, 'button', 'navigator__page-button-next', 'Next');
+    this.pageButtonLast = new ElementTemplate(pages.node, 'button', 'navigator__page-button-last', 'Last');
 
     this.loadState();
     this.groupesInit();
@@ -76,8 +82,10 @@ export default class NavigatorView extends ElementTemplate {
   }
 
   private setAblePageButtons() {
+    this.pageButtonFirst.node.disabled = this.state.page === 1;
     this.pageButtonPrev.node.disabled = this.state.page === 1;
     this.pageButtonNext.node.disabled = this.state.page === this.pagesCount;
+    this.pageButtonLast.node.disabled = this.state.page === this.pagesCount;
   }
 
   private onClickPageButtons() {
@@ -89,6 +97,12 @@ export default class NavigatorView extends ElementTemplate {
   private pagesInit() {
     this.setCurrentPage();
     this.setAblePageButtons();
+    this.pageButtonFirst.node.addEventListener('click', () => {
+      if (this.pageButtonFirst.node.disabled !== true) {
+        this.state.page = 1;
+      }
+      this.onClickPageButtons();
+    });
     this.pageButtonPrev.node.addEventListener('click', () => {
       if (this.pageButtonPrev.node.disabled !== true) {
         this.state.page -= 1;
@@ -98,6 +112,12 @@ export default class NavigatorView extends ElementTemplate {
     this.pageButtonNext.node.addEventListener('click', () => {
       if (this.pageButtonNext.node.disabled !== true) {
         this.state.page += 1;
+      }
+      this.onClickPageButtons();
+    });
+    this.pageButtonLast.node.addEventListener('click', () => {
+      if (this.pageButtonLast.node.disabled !== true) {
+        this.state.page = this.pagesCount;
       }
       this.onClickPageButtons();
     });
