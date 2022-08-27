@@ -1,6 +1,9 @@
 import { Module } from '../../common/types';
+import AudioCall from '../../modules/audioCall/AudioCall';
 import ErrorPage from '../../modules/errorPage/ErrorPage';
 import Home from '../../modules/home/Home';
+import Sprint from '../../modules/sprint/Sprint';
+import Statistic from '../../modules/statistic/Statistic';
 import Textbook from '../../modules/textBook/TextBook';
 import AppView from '../view/AppView';
 
@@ -11,6 +14,9 @@ export default class Router {
     '404': ErrorPage,
     '': Home,
     textbook: Textbook,
+    sprint: Sprint,
+    audiocall: AudioCall,
+    statistics: Statistic,
   };
 
   constructor(view: AppView) {
