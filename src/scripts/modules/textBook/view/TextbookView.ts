@@ -11,6 +11,8 @@ export default class TextbookView extends ElementTemplate {
 
   private currentSpeaker: Card | null = null;
 
+  private isAuth = true;
+
   constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'section', 'textbook');
     this.cards = new ElementTemplate(this.node, 'div', 'cards');
@@ -23,7 +25,7 @@ export default class TextbookView extends ElementTemplate {
       this.cards.delete();
       this.cards = new ElementTemplate(this.node, 'div', 'cards');
       res.forEach((el: Word) => {
-        new Card(this.cards.node, el, DataAPI.baseURL, (newSpeaker: Card) => {
+        new Card(this.cards.node, el, DataAPI.baseURL, this.isAuth, (newSpeaker: Card) => {
           if (this.currentSpeaker) {
             this.currentSpeaker.pauseSpeech();
           }

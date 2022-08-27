@@ -2,17 +2,29 @@ import ElementTemplate from '../../../common/ElementTemplate';
 import Word from '../../../common/api/models/Word.model';
 
 export default class CardView extends ElementTemplate {
-  private audio: HTMLAudioElement;
+  private audio: HTMLAudioElement | null = null;
 
-  private audioMeaning: HTMLAudioElement;
+  private audioMeaning: HTMLAudioElement | null = null;
 
-  private audioExample: HTMLAudioElement;
+  private audioExample: HTMLAudioElement | null = null;
 
-  constructor(parentNode: HTMLElement, data: Word, baseURL: string, setNewSpeaker: (newSpeaker: CardView) => void) {
+  private auioSrcs: Record<string, string>;
+
+  private isAudioInit = false;
+
+  constructor(
+    parentNode: HTMLElement,
+    data: Word,
+    baseURL: string,
+    isAuth: boolean,
+    setNewSpeaker: (newSpeaker: CardView) => void,
+  ) {
     super(parentNode, 'div', 'card');
-    this.audio = new Audio(`${baseURL}${data.audio}`);
-    this.audioMeaning = new Audio(`${baseURL}${data.audioMeaning}`);
-    this.audioExample = new Audio(`${baseURL}${data.audioExample}`);
+    this.auioSrcs = {
+      audio: `${baseURL}${data.audio}`,
+      audioMeaning: `${baseURL}${data.audioMeaning}`,
+      audioExample: `${baseURL}${data.audioExample}`,
+    };
     new ElementTemplate(this.node, 'span', 'card__word', data.word);
     new ElementTemplate(this.node, 'span', 'card__transcription', data.transcription);
     new ElementTemplate(this.node, 'span', 'card__word-translate', data.wordTranslate);
@@ -29,33 +41,43 @@ export default class CardView extends ElementTemplate {
     const learnedButtonAction = new ElementTemplate(learnedButton.node, 'div', 'card__learned-button-plus');
     listenButton.node.addEventListener('click', () => {
       setNewSpeaker(this);
+      if (!this.isAudioInit) {
+        this.isAudioInit = true;
+        this.initSpeech();
+      }
       this.loadSpeech();
       this.playSpeech();
     });
   }
 
+  private initSpeech() {
+    this.audio = new Audio(this.auioSrcs.audio);
+    this.audioMeaning = new Audio(this.auioSrcs.audioMeaning);
+    this.audioExample = new Audio(this.auioSrcs.audioExample);
+  }
+
   private loadSpeech() {
-    this.audio.load();
-    this.audioMeaning.load();
-    this.audioExample.load();
+    this.audio?.load();
+    this.audioMeaning?.load();
+    this.audioExample?.load();
   }
 
   private playSpeech() {
-    this.audio.play();
-    this.audio.addEventListener('ended', () => {
-      this.audioMeaning.play();
-      this.audioMeaning.addEventListener('ended', () => {
-        this.audioExample.play();
-        this.audioExample.addEventListener('ended', () => {
-          this.audioExample.pause();
+    this.audio?.play();
+    this.audio?.addEventListener('ended', () => {
+      this.audioMeaning?.play();
+      this.audioMeaning?.addEventListener('ended', () => {
+        this.audioExample?.play();
+        this.audioExample?.addEventListener('ended', () => {
+          this.audioExample?.pause();
         });
       });
     });
   }
 
   pauseSpeech() {
-    this.audio.pause();
-    this.audioMeaning.pause();
-    this.audioExample.pause();
+    this.audio?.pause();
+    this.audioMeaning?.pause();
+    this.audioExample?.pause();
   }
 }
