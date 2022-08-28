@@ -48,7 +48,8 @@
 .board__word-ru {
     @include font(24px, $color-inactive);
 }
-.board__btn {
+.board__btn,
+.finish__btn-play {
     width: 100px;
     margin: 5px;
     padding: 10px 0;
@@ -72,4 +73,8 @@
 .board__btn_true {
     background-color: $color-btn-true;
     color: $color-text-light;
+}
+.finish__btn-play {
+    width: 150px;
+    margin: 5px;
 }

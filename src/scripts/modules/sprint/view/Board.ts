@@ -46,4 +46,9 @@ export default class Board extends ElementTemplate {
       'Верно',
     );
   }
+
+  update = (wordEn: string, wordRu: string) => {
+    this.wordEn.node.innerHTML = wordEn;
+    this.wordRu.node.innerHTML = wordRu;
+  };
 }
