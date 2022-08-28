@@ -1,0 +1,75 @@
+.sprint {
+    width: 100%;
+    margin: 10px 0;
+    text-align: center;
+}
+.sprint__board-container {
+    margin: 10px auto;
+}
+.sprint__word-count {
+    text-align: center;
+    @include font(42px, $color-main, bold);
+}
+.sprint__timer {
+}
+.board {
+    width: 500px;
+    height: 500px;
+    margin: 10px auto;
+    @include flexColumn(space-around);
+
+    border: 1px solid;
+    border-radius: 15px;
+}
+.board__bullet-container {
+    margin: 15px;
+    @include flexRow(center);
+    gap: 15px;
+}
+.board__bullet {
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    background-color: $color-inactive;
+}
+.board__speed-container {
+    @include flexRow(center);
+    gap: 15px;
+}
+.board__speed {
+    width: 40px;
+    height: 40px;
+    background-color: $color-main;
+}
+
+.board__word-en {
+    @include font(32px, $color-main, bold);
+}
+.board__word-ru {
+    @include font(24px, $color-inactive);
+}
+.board__btn {
+    width: 100px;
+    margin: 5px;
+    padding: 10px 0;
+    border: 0;
+    border-radius: 5px;
+    @include font(16px, $color-text-main, bold);
+
+    transition: 0.3s;
+    &:hover {
+        cursor: pointer;
+        box-shadow: 2px 2px 5px 2px rgb(0 0 0 / 37%);
+    }
+    &:active {
+        box-shadow: 2px 2px 8px 2px rgb(0 0 0 / 73%);
+    }
+}
+.board__btn_false {
+    background-color: $color-btn-false;
+    color: $color-text-light;
+}
+.board__btn_true {
+    background-color: $color-btn-true;
+    color: $color-text-light;
+}
