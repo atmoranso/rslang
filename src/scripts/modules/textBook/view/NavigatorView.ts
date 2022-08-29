@@ -56,7 +56,7 @@ export default class NavigatorView extends ElementTemplate {
   };
 
   private saveState = () => {
-    localStorage.setItem('rslang-state', JSON.stringify(this.state));
+    localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
   };
 
   private setCurrentGroup = (groupButton: ElementTemplate, index: number) => {
