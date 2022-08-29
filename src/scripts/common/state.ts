@@ -1,8 +1,8 @@
-export default {
-  isAuth: localStorage.getItem('user') ? JSON.parse(<string>localStorage.getItem('user')).isAuth : false,
-  name: localStorage.getItem('user') ? JSON.parse(<string>localStorage.getItem('user')).name : '',
-  token: localStorage.getItem('user') ? JSON.parse(<string>localStorage.getItem('user')).token : '',
-  refreshToken: localStorage.getItem('user') ? JSON.parse(<string>localStorage.getItem('user')).refreshToken : '',
-  userId: localStorage.getItem('user') ? JSON.parse(<string>localStorage.getItem('user')).userId : '',
-  data: new Date(),
+import { AppState } from './stateTypes';
+
+const state: AppState = {
+  authorization: { isAuth: false, token: '', refreshToken: '', userId: '', name: '', date: Date.now(), timeoutId: 0 },
+  textbook: { group: 1, page: 1 },
 };
+
+export default state;
