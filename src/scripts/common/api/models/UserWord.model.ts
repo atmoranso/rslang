@@ -1,6 +1,9 @@
 interface UserWord {
   difficulty: string;
-  optional: Record<string, unknown>;
+  optional: {
+    learned: string;
+    learnedDate: number;
+  };
 }
 
 export default UserWord;
