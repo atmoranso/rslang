@@ -29,6 +29,10 @@ export default class NavigatorView extends ElementTemplate {
     this.state = state;
     this.navigatorOnChange = navigatorOnChange;
     this.groupsMaxCount = groupsMaxCount;
+    if (!this.state.authorization.isAuth && this.state.textbook.group === this.groupsMaxCount) {
+      this.state.textbook.group = 1;
+      this.saveState();
+    }
     this.groupsCount = this.state.authorization.isAuth ? this.groupsMaxCount : this.groupsMaxCount - 1;
     const groupNumbers = [...Array(this.groupsCount).keys()].map((x) => (x += 1));
     const groups = new ElementTemplate(this.node, 'div', 'navigator__groups');
