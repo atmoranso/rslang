@@ -15,6 +15,7 @@ export default class SprintController {
   start = async () => {
     await this.model.prepareData(0);
     this.model.setNextWord(this.view.updateBoard);
+    this.view.beforeStart();
     this.setListeners();
   };
 
@@ -25,20 +26,23 @@ export default class SprintController {
   };
 
   clickTrueHandler = () => {
-    if (!this.model.isGameFinished) this.model.setNextWord(this.view.updateBoard);
-    else {
-      this.finish();
+    this.model.checkAnswer(true, this.view.updateWordsCount);
+    if (!this.model.isGameFinished) {
+      this.model.setNextWord(this.view.updateBoard);
+    } else {
+      this.finishGame();
     }
   };
 
   clickFalseHandler = () => {
+    this.model.checkAnswer(false, this.view.updateWordsCount);
     if (!this.model.isGameFinished) this.model.setNextWord(this.view.updateBoard);
     else {
-      this.finish();
+      this.finishGame();
     }
   };
 
-  finish = () => {
+  finishGame = () => {
     this.view.showTheEnd();
     this.view.btnPlayAgain?.node.addEventListener('click', this.clickPlayAgainHandler);
   };
