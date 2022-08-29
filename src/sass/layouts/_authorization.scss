@@ -1,0 +1,110 @@
+.account {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  background-color: #6572c4;
+  padding: 100px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.account__img {
+  margin-bottom: 50px;
+}
+
+.account__buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.account__button {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  color: #FFFFFF;
+}
+
+.account__reg-button {
+  font-weight: normal;
+}
+
+.account__button:hover {
+  border-bottom: 1px solid #FFFFFF;
+}
+
+.account__button.active:hover {
+  border: none;
+}
+
+.account__close-button {
+  background: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+}
+
+.account__text {
+  color: #415268;
+  margin-right: 10px;
+}
+
+.account__error-message {
+  color: #FFFFFF;
+}
+
+.active {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.form__container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+  position: relative;
+}
+
+.form__label {
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+.form__input {
+  width: 340px;
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 8px 8px 16px;
+  background: #FFFFFF;
+
+  &::placeholder {
+    color: #cccccc;
+  }
+}
+
+.form__button {
+  padding: 15px 55px;
+  background: #FF7448;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  color: #FFFFFF;
+  display: block;
+  margin: 100px auto 0;
+}
+
+.form__error-message {
+  color: #c9b1b1;
+  position: absolute;
+  font-style: italic;
+  top: 65px;
+}
