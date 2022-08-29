@@ -5,7 +5,7 @@ button {
 .navigator {
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: 300px;
   margin: 20px auto 20px;
   gap: 10px;
 }
@@ -27,8 +27,17 @@ button {
 }
 
 .navigator__page-current {
+  display: block;
+  width: 30px;
   border: 1px solid $color-card-border;
   padding: 0 5px;
+}
+
+.navigator__page-current_show-medal {
+  background-image: url(../assets/svg/medal-purple.svg);
+  background-repeat: no-repeat;
+  background-size: 45%;
+  background-position: 90%;
 }
 
 .cards {
