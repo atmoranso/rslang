@@ -43,14 +43,14 @@ export default class AuthorizationController {
 
   signUpButtonHandler = async (event: MouseEvent) => {
     event.preventDefault();
-    const user = this.getNewUser();
+    const user = this.getNewUserData();
     if (user) {
       const str = await this.model.createUser(user);
       this.view.showSignUpErrors(str);
     }
   };
 
-  getNewUser() {
+  getNewUserData() {
     const name = this.view.signUp.nameInput.node.value;
     const email = this.view.signUp.emailInput.node.value;
     const password = this.view.signUp.passInput.node.value;

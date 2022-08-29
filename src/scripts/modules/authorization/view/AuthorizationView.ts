@@ -95,6 +95,4 @@ export default class AuthorizationView extends ElementTemplate {
       this.signUp.passError.node.textContent = str;
     }
   }
-
-  update() {}
 }
