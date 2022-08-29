@@ -31,5 +31,70 @@ export default class AuthorizationView extends ElementTemplate {
     this.signUp = new SignUp(null);
   }
 
+  showSignUpWindow() {
+    this.enterButton.node.classList.remove('active');
+    this.regButton.node.classList.add('active');
+    this.signIn.emailError.node.textContent = '';
+    this.signIn.passError.node.textContent = '';
+    this.signIn.node.remove();
+    this.signUp.regForm.node.reset();
+    this.node.append(this.signUp.node);
+  }
+
+  showSignInWindow() {
+    this.regButton.node.classList.remove('active');
+    this.enterButton.node.classList.add('active');
+    this.signUp.emailError.node.textContent = '';
+    this.signUp.nameError.node.textContent = '';
+    this.signUp.passError.node.textContent = '';
+    this.signUp.node.remove();
+    this.signIn.authForm.node.reset();
+    this.node.append(this.signIn.node);
+  }
+
+  showSignUpErrors(str: string) {
+    if (!str) {
+      this.signUp.regForm.node.reset();
+      this.signIn.authForm.node.reset();
+      this.signUp.node.remove();
+      this.node.append(this.signIn.node);
+    } else if (str === 'Пользователь с таким email существует') {
+      this.signUp.emailError.node.textContent = str;
+    }
+  }
+
+  showSignInErrors(str: string) {
+    if (!str) {
+      this.node.remove();
+    } else if (str === 'Пользователь с таким email не существует') {
+      this.signIn.emailError.node.textContent = str;
+      this.signIn.passError.node.textContent = '';
+    } else if (str === 'Введен неправильный пароль') {
+      this.signIn.emailError.node.textContent = '';
+      this.signIn.passError.node.textContent = str;
+    }
+  }
+
+  showGetAuthDataErrors(str: string) {
+    if (str === 'Невалидный email') {
+      this.signIn.emailError.node.textContent = str;
+    } else if (str === 'Пароль не может быть пустым') {
+      this.signIn.emailError.node.textContent = '';
+      this.signIn.passError.node.textContent = str;
+    }
+  }
+
+  showGetNewUserErrors(str: string) {
+    if (str === 'Укажите имя') {
+      this.signUp.nameError.node.textContent = str;
+    } else if (str === 'Невалидный email') {
+      this.signUp.nameError.node.textContent = '';
+      this.signUp.emailError.node.textContent = str;
+    } else if (str === 'Длина пароля 8 символов') {
+      this.signUp.emailError.node.textContent = '';
+      this.signUp.passError.node.textContent = str;
+    }
+  }
+
   update() {}
 }

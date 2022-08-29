@@ -30,8 +30,8 @@ export default class AuthorizationModel {
       this.state.authorization.userId = res.userId;
       this.state.authorization.date = Date.now();
       localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
-      return '';
     }
+    return '';
   }
 
   async createUser(user: User) {
@@ -43,7 +43,6 @@ export default class AuthorizationModel {
     const email = user.email;
     const password = user.password;
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
     if (!re.test(String(email).toLowerCase())) {
       return 'Невалидный email';
     }
@@ -58,7 +57,6 @@ export default class AuthorizationModel {
     const email = user.email;
     const password = user.password;
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
     if (!name) {
       return 'Укажите имя';
     }
