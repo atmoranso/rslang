@@ -34,7 +34,7 @@ export default class SprintView extends ElementTemplate {
     this.boardContainer = new ElementTemplate(null, 'div', 'sprint__board-container');
     this.score = new ElementTemplate(this.boardContainer.node, 'div', 'sprint__word-count', '0');
     this.board = new Board(this.boardContainer.node);
-    this.timer = new ElementTemplate(this.boardContainer.node, 'div', 'sprint__timer');
+    this.timer = new ElementTemplate(this.boardContainer.node, 'div', 'sprint__timer', '');
 
     this.finishWindow = new FinishWindow(null);
 
@@ -50,6 +50,18 @@ export default class SprintView extends ElementTemplate {
     this.waitingWindow.node.classList.add('show');
   };
 
+  hideWaitingWindow = () => {
+    this.waitingWindow.node.classList.remove('show');
+  };
+
+  updateContDown = (digit: number) => {
+    this.countDownWindow.update(digit);
+  };
+
+  updateGameTimer = (digit: number) => {
+    this.timer.node.innerText = '' + digit;
+  };
+
   showCountDown = () => {
     this.startWindow.delete();
     this.finishWindow.delete();
@@ -57,7 +69,7 @@ export default class SprintView extends ElementTemplate {
   };
 
   showBoard = () => {
-    this.waitingWindow.node.classList.remove('show');
+    this.hideWaitingWindow();
     this.startWindow.delete();
     this.countDownWindow.delete();
     this.finishWindow.delete();

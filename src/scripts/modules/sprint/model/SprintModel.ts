@@ -34,6 +34,24 @@ export default class SprintModel {
     this.state.group = level;
   };
 
+  setStartTimer = async (seconds: number, updateCounter: (digit: number) => void) => {
+    const startTimer = seconds;
+    updateCounter(seconds);
+    seconds--;
+    const promise = await new Promise((resolve) => {
+      const timerId = setInterval(() => {
+        updateCounter(seconds);
+        seconds--;
+        if (seconds < 0) {
+          clearInterval(timerId);
+          updateCounter(startTimer);
+          resolve('result');
+        }
+      }, 1000);
+    });
+    return promise;
+  };
+
   setNextWord(updateView: (state: SprintState) => void) {
     this.state.currentWordIndex++;
     if (this.state.currentWordIndex === this.gameWords.length - 1) {

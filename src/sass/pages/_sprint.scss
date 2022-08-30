@@ -5,6 +5,7 @@
 }
 
 .sprint__board-container {
+    position: relative;
     margin: 10px auto;
 }
 .sprint__word-count {
@@ -114,4 +115,17 @@
     top: 50%;
     background-color: white;
     @include font(25px);
+}
+.countdown__count {
+    @include font(42px, $color-main, bold);
+}
+.sprint__timer {
+    width: 60px;
+    height: 60px;
+    top: 0;
+    right: 60px;
+    position: absolute;
+    @include font(42px, $color-main, bold);
+    border: 1px solid;
+    border-radius: 100px;
 }

@@ -17,6 +17,9 @@ export default class SprintController {
 
   startGame = async () => {
     await this.model.prepareData(this.view.showWaitingWindow);
+    this.view.hideWaitingWindow();
+    this.view.showCountDown();
+    await this.model.setStartTimer(3, this.view.updateContDown);
     this.model.setNextWord(this.view.updateBoard);
   };
 
@@ -31,9 +34,14 @@ export default class SprintController {
 
   clickLevelHandler = (level: number) => {
     this.model.setLevel(level);
-    this.startGame().then(() => {
-      this.view.showBoard();
-    });
+    this.startGame()
+      .then(() => {
+        this.view.showBoard();
+        return this.model.setStartTimer(5, this.view.updateGameTimer);
+      })
+      .then(() => {
+        this.finishGame();
+      });
   };
 
   clickTrueHandler = () => {
@@ -59,7 +67,13 @@ export default class SprintController {
   };
 
   clickPlayAgainHandler = () => {
-    this.view.showBoard();
-    this.startGame();
+    this.startGame()
+      .then(() => {
+        this.view.showBoard();
+        return this.model.setStartTimer(5, this.view.updateGameTimer);
+      })
+      .then(() => {
+        this.finishGame();
+      });
   };
 }

@@ -5,7 +5,7 @@ export default class CountDownWindow extends ElementTemplate {
 
   constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'div', 'sprint__countdown-window countdown');
-    this.count = new ElementTemplate(this.node, 'div', 'countdown__count', '5');
+    this.count = new ElementTemplate(this.node, 'div', 'countdown__count', '');
   }
 
   update = (digit: number) => {
