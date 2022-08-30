@@ -8,26 +8,37 @@ export default class SprintController {
 
   constructor(view: SprintView, model: SprintModel) {
     this.view = view;
-
     this.model = model;
   }
 
-  start = async () => {
-    await this.model.prepareData(0);
-    this.model.setNextWord(this.view.updateBoard);
-    this.view.beforeStart();
+  start = () => {
     this.setListeners();
   };
 
+  startGame = async () => {
+    await this.model.prepareData(this.view.showWaitingWindow);
+    this.model.setNextWord(this.view.updateBoard);
+  };
+
   setListeners = () => {
+    this.view.startWindow.level.forEach((btn, index) => {
+      btn.node.addEventListener('click', () => this.clickLevelHandler(index));
+    });
     this.view.board.btnTrue.node.addEventListener('click', this.clickTrueHandler);
     this.view.board.btnFalse.node.addEventListener('click', this.clickFalseHandler);
     this.view.finishWindow.btnPlayAgain.node.addEventListener('click', this.clickPlayAgainHandler);
   };
 
+  clickLevelHandler = (level: number) => {
+    this.model.setLevel(level);
+    this.startGame().then(() => {
+      this.view.showBoard();
+    });
+  };
+
   clickTrueHandler = () => {
-    this.model.checkAnswer(true, this.view.updateWordsCount);
-    if (!this.model.isGameFinished) {
+    this.model.checkAnswer(true);
+    if (!this.model.state.isGameFinished) {
       this.model.setNextWord(this.view.updateBoard);
     } else {
       this.finishGame();
@@ -35,8 +46,8 @@ export default class SprintController {
   };
 
   clickFalseHandler = () => {
-    this.model.checkAnswer(false, this.view.updateWordsCount);
-    if (!this.model.isGameFinished) this.model.setNextWord(this.view.updateBoard);
+    this.model.checkAnswer(false);
+    if (!this.model.state.isGameFinished) this.model.setNextWord(this.view.updateBoard);
     else {
       this.finishGame();
     }
@@ -49,6 +60,6 @@ export default class SprintController {
 
   clickPlayAgainHandler = () => {
     this.view.showBoard();
-    this.start();
+    this.startGame();
   };
 }

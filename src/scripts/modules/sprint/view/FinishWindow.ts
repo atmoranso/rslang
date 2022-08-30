@@ -6,6 +6,11 @@ export default class FinishWindow extends ElementTemplate {
   constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'div', 'sprint__finish-window finish');
 
-    this.btnPlayAgain = new ElementTemplate<HTMLButtonElement>(this.node, 'button', 'finish__btn-play', 'Еще разок?');
+    this.btnPlayAgain = new ElementTemplate<HTMLButtonElement>(
+      this.node,
+      'button',
+      'btn finish__btn-play',
+      'Еще разок?',
+    );
   }
 }

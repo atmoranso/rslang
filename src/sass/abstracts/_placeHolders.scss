@@ -1,0 +1,8 @@
+%sprint-board {
+    width: 500px;
+    height: 500px;
+    margin: 10px auto;
+    @include flexColumn(space-around);
+    border: 1px solid;
+    border-radius: 15px;
+}

@@ -3,6 +3,7 @@
     margin: 10px 0;
     text-align: center;
 }
+
 .sprint__board-container {
     margin: 10px auto;
 }
@@ -12,15 +13,24 @@
 }
 .sprint__timer {
 }
-.board {
-    width: 500px;
-    height: 500px;
-    margin: 10px auto;
-    @include flexColumn(space-around);
-
-    border: 1px solid;
-    border-radius: 15px;
+.start {
+    @extend %sprint-board;
 }
+.start__level-container {
+    @include flexRow(space-around);
+}
+.start__level-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid;
+    &:hover {
+        cursor: pointer;
+    }
+}
+.board {
+    @extend %sprint-board;
+}
+
 .board__bullet-container {
     margin: 15px;
     @include flexRow(center);
@@ -31,15 +41,24 @@
     height: 20px;
     border-radius: 50px;
     background-color: $color-inactive;
+    &.active {
+        background-color: $color-main;
+    }
 }
+
 .board__speed-container {
+    height: 40px;
     @include flexRow(center);
     gap: 15px;
 }
 .board__speed {
+    display: none;
     width: 40px;
     height: 40px;
-    background-color: $color-main;
+    background-color: $color-btn-true;
+    &.active {
+        display: block;
+    }
 }
 
 .board__word-en {
@@ -58,13 +77,6 @@
     @include font(16px, $color-text-main, bold);
 
     transition: 0.3s;
-    &:hover {
-        cursor: pointer;
-        box-shadow: 2px 2px 5px 2px rgb(0 0 0 / 37%);
-    }
-    &:active {
-        box-shadow: 2px 2px 8px 2px rgb(0 0 0 / 73%);
-    }
 }
 .board__btn_false {
     background-color: $color-btn-false;
@@ -77,4 +89,29 @@
 .finish__btn-play {
     width: 150px;
     margin: 5px;
+}
+.waiting-window {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    position: absolute;
+    display: none;
+    z-index: 100;
+    &.show {
+        display: block;
+    }
+}
+.waiting-window__overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: black;
+    opacity: 0.5;
+}
+.waiting-window__box {
+    position: relative;
+    left: 0;
+    top: 50%;
+    background-color: white;
+    @include font(25px);
 }
