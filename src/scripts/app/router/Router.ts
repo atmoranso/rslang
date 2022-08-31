@@ -4,7 +4,6 @@ import Home from '../../modules/home/Home';
 import Textbook from '../../modules/textBook/TextBook';
 import AppView from '../view/AppView';
 import { AppState } from '../../common/stateTypes';
-import Authorization from '../../modules/authorization/Authorization';
 
 export default class Router {
   view: AppView;
@@ -31,10 +30,6 @@ export default class Router {
   };
 
   init() {
-    const authorization = new Authorization(this.state);
-    this.view.header.node.append(authorization.view.node);
-    authorization.controller.start();
-
     window.addEventListener('hashchange', this.router);
     this.router();
   }

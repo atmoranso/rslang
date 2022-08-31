@@ -2,6 +2,8 @@ import ElementTemplate from './ElementTemplate';
 import svg from './person-svg.svg';
 
 class HeaderView extends ElementTemplate {
+  logoAccount: ElementTemplate;
+
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'header', 'header');
     const headerContainer = new ElementTemplate(this.node, 'div', 'header__container');
@@ -25,8 +27,8 @@ class HeaderView extends ElementTemplate {
       </li>
       <li class="nav-menu__item"><a class="nav-menu__link" href="#statistics">Статистика</a></li>
     `;
-    const logoAccount = new ElementTemplate(headerContainer.node, 'div', 'header__account');
-    logoAccount.node.innerHTML = svg;
+    this.logoAccount = new ElementTemplate(headerContainer.node, 'div', 'header__account');
+    this.logoAccount.node.innerHTML = svg;
   }
 }
 

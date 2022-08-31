@@ -4,7 +4,7 @@ import AuthorizationController from './controller/AuthorizationController';
 import { Module } from '../../common/types';
 import { AppState } from '../../common/stateTypes';
 
-export default class Authorization implements Module {
+export default class AuthorizationModule implements Module {
   view: AuthorizationView;
 
   model: AuthorizationModel;
@@ -20,7 +20,5 @@ export default class Authorization implements Module {
     this.controller = new AuthorizationController(this.view, this.model);
   }
 
-  start() {
-    this.controller.start();
-  }
+  start() {}
 }
