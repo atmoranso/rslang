@@ -5,7 +5,7 @@ button {
 .navigator {
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: 300px;
   margin: 20px auto 20px;
   gap: 10px;
 }
@@ -27,8 +27,17 @@ button {
 }
 
 .navigator__page-current {
+  display: block;
+  width: 30px;
   border: 1px solid $color-card-border;
   padding: 0 5px;
+}
+
+.navigator__page-current_show-medal {
+  background-image: url(../assets/svg/medal-purple.svg);
+  background-repeat: no-repeat;
+  background-size: 45%;
+  background-position: 90%;
 }
 
 .cards {
@@ -36,6 +45,8 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  height: 100vh;
+  align-content: flex-start;
 }
 
 .card {
@@ -98,17 +109,64 @@ button {
   background-position: center;
 }
 
-.card__listen-button {
-  z-index: 1;
-  width: 50px;
-  height: 50px;
+.card__listen-button,
+.card__difficult-button,
+.card__learned-button,
+.card__statistic-button {
+  z-index: 2;
+  width: 40px;
+  height: 40px;
   position: absolute;
-  right: 25px;
-  top: 25px;
-  background-image: url(../assets/svg/listen.svg);
+  top: 10px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   background-color: transparent;
   border: none;
+}
+
+.card__listen-button {
+  width: 50px;
+  height: 50px;
+  top: 60px;
+  right: 15px;
+  background-image: url(../assets/svg/listen.svg);
+}
+
+.card__difficult-button {
+  right: 135px;
+  background-image: url(../assets/svg/difficult.svg);
+}
+
+.card__learned-button {
+  right: 75px;
+  background-image: url(../assets/svg/learned.svg);
+}
+
+.card__statistic-button {
+  right: 15px;
+  background-image: url(../assets/svg/statistic.svg);
+}
+
+.card__difficult-button-plus,
+.card__difficult-button-plus_remove,
+.card__learned-button-plus,
+.card__learned-button-plus_remove {
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  background-image: url(../assets/svg/plus-green.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+}
+
+.card__difficult-button-plus_remove,
+.card__learned-button-plus_remove {
+  background-image: url(../assets/svg/minus-red.svg);
 }
