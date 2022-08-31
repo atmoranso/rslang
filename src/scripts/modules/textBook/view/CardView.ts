@@ -4,6 +4,7 @@ import DataAPI from '../../../common/api/DataAPI';
 import UserWordExt from '../../../common/api/models/UserWordExt.model';
 import YesNo from '../../../common/enums';
 import { AppState } from '../../../common/stateTypes';
+import UserWord from '../../../common/api/models/UserWord.model';
 
 export default class CardView extends ElementTemplate {
   private audio: HTMLAudioElement | undefined = undefined;
@@ -76,6 +77,7 @@ export default class CardView extends ElementTemplate {
     this.difficultButtonAction = new ElementTemplate(difficultButton.node, 'div', 'card__difficult-button-plus');
     const learnedButton = new ElementTemplate(this.node, 'button', 'card__learned-button');
     this.learnedButtonAction = new ElementTemplate(learnedButton.node, 'div', 'card__learned-button-plus');
+    const statisticButton = new ElementTemplate(this.node, 'button', 'card__statistic-button');
     if (!this.state.authorization.isAuth) {
       difficultButton.node.hidden = true;
       this.difficultButtonAction.node.hidden = true;
@@ -90,23 +92,24 @@ export default class CardView extends ElementTemplate {
   }
 
   private difficultButtonOnClick = async () => {
+    const token = this.state.authorization.token;
+    const userId = this.state.authorization.userId;
+    const userWord: UserWord = {
+      difficulty: YesNo.yes,
+      optional: { learned: YesNo.no, learnedDate: 0 },
+    };
     this.isDifficult = !this.isDifficult;
     if (this.isDifficult) {
       if (this.userWordId) {
-        await DataAPI.updateUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-          difficulty: YesNo.yes,
-          optional: { learned: YesNo.no, learnedDate: 0 },
-        });
+        await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
       } else {
-        await DataAPI.createUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-          difficulty: YesNo.yes,
-          optional: { learned: YesNo.no, learnedDate: 0 },
-        });
+        await DataAPI.createUserWord(token, userId, this.wordId, userWord);
       }
       this.isLearned = false;
       this.changelearnedStyle();
     } else {
-      await DataAPI.deleteUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId);
+      userWord.difficulty = YesNo.no;
+      await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
     }
     this.changeDifficultStyle();
     this.onChangeUserWord();
@@ -124,24 +127,24 @@ export default class CardView extends ElementTemplate {
   };
 
   private learnedButtonOnClick = async () => {
-    this.learnedDate = Date.now();
+    const token = this.state.authorization.token;
+    const userId = this.state.authorization.userId;
+    const userWord: UserWord = {
+      difficulty: YesNo.no,
+      optional: { learned: YesNo.yes, learnedDate: Date.now() },
+    };
     this.isLearned = !this.isLearned;
     if (this.isLearned) {
       if (this.userWordId) {
-        await DataAPI.updateUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-          difficulty: YesNo.no,
-          optional: { learned: YesNo.yes, learnedDate: this.learnedDate },
-        });
+        await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
       } else {
-        await DataAPI.createUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-          difficulty: YesNo.no,
-          optional: { learned: YesNo.yes, learnedDate: this.learnedDate },
-        });
+        await DataAPI.createUserWord(token, userId, this.wordId, userWord);
       }
       this.isDifficult = false;
       this.changeDifficultStyle();
     } else {
-      await DataAPI.deleteUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId);
+      userWord.optional = { learned: YesNo.no, learnedDate: 0 };
+      await DataAPI.createUserWord(token, userId, this.wordId, userWord);
     }
     this.changelearnedStyle();
     this.onChangeUserWord();
