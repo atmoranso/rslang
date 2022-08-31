@@ -35,6 +35,8 @@ export default class CardView extends ElementTemplate {
 
   private state: AppState;
 
+  private gamesStatistic: UserWord['optional']['gamesStatistic'];
+
   private setNewSpeaker: (newSpeaker: CardView) => void;
 
   private onChangeUserWord: () => void;
@@ -60,8 +62,13 @@ export default class CardView extends ElementTemplate {
     };
     this.isRemoveAble = isRemoveAble;
     this.wordId = data.id;
+    const gameStatistic = { correct: 0, wrong: 0, correctChain: 0, lastUpdate: 0 };
+    this.gamesStatistic = { wasInGames: false, sprint: gameStatistic, audioCall: gameStatistic };
     if (initUserWordData) {
       this.userWordId = initUserWordData.id;
+      if (initUserWordData.optional.gamesStatistic) {
+        this.gamesStatistic = initUserWordData.optional.gamesStatistic;
+      }
     }
     new ElementTemplate(this.node, 'span', 'card__word', data.word);
     new ElementTemplate(this.node, 'span', 'card__transcription', data.transcription);
@@ -77,7 +84,7 @@ export default class CardView extends ElementTemplate {
     this.difficultButtonAction = new ElementTemplate(difficultButton.node, 'div', 'card__difficult-button-plus');
     const learnedButton = new ElementTemplate(this.node, 'button', 'card__learned-button');
     this.learnedButtonAction = new ElementTemplate(learnedButton.node, 'div', 'card__learned-button-plus');
-    const statisticButton = new ElementTemplate(this.node, 'button', 'card__statistic-button');
+    // const statisticButton = new ElementTemplate(this.node, 'button', 'card__statistic-button');
     if (!this.state.authorization.isAuth) {
       difficultButton.node.hidden = true;
       this.difficultButtonAction.node.hidden = true;
@@ -96,7 +103,7 @@ export default class CardView extends ElementTemplate {
     const userId = this.state.authorization.userId;
     const userWord: UserWord = {
       difficulty: YesNo.yes,
-      optional: { learned: YesNo.no, learnedDate: 0 },
+      optional: { learned: YesNo.no, learnedDate: 0, gamesStatistic: this.gamesStatistic },
     };
     this.isDifficult = !this.isDifficult;
     if (this.isDifficult) {
@@ -131,7 +138,7 @@ export default class CardView extends ElementTemplate {
     const userId = this.state.authorization.userId;
     const userWord: UserWord = {
       difficulty: YesNo.no,
-      optional: { learned: YesNo.yes, learnedDate: Date.now() },
+      optional: { learned: YesNo.yes, learnedDate: Date.now(), gamesStatistic: this.gamesStatistic },
     };
     this.isLearned = !this.isLearned;
     if (this.isLearned) {
@@ -143,7 +150,8 @@ export default class CardView extends ElementTemplate {
       this.isDifficult = false;
       this.changeDifficultStyle();
     } else {
-      userWord.optional = { learned: YesNo.no, learnedDate: 0 };
+      userWord.optional.learned = YesNo.no;
+      userWord.optional.learnedDate = 0;
       await DataAPI.createUserWord(token, userId, this.wordId, userWord);
     }
     this.changelearnedStyle();

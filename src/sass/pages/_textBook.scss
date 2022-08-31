@@ -111,7 +111,8 @@ button {
 
 .card__listen-button,
 .card__difficult-button,
-.card__learned-button {
+.card__learned-button,
+.card__statistic-button {
   z-index: 2;
   width: 40px;
   height: 40px;
@@ -128,18 +129,23 @@ button {
   width: 50px;
   height: 50px;
   top: 60px;
-  right: 40px;
+  right: 15px;
   background-image: url(../assets/svg/listen.svg);
 }
 
 .card__difficult-button {
-  right: 75px;
+  right: 135px;
   background-image: url(../assets/svg/difficult.svg);
 }
 
 .card__learned-button {
-  right: 15px;
+  right: 75px;
   background-image: url(../assets/svg/learned.svg);
+}
+
+.card__statistic-button {
+  right: 15px;
+  background-image: url(../assets/svg/statistic.svg);
 }
 
 .card__difficult-button-plus,
