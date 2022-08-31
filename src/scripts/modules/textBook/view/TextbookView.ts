@@ -4,7 +4,6 @@ import Card from './CardView';
 import DataAPI from '../../../common/api/DataAPI';
 import Word from '../../../common/api/models/Word.model';
 import UserWordExt from '../../../common/api/models/UserWordExt.model';
-import state from '../../../common/state';
 import YesNo from '../../../common/enums';
 import { AppState } from '../../../common/stateTypes';
 
@@ -21,7 +20,7 @@ export default class TextbookView extends ElementTemplate {
 
   private state: AppState;
 
-  constructor(parentNode: HTMLElement | null) {
+  constructor(parentNode: HTMLElement | null, state: AppState) {
     super(parentNode, 'section', 'textbook');
     this.state = state;
     this.navigator = new Navigator(this.node, this.groupsMaxCount, this.state, this.renderCards);
@@ -31,7 +30,10 @@ export default class TextbookView extends ElementTemplate {
   private renderCards = async () => {
     try {
       const words = await this.getWords();
-      const userWords = await DataAPI.getUserWords(this.state.authorization.token, this.state.authorization.userId);
+      let userWords: Array<UserWordExt> = [];
+      if (this.state.authorization.isAuth) {
+        userWords = await DataAPI.getUserWords(this.state.authorization.token, this.state.authorization.userId);
+      }
       this.removePreviousCards();
       words.forEach((word: Word) => {
         const foundedWord = userWords.find((userWord: UserWordExt) => {
