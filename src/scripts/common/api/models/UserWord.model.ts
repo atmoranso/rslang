@@ -1,10 +1,10 @@
-import YesNo from "../../enums";
+import YesNo from '../../enums';
 
-interface gameStatistic {
-  correct: number,
-  wrong: number,
-  correctChain: number,
-  lastUpdate: number,
+interface GameStatistic {
+  correct: number;
+  wrong: number;
+  correctChain: number;
+  lastUpdate: number;
 }
 
 interface UserWord {
@@ -13,10 +13,10 @@ interface UserWord {
     learned: YesNo;
     learnedDate: number;
     gamesStatistic: {
-      wasInGames: boolean,
-      sprint: gameStatistic,
-      audioCall: gameStatistic
-    }
+      wasInGames: boolean;
+      sprint: GameStatistic;
+      audioCall: GameStatistic;
+    };
   };
 }
 
