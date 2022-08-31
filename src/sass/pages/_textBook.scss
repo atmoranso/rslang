@@ -45,7 +45,8 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
-  height: 100vh;
+  min-height: 100vh;
+  margin-bottom: 20px;
   align-content: flex-start;
 }
 
