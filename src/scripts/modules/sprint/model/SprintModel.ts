@@ -1,26 +1,27 @@
 import DataAPI from '../../../common/api/DataAPI';
 import Word from '../../../common/api/models/Word.model';
-import { SprintState } from '../../../common/stateTypes';
+import { AppState, Authorization, SprintState } from '../../../common/stateTypes';
 
 export default class SprintModel {
   state: SprintState;
 
+  authorization: Authorization;
+
   gameWords: Word[] = [];
 
-  constructor(state: SprintState) {
-    this.state = state;
+  constructor(state: AppState) {
+    this.state = state.sprint;
+    this.authorization = state.authorization;
   }
 
-  async prepareData(updateView: () => void) {
+  async prepareData(showLoadingPage: () => void) {
     if (this.gameWords.length > 1) {
     } else {
-      updateView();
-      const response = await DataAPI.getChunkOfWords(this.state.group, 0);
-      if ('status' in response) {
-        throw new Error(response.status + '  ' + response.statusText);
+      showLoadingPage();
+      if (!this.authorization.isAuth) {
+        const pageNumber = Math.floor(Math.random() * 20);
+        this.gameWords = await this.getWordsArr(this.state.group, pageNumber);
       }
-
-      this.gameWords = response;
     }
     this.state.speedSprint = 1;
     this.state.speedIconCount = 1;
@@ -29,6 +30,14 @@ export default class SprintModel {
     this.state.isGameFinished = false;
     this.state.correctAnswerCount = 0;
   }
+
+  getWordsArr = async (group: number, pageNumber: number) => {
+    const response = await DataAPI.getChunkOfWords(group, pageNumber);
+    if ('status' in response) {
+      throw new Error(response.status + '  ' + response.statusText);
+    }
+    return response;
+  };
 
   setLevel = (level: number) => {
     this.state.group = level;
