@@ -18,7 +18,9 @@ export default class CardView extends ElementTemplate {
 
   private wordId = '';
 
-  private isDifficult = false;
+  private userWordId = '';
+
+  public isDifficult = false;
 
   public isLearned = false;
 
@@ -57,6 +59,9 @@ export default class CardView extends ElementTemplate {
     };
     this.isRemoveAble = isRemoveAble;
     this.wordId = data.id;
+    if (initUserWordData) {
+      this.userWordId = initUserWordData.id;
+    }
     new ElementTemplate(this.node, 'span', 'card__word', data.word);
     new ElementTemplate(this.node, 'span', 'card__transcription', data.transcription);
     new ElementTemplate(this.node, 'span', 'card__word-translate', data.wordTranslate);
@@ -85,57 +90,69 @@ export default class CardView extends ElementTemplate {
   }
 
   private difficultButtonOnClick = async () => {
-    if (this.isDifficult && this.isLearned) {
-      await DataAPI.updateUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-        difficulty: YesNo.no,
-        optional: { learned: YesNo.yes, learnedDate: this.learnedDate },
-      });
-    } else if (this.isDifficult) {
+    this.isDifficult = !this.isDifficult;
+    if (this.isDifficult) {
+      if (this.userWordId) {
+        await DataAPI.updateUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
+          difficulty: YesNo.yes,
+          optional: { learned: YesNo.no, learnedDate: 0 },
+        });
+      } else {
+        await DataAPI.createUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
+          difficulty: YesNo.yes,
+          optional: { learned: YesNo.no, learnedDate: 0 },
+        });
+      }
+      this.isLearned = false;
+      this.changelearnedStyle();
+    } else {
       await DataAPI.deleteUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId);
     }
-    if (!this.isDifficult && this.isLearned) {
-      await DataAPI.updateUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-        difficulty: YesNo.yes,
-        optional: { learned: YesNo.yes, learnedDate: this.learnedDate },
-      });
-    } else if (!this.isDifficult) {
-      await DataAPI.createUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-        difficulty: YesNo.yes,
-        optional: { learned: YesNo.no, learnedDate: 0 },
-      });
+    this.changeDifficultStyle();
+    this.onChangeUserWord();
+  };
+
+  private changeDifficultStyle = () => {
+    if (this.isDifficult) {
+      this.difficultButtonAction.node.classList.add('card__difficult-button-plus_remove');
+    } else {
+      this.difficultButtonAction.node.classList.remove('card__difficult-button-plus_remove');
     }
-    this.isDifficult = !this.isDifficult;
-    this.difficultButtonAction.node.classList.toggle('card__difficult-button-plus_remove');
     if (this.isRemoveAble && !this.isDifficult) {
       super.delete();
     }
-    this.onChangeUserWord();
   };
 
   private learnedButtonOnClick = async () => {
     this.learnedDate = Date.now();
-    if (this.isDifficult && this.isLearned) {
-      await DataAPI.updateUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-        difficulty: YesNo.yes,
-        optional: { learned: YesNo.no, learnedDate: 0 },
-      });
-    } else if (this.isLearned) {
+    this.isLearned = !this.isLearned;
+    if (this.isLearned) {
+      if (this.userWordId) {
+        await DataAPI.updateUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
+          difficulty: YesNo.no,
+          optional: { learned: YesNo.yes, learnedDate: this.learnedDate },
+        });
+      } else {
+        await DataAPI.createUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
+          difficulty: YesNo.no,
+          optional: { learned: YesNo.yes, learnedDate: this.learnedDate },
+        });
+      }
+      this.isDifficult = false;
+      this.changeDifficultStyle();
+    } else {
       await DataAPI.deleteUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId);
     }
-    if (this.isDifficult && !this.isLearned) {
-      await DataAPI.updateUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-        difficulty: YesNo.yes,
-        optional: { learned: YesNo.yes, learnedDate: this.learnedDate },
-      });
-    } else if (!this.isLearned) {
-      await DataAPI.createUserWord(this.state.authorization.token, this.state.authorization.userId, this.wordId, {
-        difficulty: YesNo.no,
-        optional: { learned: YesNo.yes, learnedDate: this.learnedDate },
-      });
-    }
-    this.isLearned = !this.isLearned;
-    this.learnedButtonAction.node.classList.toggle('card__learned-button-plus_remove');
+    this.changelearnedStyle();
     this.onChangeUserWord();
+  };
+
+  private changelearnedStyle = () => {
+    if (this.isLearned) {
+      this.learnedButtonAction.node.classList.add('card__learned-button-plus_remove');
+    } else {
+      this.learnedButtonAction.node.classList.remove('card__learned-button-plus_remove');
+    }
   };
 
   private listenButtonOnClick = () => {
@@ -151,14 +168,9 @@ export default class CardView extends ElementTemplate {
   private initUserWord = async (initUserWordData: UserWordExt | undefined) => {
     if (initUserWordData) {
       this.isDifficult = initUserWordData.difficulty === YesNo.yes;
-      if (this.isDifficult) {
-        this.difficultButtonAction.node.classList.add('card__difficult-button-plus_remove');
-      }
       this.isLearned = initUserWordData.optional.learned === YesNo.yes;
-      if (this.isLearned) {
-        this.learnedDate = initUserWordData.optional.learnedDate;
-        this.learnedButtonAction.node.classList.add('card__learned-button-plus_remove');
-      }
+      this.changeDifficultStyle();
+      this.changelearnedStyle();
     }
   };
 

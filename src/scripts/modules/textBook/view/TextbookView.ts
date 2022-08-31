@@ -30,9 +30,9 @@ export default class TextbookView extends ElementTemplate {
 
   private renderCards = async () => {
     try {
-      this.removePreviousCards();
       const words = await this.getWords();
       const userWords = await DataAPI.getUserWords(this.state.authorization.token, this.state.authorization.userId);
+      this.removePreviousCards();
       words.forEach((word: Word) => {
         const foundedWord = userWords.find((userWord: UserWordExt) => {
           return userWord.wordId === word.id;
@@ -59,7 +59,7 @@ export default class TextbookView extends ElementTemplate {
   };
 
   private onChangeUserWord = () => {
-    const visible = this.cards.every((card: Card) => card.isLearned);
+    const visible = this.cards.every((card: Card) => card.isLearned || card.isDifficult);
     this.navigator.displayMedal(visible);
   };
 
@@ -90,10 +90,8 @@ export default class TextbookView extends ElementTemplate {
   };
 
   private removePreviousCards = () => {
-    if (this.cards.length !== 0) {
-      this.cards.forEach((el) => el.delete());
-      this.cards = [];
-    }
+    this.cards.forEach((el) => el.delete());
+    this.cards = [];
   };
 
   private setNewSpeaker = (newSpeaker: Card) => {
