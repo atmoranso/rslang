@@ -8,6 +8,7 @@ button {
   width: 300px;
   margin: 20px auto 20px;
   gap: 10px;
+  position: relative;
 }
 
 .navigator__groups,
@@ -40,12 +41,32 @@ button {
   background-position: 90%;
 }
 
+.navigator__links {
+  position: absolute;
+  top: -5px;
+  right: 0px;
+}
+
+.navigator__links .dropdown-menu {
+  margin-top: 0;
+  display: block;
+}
+
+.navigator__links .dropdown-menu__item {
+  padding: 0.5rem 2rem;
+}
+
+.navigator__links .dropdown-menu__link::after {
+  top: 1.5rem;
+}
+
 .cards {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
-  height: 100vh;
+  min-height: 100vh;
+  margin-bottom: 20px;
   align-content: flex-start;
 }
 

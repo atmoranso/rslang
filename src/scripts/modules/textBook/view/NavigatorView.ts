@@ -46,6 +46,15 @@ export default class NavigatorView extends ElementTemplate {
     this.pageCurrent = new ElementTemplate(pages.node, 'span', 'navigator__page-current');
     this.pageButtonNext = new ElementTemplate(pages.node, 'button', 'navigator__page-button-next', 'Next');
     this.pageButtonLast = new ElementTemplate(pages.node, 'button', 'navigator__page-button-last', 'Last');
+    new ElementTemplate(
+      this.node,
+      'div',
+      'navigator__links',
+      `<ul class="dropdown-menu">
+         <li class="dropdown-menu__item"><a class="dropdown-menu__link" href="#sprint">Спринт</a></li>
+         <li class="dropdown-menu__item"><a class="dropdown-menu__link" href="#audiocall">Аудиовызов</a></li>
+       </ul>`,
+    );
     this.navigatorOnChange();
     this.groupesInit();
     this.pagesInit();
