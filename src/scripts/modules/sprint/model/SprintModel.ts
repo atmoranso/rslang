@@ -158,6 +158,7 @@ export default class SprintModel {
         (sprintStat.correctChain === 3 && userWord.difficulty === YesNo.no) ||
         (sprintStat.correctChain === 5 && userWord.difficulty === YesNo.yes)
       ) {
+        userWord.difficulty = YesNo.no;
         userWord.optional.learned = YesNo.yes;
       }
     } else {
