@@ -25,6 +25,7 @@ interface DailyStat {
   correctAnswers: number;
   incorrectAnswers: number;
   sprint: DailyGameStat;
+  audioCall: DailyGameStat;
 }
 
 interface totalDayStat {
