@@ -10,7 +10,7 @@
 }
 .sprint__word-count {
     text-align: center;
-    @include font(42px, $color-main, bold);
+    @include fontAtm(42px, $color-main, bold);
 }
 .sprint__timer {
 }
@@ -63,10 +63,10 @@
 }
 
 .board__word-en {
-    @include font(32px, $color-main, bold);
+    @include fontAtm(32px, $color-main, bold);
 }
 .board__word-ru {
-    @include font(24px, $color-inactive);
+    @include fontAtm(24px, $color-inactive);
 }
 .board__btn,
 .finish__btn-play {
@@ -75,7 +75,7 @@
     padding: 10px 0;
     border: 0;
     border-radius: 5px;
-    @include font(16px, $color-text-main, bold);
+    @include fontAtm(16px, $color-text-main, bold);
 
     transition: 0.3s;
 }
@@ -114,10 +114,10 @@
     left: 0;
     top: 50%;
     background-color: white;
-    @include font(25px);
+    @include fontAtm(25px);
 }
 .countdown__count {
-    @include font(42px, $color-main, bold);
+    @include fontAtm(42px, $color-main, bold);
 }
 .sprint__timer {
     width: 60px;
@@ -125,7 +125,7 @@
     top: 0;
     right: 60px;
     position: absolute;
-    @include font(42px, $color-main, bold);
+    @include fontAtm(42px, $color-main, bold);
     border: 1px solid;
     border-radius: 100px;
 }
