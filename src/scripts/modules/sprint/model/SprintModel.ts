@@ -1,5 +1,9 @@
 import DataAPI from '../../../common/api/DataAPI';
+import ErrorRes from '../../../common/api/models/ErrorRes';
+import UserWord from '../../../common/api/models/UserWord.model';
+import UserWordExt from '../../../common/api/models/UserWordExt.model';
 import Word from '../../../common/api/models/Word.model';
+import YesNo from '../../../common/enums';
 import { AppState, Authorization, SprintState, Textbook } from '../../../common/stateTypes';
 
 export default class SprintModel {
@@ -21,10 +25,9 @@ export default class SprintModel {
     if (this.gameWords.length > 1) {
     } else {
       showLoadingPage();
-      if (!this.authorization.isAuth) {
-        const pageNumber = Math.floor(Math.random() * 20);
-        this.gameWords = await this.getWordsArr(this.state.group, pageNumber);
-      }
+
+      const pageNumber = Math.floor(Math.random() * 20);
+      this.gameWords = await this.getWordsArr(this.state.group, pageNumber);
     }
     this.state.speedSprint = 1;
     this.state.speedIconCount = 1;
@@ -93,10 +96,7 @@ export default class SprintModel {
   }
 
   doAnswerCorrect() {
-    //     if (this.authorization.isAuth) {
-    // DataAPI.createUserWord(this.authorization.token, this.authorization.userId, this.gameWords[this.state.currentWordIndex].id,)
-    //     }
-    console.log(this.gameWords[this.state.currentWordIndex]);
+    this.setWordStat(this.gameWords[this.state.currentWordIndex].id, true);
 
     this.state.score += 10 * this.state.speedSprint;
     if (this.state.correctAnswerCount === 3) {
@@ -107,8 +107,92 @@ export default class SprintModel {
   }
 
   doAnswerIncorrect() {
+    this.setWordStat(this.gameWords[this.state.currentWordIndex].id, false);
+
     this.state.correctAnswerCount = 0;
     this.state.speedSprint = 1;
     this.state.speedIconCount = 1;
   }
+
+  setWordStat = (wordId: string, isAnswerCorrect: boolean) => {
+    if (this.authorization.isAuth) {
+      const userWord = DataAPI.getUserWord(
+        this.authorization.token,
+        this.authorization.userId,
+        this.gameWords[this.state.currentWordIndex].id,
+      );
+
+      userWord.then((response: UserWordExt | ErrorRes) => {
+        if ('status' in response) {
+          if (response.status == 404) {
+            DataAPI.createUserWord(
+              this.authorization.token,
+              this.authorization.userId,
+              wordId,
+              this.createUserWord(isAnswerCorrect),
+            );
+          }
+        } else {
+          DataAPI.updateUserWord(
+            this.authorization.token,
+            this.authorization.userId,
+            wordId,
+            this.updateUserWord(response, isAnswerCorrect),
+          );
+        }
+      });
+    }
+  };
+
+  updateUserWord = (userWordExt: Partial<UserWordExt>, isAnswerCorrect: boolean) => {
+    delete userWordExt.id;
+    delete userWordExt.wordId;
+    const userWord = userWordExt as UserWord;
+
+    const sprintStat = userWord.optional.gamesStatistic.sprint;
+    if (isAnswerCorrect) {
+      sprintStat.correct++;
+      sprintStat.correctChain++;
+      sprintStat.lastUpdate = Date.now();
+      if (
+        (sprintStat.correctChain === 3 && userWord.difficulty === YesNo.no) ||
+        (sprintStat.correctChain === 5 && userWord.difficulty === YesNo.yes)
+      ) {
+        userWord.optional.learned = YesNo.yes;
+      }
+    } else {
+      sprintStat.wrong++;
+      sprintStat.correctChain = 0;
+      sprintStat.lastUpdate = Date.now();
+      userWord.optional.learned = YesNo.no;
+    }
+    userWord.optional.gamesStatistic.sprint = sprintStat;
+    return userWord;
+  };
+
+  createUserWord = (isAnswerCorrect: boolean) => {
+    const userWord: UserWord = {
+      difficulty: YesNo.no,
+      optional: {
+        learned: YesNo.no,
+        learnedDate: 0,
+        gamesStatistic: {
+          wasInGames: true,
+          sprint: {
+            correct: isAnswerCorrect ? 1 : 0,
+            wrong: isAnswerCorrect ? 0 : 1,
+            correctChain: isAnswerCorrect ? 1 : 0,
+            lastUpdate: Date.now(),
+          },
+          audioCall: {
+            correct: 0,
+            wrong: 0,
+            correctChain: 0,
+            lastUpdate: 0,
+          },
+        },
+      },
+    };
+    return userWord;
+  };
 }
