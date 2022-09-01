@@ -2,7 +2,7 @@ import AppModel from '../model/AppModel';
 import Router from '../router/Router';
 import AppView from '../view/AppView';
 import state from '../../common/state';
-import { Authorization, Textbook } from '../../common/stateTypes';
+import { AppState } from '../../common/stateTypes';
 import AuthorizationModule from '../../modules/authorization/Authorization';
 
 export default class AppController {
@@ -28,14 +28,11 @@ export default class AppController {
   }
 
   checkLocalStorage = () => {
-    const authorization: Authorization | '' = localStorage.getItem('rsLang-appState-DT')
-      ? JSON.parse(<string>localStorage.getItem('rsLang-appState-DT')).authorization
+    const savedState: AppState | '' = localStorage.getItem('rsLang-appState-DT')
+      ? JSON.parse(<string>localStorage.getItem('rsLang-appState-DT'))
       : '';
-    const textbook: Textbook | '' = localStorage.getItem('rsLang-appState-DT')
-      ? JSON.parse(<string>localStorage.getItem('rsLang-appState-DT')).textbook
-      : '';
-    if (authorization !== '') state.authorization = authorization;
-    if (textbook !== '') state.textbook = textbook;
+    if (savedState !== '') state.authorization = savedState.authorization;
+    if (savedState !== '') state.textbook = savedState.textbook;
   };
 
   startAuthorizationModule = () => {
