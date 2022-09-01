@@ -77,6 +77,7 @@ export default class AuthorizationModel {
       this.state.authorization.token = res.token;
       this.state.authorization.refreshToken = res.refreshToken;
       this.state.authorization.timeoutId = timeoutId;
+      this.state.authorization.date = Date.now();
       localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
     }, limitTokenTime);
   }
@@ -87,8 +88,11 @@ export default class AuthorizationModel {
       const res = await DataAPI.getNewToken(this.state.authorization.refreshToken, userId);
       this.state.authorization.token = res.token;
       this.state.authorization.refreshToken = res.refreshToken;
+      this.state.authorization.date = Date.now();
       localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
       this.updateToken();
+      return true;
     }
+    return false;
   }
 }

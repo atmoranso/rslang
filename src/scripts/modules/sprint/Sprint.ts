@@ -1,4 +1,3 @@
-import state from '../../common/state';
 import { AppState } from '../../common/stateTypes';
 import { Module } from '../../common/types';
 import SprintController from './controller/SprintController';
@@ -14,7 +13,7 @@ export default class Sprint implements Module {
 
   state: AppState;
 
-  constructor() {
+  constructor(state: AppState) {
     this.state = state;
     this.model = new SprintModel(this.state);
     this.view = new SprintView(null);
