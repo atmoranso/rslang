@@ -1,9 +1,11 @@
 import DataAPI from '../../../common/api/DataAPI';
 import Word from '../../../common/api/models/Word.model';
-import { AppState, Authorization, SprintState } from '../../../common/stateTypes';
+import { AppState, Authorization, SprintState, Textbook } from '../../../common/stateTypes';
 
 export default class SprintModel {
   state: SprintState;
+
+  textBookState: Textbook;
 
   authorization: Authorization;
 
@@ -11,6 +13,7 @@ export default class SprintModel {
 
   constructor(state: AppState) {
     this.state = state.sprint;
+    this.textBookState = state.textbook;
     this.authorization = state.authorization;
   }
 
@@ -85,11 +88,16 @@ export default class SprintModel {
     const condition1 = answer && this.gameWords[this.state.currentWordIndex].wordTranslate === this.state.currentWordRu;
     const condition2 =
       !answer && this.gameWords[this.state.currentWordIndex].wordTranslate !== this.state.currentWordRu;
-    if (condition1 || condition2) this.ifAnswerCorrect();
-    else this.ifAnswerIncorrect();
+    if (condition1 || condition2) this.doAnswerCorrect();
+    else this.doAnswerIncorrect();
   }
 
-  ifAnswerCorrect() {
+  doAnswerCorrect() {
+    //     if (this.authorization.isAuth) {
+    // DataAPI.createUserWord(this.authorization.token, this.authorization.userId, this.gameWords[this.state.currentWordIndex].id,)
+    //     }
+    console.log(this.gameWords[this.state.currentWordIndex]);
+
     this.state.score += 10 * this.state.speedSprint;
     if (this.state.correctAnswerCount === 3) {
       this.state.speedSprint = this.state.speedSprint < 8 ? this.state.speedSprint * 2 : 8;
@@ -98,7 +106,7 @@ export default class SprintModel {
     } else this.state.correctAnswerCount++;
   }
 
-  ifAnswerIncorrect() {
+  doAnswerIncorrect() {
     this.state.correctAnswerCount = 0;
     this.state.speedSprint = 1;
     this.state.speedIconCount = 1;
