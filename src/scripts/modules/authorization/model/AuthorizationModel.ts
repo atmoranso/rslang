@@ -85,7 +85,7 @@ export default class AuthorizationModel {
   }
 
   updateToken() {
-    const limitTokenTime = 0.003 * 3600000;
+    const limitTokenTime = 3.95 * 3600000;
     const userId = this.state.authorization.userId;
     const timeoutId = window.setInterval(async () => {
       const res = await DataAPI.getNewToken(this.state.authorization.refreshToken, userId);
@@ -94,8 +94,6 @@ export default class AuthorizationModel {
       this.state.authorization.timeoutId = timeoutId;
       this.state.authorization.date = Date.now();
       localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
-      const name = await DataAPI.getUser(this.state.authorization.token, this.state.authorization.userId);
-      console.log(name);
     }, limitTokenTime);
   }
 
