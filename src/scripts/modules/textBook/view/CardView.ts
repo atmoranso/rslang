@@ -93,6 +93,7 @@ export default class CardView extends ElementTemplate {
       this.difficultButtonAction.node.hidden = true;
       learnedButton.node.hidden = true;
       this.learnedButtonAction.node.hidden = true;
+      statisticButton.node.hidden = true;
     } else {
       this.initUserWord(initUserWordData);
     }
@@ -104,6 +105,11 @@ export default class CardView extends ElementTemplate {
     });
   }
 
+  private correctChainZeroing = () => {
+    this.gamesStatistic.sprint.correctChain = 0;
+    this.gamesStatistic.audioCall.correctChain = 0;
+  };
+
   private difficultButtonOnClick = async () => {
     const token = this.state.authorization.token;
     const userId = this.state.authorization.userId;
@@ -113,6 +119,7 @@ export default class CardView extends ElementTemplate {
     };
     this.isDifficult = !this.isDifficult;
     if (this.isDifficult) {
+      this.correctChainZeroing();
       if (this.userWordId) {
         await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
       } else {
@@ -156,9 +163,10 @@ export default class CardView extends ElementTemplate {
       this.isDifficult = false;
       this.changeDifficultStyle();
     } else {
+      this.correctChainZeroing();
       userWord.optional.learned = YesNo.no;
       userWord.optional.learnedDate = 0;
-      await DataAPI.createUserWord(token, userId, this.wordId, userWord);
+      await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
     }
     this.changelearnedStyle();
     this.onChangeUserWord();
