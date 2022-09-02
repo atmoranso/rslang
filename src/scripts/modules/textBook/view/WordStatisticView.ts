@@ -30,7 +30,7 @@ class WordStatistic extends ElementTemplate {
            <td>${gamesStatistic.sprint.wrong}</td>
          </tr>
          <tr>
-           <td>Аудиовзов</td>
+           <td>Аудиовызов</td>
            <td>${gamesStatistic.audioCall.correct}</td>
            <td>${gamesStatistic.audioCall.wrong}</td>
          </tr>
