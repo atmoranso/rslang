@@ -31,6 +31,10 @@ export default class AuthorizationView extends ElementTemplate {
     this.signUp = new SignUp(null);
   }
 
+  resetAuthForm() {
+    this.signIn.authForm.node.reset();
+  }
+
   showSignUpWindow() {
     this.enterButton.node.classList.remove('active');
     this.regButton.node.classList.add('active');
