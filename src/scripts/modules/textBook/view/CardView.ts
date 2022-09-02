@@ -93,6 +93,7 @@ export default class CardView extends ElementTemplate {
       this.difficultButtonAction.node.hidden = true;
       learnedButton.node.hidden = true;
       this.learnedButtonAction.node.hidden = true;
+      statisticButton.node.hidden = true;
     } else {
       this.initUserWord(initUserWordData);
     }
