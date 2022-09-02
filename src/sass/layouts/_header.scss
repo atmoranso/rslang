@@ -36,11 +36,18 @@
 .header__account {
   cursor: pointer;
   border-radius: 1.8rem;
-  @extend %transition;
+  width: 145px;
+  @include flex($justify-content: end);
+}
 
-  &:hover {
-    @extend %box-shadow;
-  }
+.header__log-out {
+  @include flex;
+}
+
+.header__name {
+  margin-right: 10px;
+  color: $color-light;
+  @include font(1.5rem, 2rem, 400);
 }
 
 

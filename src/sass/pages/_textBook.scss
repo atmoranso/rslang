@@ -8,6 +8,7 @@ button {
   width: 300px;
   margin: 20px auto 20px;
   gap: 10px;
+  position: relative;
 }
 
 .navigator__groups,
@@ -19,7 +20,7 @@ button {
 }
 
 .navigator__group-button_active {
-  border: 3px solid $color-card-border;
+  border: 3px solid $color-dark;
 }
 
 .navigator__pages {
@@ -29,7 +30,7 @@ button {
 .navigator__page-current {
   display: block;
   width: 30px;
-  border: 1px solid $color-card-border;
+  border: 1px solid $color-dark;
   padding: 0 5px;
 }
 
@@ -38,6 +39,25 @@ button {
   background-repeat: no-repeat;
   background-size: 45%;
   background-position: 90%;
+}
+
+.navigator__links {
+  position: absolute;
+  top: -5px;
+  right: 0px;
+}
+
+.navigator__links .dropdown-menu {
+  margin-top: 0;
+  display: block;
+}
+
+.navigator__links .dropdown-menu__item {
+  padding: 0.5rem 2rem;
+}
+
+.navigator__links .dropdown-menu__link::after {
+  top: 1.5rem;
 }
 
 .cards {
@@ -59,7 +79,7 @@ button {
   width: 23.75%;
   box-sizing: border-box;
   padding: 20px;
-  border: 1px solid $color-card-border;
+  border: 1px solid $color-dark;
   background-color: $color-card-bg;
   font-size: 1.5rem;
 
@@ -95,7 +115,7 @@ button {
 .card__text-example,
 .card__text-example-translate {
   margin: 0;
-  text-shadow: 0px 0px 5px $color-card-text-shadow;
+  text-shadow: 0px 0px 5px $color-light;
 }
 
 .card__image {
@@ -114,7 +134,6 @@ button {
 .card__difficult-button,
 .card__learned-button,
 .card__statistic-button {
-  z-index: 2;
   width: 40px;
   height: 40px;
   position: absolute;
@@ -153,7 +172,6 @@ button {
 .card__difficult-button-plus_remove,
 .card__learned-button-plus,
 .card__learned-button-plus_remove {
-  z-index: 1;
   width: 20px;
   height: 20px;
   position: absolute;
@@ -170,4 +188,53 @@ button {
 .card__difficult-button-plus_remove,
 .card__learned-button-plus_remove {
   background-image: url(../assets/svg/minus-red.svg);
+}
+
+.black-out {
+  z-index: 1;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+}
+
+.pop-up {
+  z-index: 2;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  left: 0;
+  top: 0;
+  border: 1px solid $color-dark;
+  padding: 10px;
+  background-color: $color-light;
+  text-align: center;
+}
+
+.pop-up__close-button {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid $color-dark;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url(../assets/svg/cross.svg);
+}
+
+.pop-up__table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.pop-up__table th,
+.pop-up__table td {
+  border-bottom: 1px solid $color-dark;
 }

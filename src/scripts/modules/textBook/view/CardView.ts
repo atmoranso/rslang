@@ -5,6 +5,9 @@ import UserWordExt from '../../../common/api/models/UserWordExt.model';
 import YesNo from '../../../common/enums';
 import { AppState } from '../../../common/stateTypes';
 import UserWord from '../../../common/api/models/UserWord.model';
+import WordStatistic from './WordStatisticView';
+import GamesStatistic from '../../../common/api/models/GamesStatistic.model';
+import GameStatistic from '../../../common/api/models/GameStatistic.model';
 
 export default class CardView extends ElementTemplate {
   private audio: HTMLAudioElement | undefined = undefined;
@@ -35,7 +38,7 @@ export default class CardView extends ElementTemplate {
 
   private state: AppState;
 
-  private gamesStatistic: UserWord['optional']['gamesStatistic'];
+  private gamesStatistic: GamesStatistic;
 
   private setNewSpeaker: (newSpeaker: CardView) => void;
 
@@ -62,7 +65,7 @@ export default class CardView extends ElementTemplate {
     };
     this.isRemoveAble = isRemoveAble;
     this.wordId = data.id;
-    const gameStatistic = { correct: 0, wrong: 0, correctChain: 0, lastUpdate: 0 };
+    const gameStatistic: GameStatistic = { correct: 0, wrong: 0, correctChain: 0, lastUpdate: 0 };
     this.gamesStatistic = { wasInGames: false, sprint: gameStatistic, audioCall: gameStatistic };
     if (initUserWordData) {
       this.userWordId = initUserWordData.id;
@@ -84,19 +87,28 @@ export default class CardView extends ElementTemplate {
     this.difficultButtonAction = new ElementTemplate(difficultButton.node, 'div', 'card__difficult-button-plus');
     const learnedButton = new ElementTemplate(this.node, 'button', 'card__learned-button');
     this.learnedButtonAction = new ElementTemplate(learnedButton.node, 'div', 'card__learned-button-plus');
-    // const statisticButton = new ElementTemplate(this.node, 'button', 'card__statistic-button');
+    const statisticButton = new ElementTemplate(this.node, 'button', 'card__statistic-button');
     if (!this.state.authorization.isAuth) {
       difficultButton.node.hidden = true;
       this.difficultButtonAction.node.hidden = true;
       learnedButton.node.hidden = true;
       this.learnedButtonAction.node.hidden = true;
+      statisticButton.node.hidden = true;
     } else {
       this.initUserWord(initUserWordData);
     }
     difficultButton.node.addEventListener('click', this.difficultButtonOnClick);
     learnedButton.node.addEventListener('click', this.learnedButtonOnClick);
     listenButton.node.addEventListener('click', this.listenButtonOnClick);
+    statisticButton.node.addEventListener('click', () => {
+      new WordStatistic(this.node, this.gamesStatistic);
+    });
   }
+
+  private correctChainZeroing = () => {
+    this.gamesStatistic.sprint.correctChain = 0;
+    this.gamesStatistic.audioCall.correctChain = 0;
+  };
 
   private difficultButtonOnClick = async () => {
     const token = this.state.authorization.token;
@@ -107,6 +119,7 @@ export default class CardView extends ElementTemplate {
     };
     this.isDifficult = !this.isDifficult;
     if (this.isDifficult) {
+      this.correctChainZeroing();
       if (this.userWordId) {
         await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
       } else {
@@ -150,9 +163,10 @@ export default class CardView extends ElementTemplate {
       this.isDifficult = false;
       this.changeDifficultStyle();
     } else {
+      this.correctChainZeroing();
       userWord.optional.learned = YesNo.no;
       userWord.optional.learnedDate = 0;
-      await DataAPI.createUserWord(token, userId, this.wordId, userWord);
+      await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
     }
     this.changelearnedStyle();
     this.onChangeUserWord();
