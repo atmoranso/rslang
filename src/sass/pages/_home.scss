@@ -29,8 +29,8 @@
 }
 
 .about {
-  background: url('../assets/images/bg-about-1.png') no-repeat bottom;
-  background-size: contain;
+  background: url('../assets/images/bg-about-1.png') no-repeat center center;
+  background-size: cover;
   padding-bottom: 140px;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .team {
-  background: url('../assets/images/bg-about-2.png') no-repeat top;
+  background: url('../assets/images/bg-about-2.png') no-repeat center center;
   background-size: cover;
   margin-bottom: 30px;
   padding: 140px 0;
