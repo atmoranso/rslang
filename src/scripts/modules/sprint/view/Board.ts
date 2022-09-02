@@ -56,7 +56,7 @@ export default class Board extends ElementTemplate {
   }
 
   update = (state: SprintState) => {
-    this.wordEn.node.innerHTML = state.currentWordEn;
+    this.wordEn.node.innerHTML = state.gameWords[state.currentWordIndex].word;
     this.wordRu.node.innerHTML = state.currentWordRu;
     this.updateBullets(state.correctAnswerCount);
     this.updateSpeedIcon(state.speedIconCount);

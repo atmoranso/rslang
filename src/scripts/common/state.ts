@@ -6,14 +6,17 @@ const state: AppState = {
   sprint: {
     group: 0,
     score: 0,
+    gameWords: [],
     currentWordIndex: -1,
-    currentWordEn: '',
     currentWordRu: '',
-    currentWordRuTrue: '',
+    wordsCorrectIds: [],
+    wordsInCorrectIds: [],
     isGameFinished: false,
     correctAnswerCount: 0,
     speedSprint: 1,
     speedIconCount: 1,
+    newWords: 0,
+    gameLearnedWords: 0,
   },
 };
 

@@ -5,30 +5,36 @@ import UserWordExt from '../../../common/api/models/UserWordExt.model';
 import Word from '../../../common/api/models/Word.model';
 import YesNo from '../../../common/enums';
 import { AppState, Authorization, SprintState, Textbook } from '../../../common/stateTypes';
+import StatsHelper from '../../../common/StatsHelper';
+import { userStat } from '../../../common/userStatHolder';
 
 export default class SprintModel {
   state: SprintState;
+
+  statsHelper: StatsHelper;
 
   textBookState: Textbook;
 
   authorization: Authorization;
 
-  gameWords: Word[] = [];
+  correctAnswerCount = 0;
 
   constructor(state: AppState) {
     this.state = state.sprint;
     this.textBookState = state.textbook;
     this.authorization = state.authorization;
+    this.statsHelper = new StatsHelper(state);
   }
 
   async prepareData(showLoadingPage: () => void) {
-    if (this.gameWords.length > 1) {
+    if (this.state.gameWords.length > 1) {
     } else {
       showLoadingPage();
 
       const pageNumber = Math.floor(Math.random() * 20);
-      this.gameWords = await this.getWordsArr(this.state.group, pageNumber);
+      this.state.gameWords = await this.getWordsArr(this.state.group, pageNumber);
     }
+
     this.state.speedSprint = 1;
     this.state.speedIconCount = 1;
     this.state.score = 0;
@@ -69,34 +75,39 @@ export default class SprintModel {
 
   setNextWord(updateView: (state: SprintState) => void) {
     this.state.currentWordIndex++;
-    if (this.state.currentWordIndex === this.gameWords.length - 1) {
+    if (this.state.currentWordIndex === this.state.gameWords.length - 1) {
       this.state.isGameFinished = true;
     }
-
-    this.state.currentWordEn = this.gameWords[this.state.currentWordIndex].word;
-    this.state.currentWordRuTrue = this.gameWords[this.state.currentWordIndex].wordTranslate;
     this.state.currentWordRu = this.getWordTranslate();
     updateView(this.state);
   }
 
   getWordTranslate() {
-    if (Math.floor(Math.random() * 2)) return this.gameWords[this.state.currentWordIndex].wordTranslate;
+    if (Math.floor(Math.random() * 2)) return this.state.gameWords[this.state.currentWordIndex].wordTranslate;
     else {
-      const index = Math.floor(Math.random() * this.gameWords.length);
-      return this.gameWords[index].wordTranslate;
+      const index = Math.floor(Math.random() * this.state.gameWords.length);
+      return this.state.gameWords[index].wordTranslate;
     }
   }
 
   checkAnswer(answer: boolean) {
-    const condition1 = answer && this.gameWords[this.state.currentWordIndex].wordTranslate === this.state.currentWordRu;
+    const condition1 =
+      answer && this.state.gameWords[this.state.currentWordIndex].wordTranslate === this.state.currentWordRu;
     const condition2 =
-      !answer && this.gameWords[this.state.currentWordIndex].wordTranslate !== this.state.currentWordRu;
+      !answer && this.state.gameWords[this.state.currentWordIndex].wordTranslate !== this.state.currentWordRu;
     if (condition1 || condition2) this.doAnswerCorrect();
     else this.doAnswerIncorrect();
   }
 
   doAnswerCorrect() {
-    this.setWordStat(this.gameWords[this.state.currentWordIndex].id, true);
+    this.state.wordsCorrectIds.push(this.state.gameWords[this.state.currentWordIndex].id);
+    this.correctAnswerCount++;
+    userStat.optional.dailyStat.sprint.mostLongCorrectChain =
+      this.correctAnswerCount > userStat.optional.dailyStat.sprint.mostLongCorrectChain
+        ? this.correctAnswerCount
+        : userStat.optional.dailyStat.sprint.mostLongCorrectChain;
+
+    this.setWordStat(this.state.gameWords[this.state.currentWordIndex].id, true);
 
     this.state.score += 10 * this.state.speedSprint;
     if (this.state.correctAnswerCount === 3) {
@@ -107,9 +118,10 @@ export default class SprintModel {
   }
 
   doAnswerIncorrect() {
-    this.setWordStat(this.gameWords[this.state.currentWordIndex].id, false);
-
+    this.correctAnswerCount = 0;
     this.state.correctAnswerCount = 0;
+    this.state.wordsInCorrectIds.push(this.state.gameWords[this.state.currentWordIndex].id);
+    this.setWordStat(this.state.gameWords[this.state.currentWordIndex].id, false);
     this.state.speedSprint = 1;
     this.state.speedIconCount = 1;
   }
@@ -119,7 +131,7 @@ export default class SprintModel {
       const userWord = DataAPI.getUserWord(
         this.authorization.token,
         this.authorization.userId,
-        this.gameWords[this.state.currentWordIndex].id,
+        this.state.gameWords[this.state.currentWordIndex].id,
       );
 
       userWord.then((response: UserWordExt | ErrorRes) => {
@@ -131,6 +143,7 @@ export default class SprintModel {
               wordId,
               this.createUserWord(isAnswerCorrect),
             );
+            // this.setUserStat(isAnswerCorrect);
           }
         } else {
           DataAPI.updateUserWord(
@@ -160,6 +173,7 @@ export default class SprintModel {
       ) {
         userWord.difficulty = YesNo.no;
         userWord.optional.learned = YesNo.yes;
+        this.state.gameLearnedWords++;
       }
     } else {
       sprintStat.wrong++;
@@ -172,6 +186,7 @@ export default class SprintModel {
   };
 
   createUserWord = (isAnswerCorrect: boolean) => {
+    this.state.newWords++;
     const userWord: UserWord = {
       difficulty: YesNo.no,
       optional: {
@@ -195,5 +210,11 @@ export default class SprintModel {
       },
     };
     return userWord;
+  };
+
+  finishGame = (showFinishPage: () => void) => {
+    this.statsHelper.setNewUserStat();
+
+    showFinishPage();
   };
 }

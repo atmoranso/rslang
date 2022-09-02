@@ -1,3 +1,5 @@
+import Word from './api/models/Word.model';
+
 export interface Authorization {
   isAuth: boolean;
   token: string;
@@ -15,14 +17,17 @@ export interface Textbook {
 export interface SprintState {
   group: number;
   score: number;
+  gameWords: Word[];
   currentWordIndex: number;
-  currentWordEn: string;
   currentWordRu: string;
-  currentWordRuTrue: string;
+  wordsCorrectIds: string[];
+  wordsInCorrectIds: string[];
   isGameFinished: boolean;
   correctAnswerCount: number;
   speedSprint: number;
   speedIconCount: number;
+  newWords: number;
+  gameLearnedWords: number;
 }
 
 export interface AppState {

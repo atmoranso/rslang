@@ -1,18 +1,3 @@
-enum Month {
-  January,
-  February,
-  March,
-  April,
-  May,
-  June,
-  July,
-  August,
-  September,
-  October,
-  November,
-  December,
-}
-
 interface DailyGameStat {
   newWords: number;
   correctAnswers: number;
@@ -36,7 +21,7 @@ interface UserStatistic {
   learnedWords: number;
   optional: {
     dailyStat: DailyStat;
-    totalStat: Record<Month, Record<number, totalDayStat>>;
+    totalStat: Record<number, Record<number, totalDayStat>>;
   };
 }
 

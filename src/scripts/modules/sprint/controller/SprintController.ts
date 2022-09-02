@@ -37,7 +37,7 @@ export default class SprintController {
     this.startGame()
       .then(() => {
         this.view.showBoard();
-        return this.model.setStartTimer(60, this.view.updateGameTimer);
+        return this.model.setStartTimer(10, this.view.updateGameTimer);
       })
       .then(() => {
         this.finishGame();
@@ -62,7 +62,7 @@ export default class SprintController {
   };
 
   finishGame = () => {
-    this.view.showTheEnd();
+    this.model.finishGame(this.view.showTheEnd);
     this.view.btnPlayAgain?.node.addEventListener('click', this.clickPlayAgainHandler);
   };
 
@@ -70,7 +70,7 @@ export default class SprintController {
     this.startGame()
       .then(() => {
         this.view.showBoard();
-        return this.model.setStartTimer(60, this.view.updateGameTimer);
+        return this.model.setStartTimer(10, this.view.updateGameTimer);
       })
       .then(() => {
         this.finishGame();
