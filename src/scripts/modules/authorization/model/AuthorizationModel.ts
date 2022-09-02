@@ -78,6 +78,9 @@ export default class AuthorizationModel {
       this.state.authorization.refreshToken = res.refreshToken;
       this.state.authorization.timeoutId = timeoutId;
       this.state.authorization.date = Date.now();
+      console.log(this.state.authorization.token);
+      console.log('ccc');
+
       localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
     }, limitTokenTime);
   }

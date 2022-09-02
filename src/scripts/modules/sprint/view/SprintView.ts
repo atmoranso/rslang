@@ -41,8 +41,9 @@ export default class SprintView extends ElementTemplate {
     this.waitingWindow = new WaitingWindow(this.node);
   }
 
-  showTheEnd = () => {
+  showTheEnd = (state: SprintState) => {
     this.boardContainer.delete();
+    this.finishWindow.update(state);
     this.node.append(this.finishWindow.node);
   };
 

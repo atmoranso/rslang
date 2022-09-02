@@ -2,11 +2,9 @@ import DataAPI from '../../../common/api/DataAPI';
 import ErrorRes from '../../../common/api/models/ErrorRes';
 import UserWord from '../../../common/api/models/UserWord.model';
 import UserWordExt from '../../../common/api/models/UserWordExt.model';
-import Word from '../../../common/api/models/Word.model';
 import YesNo from '../../../common/enums';
 import { AppState, Authorization, SprintState, Textbook } from '../../../common/stateTypes';
 import StatsHelper from '../../../common/StatsHelper';
-import { userStat } from '../../../common/userStatHolder';
 
 export default class SprintModel {
   state: SprintState;
@@ -17,13 +15,11 @@ export default class SprintModel {
 
   authorization: Authorization;
 
-  correctAnswerCount = 0;
-
   constructor(state: AppState) {
     this.state = state.sprint;
     this.textBookState = state.textbook;
     this.authorization = state.authorization;
-    this.statsHelper = new StatsHelper(state);
+    this.statsHelper = new StatsHelper('sprint', state);
   }
 
   async prepareData(showLoadingPage: () => void) {
@@ -34,14 +30,24 @@ export default class SprintModel {
       const pageNumber = Math.floor(Math.random() * 20);
       this.state.gameWords = await this.getWordsArr(this.state.group, pageNumber);
     }
+    this.resetGameState();
+    this.statsHelper.resetUserStat('sprint');
+  }
 
+  resetGameState = () => {
     this.state.speedSprint = 1;
     this.state.speedIconCount = 1;
     this.state.score = 0;
     this.state.currentWordIndex = -1;
     this.state.isGameFinished = false;
     this.state.correctAnswerCount = 0;
-  }
+    this.state.correctAnswerCountTotal = 0;
+    this.state.wordsCorrectIds = [];
+    this.state.wordsInCorrectIds = [];
+    this.state.currentWordRu = '';
+    this.state.newWords = 0;
+    this.state.gameLearnedWords = 0;
+  };
 
   getWordsArr = async (group: number, pageNumber: number) => {
     const response = await DataAPI.getChunkOfWords(group, pageNumber);
@@ -101,11 +107,8 @@ export default class SprintModel {
 
   doAnswerCorrect() {
     this.state.wordsCorrectIds.push(this.state.gameWords[this.state.currentWordIndex].id);
-    this.correctAnswerCount++;
-    userStat.optional.dailyStat.sprint.mostLongCorrectChain =
-      this.correctAnswerCount > userStat.optional.dailyStat.sprint.mostLongCorrectChain
-        ? this.correctAnswerCount
-        : userStat.optional.dailyStat.sprint.mostLongCorrectChain;
+    this.state.correctAnswerCountTotal++;
+    this.statsHelper.setMostLongCorrectChain('sprint');
 
     this.setWordStat(this.state.gameWords[this.state.currentWordIndex].id, true);
 
@@ -118,7 +121,7 @@ export default class SprintModel {
   }
 
   doAnswerIncorrect() {
-    this.correctAnswerCount = 0;
+    this.state.correctAnswerCountTotal = 0;
     this.state.correctAnswerCount = 0;
     this.state.wordsInCorrectIds.push(this.state.gameWords[this.state.currentWordIndex].id);
     this.setWordStat(this.state.gameWords[this.state.currentWordIndex].id, false);
@@ -143,7 +146,6 @@ export default class SprintModel {
               wordId,
               this.createUserWord(isAnswerCorrect),
             );
-            // this.setUserStat(isAnswerCorrect);
           }
         } else {
           DataAPI.updateUserWord(
@@ -212,9 +214,11 @@ export default class SprintModel {
     return userWord;
   };
 
-  finishGame = (showFinishPage: () => void) => {
-    this.statsHelper.setNewUserStat();
+  finishGame = (showFinishPage: (state: SprintState) => void) => {
+    if (this.authorization.isAuth) {
+      this.statsHelper.manageStats('sprint');
+    }
 
-    showFinishPage();
+    showFinishPage(this.state);
   };
 }

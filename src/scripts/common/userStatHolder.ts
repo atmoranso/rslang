@@ -8,6 +8,7 @@ export const userStat = {
       learnedWords: 0,
       correctAnswers: 0,
       incorrectAnswers: 0,
+      todayDate: '',
       sprint: {
         newWords: 0,
         correctAnswers: 0,

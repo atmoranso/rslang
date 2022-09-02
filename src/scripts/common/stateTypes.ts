@@ -24,6 +24,23 @@ export interface SprintState {
   wordsInCorrectIds: string[];
   isGameFinished: boolean;
   correctAnswerCount: number;
+  correctAnswerCountTotal: number;
+  speedSprint: number;
+  speedIconCount: number;
+  newWords: number;
+  gameLearnedWords: number;
+}
+export interface AudioCallState {
+  group: number;
+  score: number;
+  gameWords: Word[];
+  currentWordIndex: number;
+  currentWordRu: string;
+  wordsCorrectIds: string[];
+  wordsInCorrectIds: string[];
+  isGameFinished: boolean;
+  correctAnswerCount: number;
+  correctAnswerCountTotal: number;
   speedSprint: number;
   speedIconCount: number;
   newWords: number;
@@ -34,4 +51,5 @@ export interface AppState {
   authorization: Authorization;
   textbook: Textbook;
   sprint: SprintState;
+  audioCall: AudioCallState;
 }

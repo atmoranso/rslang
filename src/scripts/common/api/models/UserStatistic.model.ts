@@ -9,6 +9,7 @@ interface DailyStat {
   learnedWords: number;
   correctAnswers: number;
   incorrectAnswers: number;
+  todayDate: string;
   sprint: DailyGameStat;
   audioCall: DailyGameStat;
 }
@@ -18,10 +19,11 @@ interface totalDayStat {
   learnedWords: number;
 }
 interface UserStatistic {
+  id?: string;
   learnedWords: number;
   optional: {
     dailyStat: DailyStat;
-    totalStat: Record<number, Record<number, totalDayStat>>;
+    [key: string]: totalDayStat;
   };
 }
 

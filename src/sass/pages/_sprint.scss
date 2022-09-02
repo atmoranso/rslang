@@ -87,6 +87,18 @@
     background-color: $color-btn-true;
     color: $color-text-light;
 }
+.finish {
+    @extend %sprint-board;
+    height: auto;
+    padding: 20px 0;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+}
+.finish__correct-block,
+.finish__incorrect-block {
+    @include flexColumn(flex-start, flex-start);
+}
 .finish__btn-play {
     width: 150px;
     margin: 5px;
