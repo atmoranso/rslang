@@ -16,9 +16,15 @@ export default class AuthorizationController {
 
   start(header: HeaderView) {
     this.header = header;
-    this.header.logoAccount.node.addEventListener('click', this.clickLogoAccHandler);
+    this.header.logIn.node.addEventListener('click', this.clickLogInHandler);
+    this.header.logOut.node.addEventListener('click', this.clickLogOutHandler);
     this.checkUser().then((isAuth) => {
-      if (isAuth) this.header?.logoAccount.node.removeEventListener('click', this.clickLogoAccHandler);
+      if (isAuth) {
+        const name = this.model.getUserName();
+        this.header?.showLogOutIcon(name);
+      } else {
+        this.header?.showLogInIcon();
+      }
     });
     this.view.enterButton.node.addEventListener('click', this.enterButtonHandler);
     this.view.regButton.node.addEventListener('click', this.regButtonHandler);
@@ -27,12 +33,23 @@ export default class AuthorizationController {
     this.view.closeButton.node.addEventListener('click', () => this.view.node.remove());
   }
 
+  clickLogInHandler = () => {
+    this.header?.logoAccount.node.addEventListener('click', this.clickLogoAccHandler);
+  };
+
+  clickLogOutHandler = () => {
+    this.model.logOutUser();
+    this.header?.showLogInIcon();
+    this.header?.logoAccount.node.removeEventListener('click', this.clickLogoAccHandler);
+  };
+
   async checkUser() {
     const isUserAuth = await this.model.checkToken();
     return isUserAuth;
   }
 
   clickLogoAccHandler = () => {
+    this.view.resetAuthForm();
     this.header?.node.append(this.view.node);
   };
 
@@ -50,7 +67,11 @@ export default class AuthorizationController {
     if (user) {
       const str = await this.model.logInUser(user);
       this.view.showSignInErrors(str);
-      if (!str) this.model.updateToken();
+      if (!str) {
+        this.model.updateToken();
+        const name = this.model.getUserName();
+        this.header?.showLogOutIcon(name);
+      }
     }
   };
 

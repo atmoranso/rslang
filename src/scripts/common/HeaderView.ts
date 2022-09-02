@@ -1,8 +1,13 @@
 import ElementTemplate from './ElementTemplate';
-import svg from './person-svg.svg';
+import personSvg from './person-svg.svg';
+import exitSvg from './exit-svg.svg';
 
 class HeaderView extends ElementTemplate {
   logoAccount: ElementTemplate;
+
+  logIn: ElementTemplate;
+
+  logOut: ElementTemplate;
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'header', 'header');
@@ -28,7 +33,22 @@ class HeaderView extends ElementTemplate {
       <li class="nav-menu__item"><a class="nav-menu__link" href="#statistics">Статистика</a></li>
     `;
     this.logoAccount = new ElementTemplate(headerContainer.node, 'div', 'header__account');
-    this.logoAccount.node.innerHTML = svg;
+    this.logIn = new ElementTemplate(null, 'div', 'header__log-in');
+    this.logOut = new ElementTemplate(null, 'div', 'header__log-out');
+  }
+
+  showLogInIcon() {
+    this.logOut.node.remove();
+    this.logIn.node.innerHTML = personSvg;
+    this.logoAccount.node.append(this.logIn.node);
+  }
+
+  showLogOutIcon(name: string) {
+    this.logIn.node.remove();
+    this.logOut.node.innerHTML = '';
+    new ElementTemplate(this.logOut.node, 'span', 'header__name', name);
+    this.logOut.node.insertAdjacentHTML('beforeend', exitSvg);
+    this.logoAccount.node.append(this.logOut.node);
   }
 }
 

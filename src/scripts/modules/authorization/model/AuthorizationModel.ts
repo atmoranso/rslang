@@ -34,6 +34,21 @@ export default class AuthorizationModel {
     return '';
   }
 
+  getUserName() {
+    return this.state.authorization.name;
+  }
+
+  logOutUser() {
+    this.state.authorization.isAuth = false;
+    this.state.authorization.name = '';
+    this.state.authorization.token = '';
+    this.state.authorization.refreshToken = '';
+    this.state.authorization.userId = '';
+    this.state.authorization.date = 0;
+    localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
+    clearInterval(this.state.authorization.timeoutId);
+  }
+
   async createUser(user: User) {
     const res = await DataAPI.createUser(user);
     return res.status ? 'Пользователь с таким email существует' : '';
@@ -70,7 +85,7 @@ export default class AuthorizationModel {
   }
 
   updateToken() {
-    const limitTokenTime = 3.95 * 3600000;
+    const limitTokenTime = 0.003 * 3600000;
     const userId = this.state.authorization.userId;
     const timeoutId = window.setInterval(async () => {
       const res = await DataAPI.getNewToken(this.state.authorization.refreshToken, userId);
@@ -79,6 +94,8 @@ export default class AuthorizationModel {
       this.state.authorization.timeoutId = timeoutId;
       this.state.authorization.date = Date.now();
       localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
+      const name = await DataAPI.getUser(this.state.authorization.token, this.state.authorization.userId);
+      console.log(name);
     }, limitTokenTime);
   }
 
