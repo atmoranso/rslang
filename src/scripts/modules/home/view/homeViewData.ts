@@ -2,13 +2,13 @@
 
 export const developersData = [
   {
-    title: 'Артем',
-    img: '../assets/images/developer-1.jpg',
+    title: 'Анастасия',
+    img: '../assets/images/developer-3.jpg',
     subtitle: 'Developer',
     about:
-      'Разработал дизайн карточек словаря, организовал взаимодейсвие с API. Создатель электронного учебника, функционала изученных слов, страницы статистики',
-    githubName: '@redcliphaloe',
-    githubLink: 'https://github.com/redcliphaloe',
+      'Разработала дизайн проекта, внесла вклад в разработку общих компонентов приложения. Создатель главной страницы и функционала авторизации и регистрации пользователя',
+    githubName: '@kirsawka',
+    githubLink: 'https://github.com/Kirsawka',
   },
   {
     title: 'Андрей',
@@ -20,13 +20,13 @@ export const developersData = [
     githubLink: 'https://github.com/atmoranso',
   },
   {
-    title: 'Анастасия',
-    img: '../assets/images/developer-3.jpg',
+    title: 'Артем',
+    img: '../assets/images/developer-1.jpg',
     subtitle: 'Developer',
     about:
-      'Разработала дизайн проекта, внесла вклад в разработку общих компонентов приложения. Создатель главной страницы и функционала авторизации и регистрации пользователя',
-    githubName: '@kirsawka',
-    githubLink: 'https://github.com/Kirsawka',
+      'Организовал взаимодействие с API, описал основные интерфейсы данных. Создатель электронного учебника, функционала изученных слов, страницы статистики',
+    githubName: '@redcliphaloe',
+    githubLink: 'https://github.com/redcliphaloe',
   },
 ];
 
