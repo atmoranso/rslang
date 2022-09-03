@@ -14,7 +14,7 @@ interface DailyStat {
   audioCall: DailyGameStat;
 }
 
-interface totalDayStat {
+interface TotalDayStat {
   newWords: number;
   learnedWords: number;
 }
@@ -23,7 +23,7 @@ interface UserStatistic {
   learnedWords: number;
   optional: {
     dailyStat: DailyStat;
-    [key: string]: totalDayStat;
+    [key: string]: TotalDayStat;
   };
 }
 
