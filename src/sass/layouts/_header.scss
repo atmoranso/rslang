@@ -6,11 +6,11 @@
   max-width: $width-content;
   @include flex($justify-content: space-between);
   margin: auto;
-  padding: 20px;
+  padding: 20px 0;
 }
 
 .header__title {
-  font-size: calc(1.5rem + 0.5vw);
+  font-size: calc(15px + 0.5vw);
   color: $color-text-logo;
   margin: 0;
 }
@@ -21,6 +21,7 @@
   border-radius: 50%;
   background-color: $color-light;
   text-decoration: none;
+  z-index: 5;
   @include flex;
   @extend %transition;
 
@@ -37,59 +38,88 @@
   cursor: pointer;
   border-radius: 18px;
   margin-left: 20px;
-  width: 145px;
+  max-width: 145px;
   @include flex($justify-content: end);
 }
 
 .header__log-out {
   @include flex;
+  flex-direction: row-reverse;
+  @include media-mobile {
+    flex-direction: column;
+  }
 }
 
 .header__name {
-  margin-right: 10px;
+  margin-left: 10px;
   color: $color-light;
-  @include font(1.5rem, 2rem, 400);
+  @include font(15px, 20px, 400);
+  @include media-mobile {
+    margin: 0;
+  }
 }
 
-@media screen and (max-width: $width-tablet) {
-  .header__burger {
-    //display: block;
+.header__burger {
+  display: none;
+  @include media-tablet {
+    display: block;
     position: relative;
     width: 30px;
     height: 22px;
-    margin-right: 43px;
-    transition: .5s;
+    margin-right: 15px;
+    transition: .3s;
     z-index: 2;
     cursor: pointer;
-  }
 
-  .header__burger:before,
-  .header__burger:after {
-    content: '';
+    &::before,
+    &::after {
+      @include pseudo;
+      background-color: $color-light;
+      width: 100%;
+      height: 2px;
+      left: 0;
+    }
+
+    &::before {
+      top: 0;
+    }
+
+    &::after {
+      bottom: 0;
+    }
+  }
+}
+
+.header__burger.open {
+  @include media-tablet {
+    transform: rotate(90deg);
+    transition: all 0.3s ease-out;
+  }
+}
+
+.header__burger-line {
+  @include media-tablet {
     background-color: $color-light;
-    position: absolute;
     width: 100%;
     height: 2px;
     left: 0;
-  }
-
-  .header__burger:before {
-    top: 0;
-  }
-
-  .header__burger:after {
-    bottom: 0;
-  }
-
-  .header__burger-line {
-    background-color: $color-light;
     position: absolute;
-    width: 100%;
-    left: 0;
-    height: 2px;
     top: 50%;
     transform: translateY(-50%);
   }
 }
 
-
+.header__overlay.open {
+  display: none;
+  @include media-tablet {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(41, 41, 41, 0.6);
+    padding: 50px;
+    cursor: pointer;
+  }
+}

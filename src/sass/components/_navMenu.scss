@@ -1,12 +1,42 @@
 .nav-menu {
   @include flex;
   @extend %reset-list;
-  font-size: calc(1rem + 0.5vw);
+  font-size: calc(10px + 0.5vw);
+
+  @include media-tablet {
+    @include flex($align-items: flex-start);
+    flex-direction: column;
+    row-gap: 25px;
+    @include font(20px, 25px, 400);
+    max-width: 320px;
+    width: 100%;
+    height: 100%;
+    background-color: $color-primary;
+    position: absolute;
+    left: -320px;
+    top: 0;
+    transition: all 0.3s ease-out;
+  }
 }
 
-.nav-menu__item,
-.dropdown-menu__item {
+.nav-menu.open {
+  @include media-tablet {
+    left: 0;
+    overflow: auto;
+    z-index: 1;
+    transition: all 0.3s ease-out;
+  }
+}
+
+.nav-menu__item {
   color: $color-light;
+  padding: 10px;
+  @include media-tablet {
+    margin-left: 20px;
+  }
+}
+
+.dropdown-menu__item {
   padding: 10px 25px;
 }
 
@@ -18,9 +48,9 @@
 
   &::after {
     @include pseudo;
+    top: 25px;
     width: 0;
     height: 1px;
-    top: 25px;
     background-color: $color-light;
     @extend %transition;
   }
@@ -42,6 +72,16 @@
       transform: rotate(-180deg);
     }
   }
+
+  @include media-tablet {
+    position: relative;
+
+    &:hover {
+      .dropdown__icon {
+        transform: rotate(-90deg);
+      }
+    }
+  }
 }
 
 .dropdown__container {
@@ -58,48 +98,14 @@
   position: absolute;
   z-index: 1;
   display: none;
-}
 
-.dropdown__icon {
-  @extend %transition;
-}
-
-@media screen and (max-width: $width-tablet) {
-  .dropdown {
-    position: relative;
-
-    &:hover {
-      .dropdown__icon {
-        transform: rotate(-90deg);
-      }
-    }
-  }
-
-  .dropdown-menu {
+  @include media-tablet {
     position: absolute;
     right: -170px;
     top: -35px;
   }
+}
 
-  .nav-menu {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    row-gap: 15px;
-    font-size: 20px;
-    width: 320px;
-    height: 100%;
-    background-color: $color-primary;
-    position: absolute;
-    left: -320px;
-    //left: 0;
-    top: 0;
-    transition: .5s;
-  }
-
-  .nav-menu.active {
-    left: 0;
-    transition: .5s;
-    overflow: auto;
-  }
+.dropdown__icon {
+  @extend %transition;
 }

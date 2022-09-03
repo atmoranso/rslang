@@ -20,6 +20,11 @@ body {
   font-family: "Montserrat", "Verdana", sans-serif;
   @include flexColumn(space-between);
 }
+
 .hidden {
   display: none;
+}
+
+.lock {
+  overflow: hidden;
 }
