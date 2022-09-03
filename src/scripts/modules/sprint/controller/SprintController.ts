@@ -28,7 +28,10 @@ export default class SprintController {
       btn.node.addEventListener('click', () => this.clickLevelHandler(index));
     });
     this.view.board.btnTrue.node.addEventListener('click', this.clickTrueHandler);
+    document.addEventListener('keydown', this.clickTrueHandler);
     this.view.board.btnFalse.node.addEventListener('click', this.clickFalseHandler);
+    document.addEventListener('keydown', this.clickFalseHandler);
+
     this.view.finishWindow.btnPlayAgain.node.addEventListener('click', this.clickPlayAgainHandler);
   };
 
@@ -44,20 +47,26 @@ export default class SprintController {
       });
   };
 
-  clickTrueHandler = () => {
-    this.model.checkAnswer(true);
-    if (!this.model.state.isGameFinished) {
-      this.model.setNextWord(this.view.updateBoard);
-    } else {
-      this.finishGame();
+  clickTrueHandler = (e: KeyboardEvent | MouseEvent) => {
+    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'ArrowRight')) {
+      e.preventDefault();
+      this.model.checkAnswer(true);
+      if (!this.model.state.isGameFinished) {
+        this.model.setNextWord(this.view.updateBoard);
+      } else {
+        this.finishGame();
+      }
     }
   };
 
-  clickFalseHandler = () => {
-    this.model.checkAnswer(false);
-    if (!this.model.state.isGameFinished) this.model.setNextWord(this.view.updateBoard);
-    else {
-      this.finishGame();
+  clickFalseHandler = (e: KeyboardEvent | MouseEvent) => {
+    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'ArrowLeft')) {
+      e.preventDefault();
+      this.model.checkAnswer(false);
+      if (!this.model.state.isGameFinished) this.model.setNextWord(this.view.updateBoard);
+      else {
+        this.finishGame();
+      }
     }
   };
 

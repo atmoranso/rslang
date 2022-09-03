@@ -45,13 +45,13 @@ export default class Board extends ElementTemplate {
       buttonContainer.node,
       'button',
       'btn board__btn board__btn_false',
-      'Неверно',
+      'Неверно<br>←',
     );
     this.btnTrue = new ElementTemplate<HTMLButtonElement>(
       buttonContainer.node,
       'button',
       'btn board__btn board__btn_true',
-      'Верно',
+      'Верно<br>→',
     );
   }
 
