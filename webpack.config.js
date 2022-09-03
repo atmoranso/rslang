@@ -53,9 +53,9 @@ const baseConfig = {
       filename: 'style.css',
     }),
     new EslintPlugin({ extensions: 'ts' }),
-    // new CopyPlugin({
-    //     patterns: [{ from: './src/assets/', to: './assets/' }],
-    // }),
+    new CopyPlugin({
+        patterns: [{ from: './src/assets/', to: './assets/' }],
+    }),
   ],
 };
 

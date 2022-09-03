@@ -3,6 +3,7 @@
   font-weight: $weight;
   font-style: $style;
   line-height: $height;
+  user-select: none;
 }
 
 @mixin pseudo($display: block, $pos: absolute, $content: ''){
