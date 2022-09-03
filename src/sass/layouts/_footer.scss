@@ -6,7 +6,7 @@
   max-width: $width-content;
   margin: auto;
   @include flex($justify-content: space-between);
-  padding: 2rem;
+  padding: 20px 0;
 }
 
 .footer__logo {
@@ -17,16 +17,27 @@
 
 .footer__copyright {
   color: $color-light;
-  @include font(1.9rem, 1.9rem);
+  font-size: calc(1rem + 0.5vw);
 }
 
 .github-members {
   @include flex;
-  column-gap: 3rem;
-  @include font(1.9rem, 1.9rem);
+  column-gap: 20px;
+  font-size: calc(1rem + 0.5vw);
 }
 
 .github-members__member {
   color: $color-light;
   text-decoration: none;
+}
+
+@media screen and (max-width: $width-tablet) {
+  .footer__container {
+    flex-direction: column-reverse;
+    row-gap: 20px;
+  }
+
+  .footer__logo {
+    width: 100px;
+  }
 }

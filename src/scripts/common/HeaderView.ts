@@ -9,9 +9,14 @@ class HeaderView extends ElementTemplate {
 
   logOut: ElementTemplate;
 
+  burger: ElementTemplate;
+
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'header', 'header');
     const headerContainer = new ElementTemplate(this.node, 'div', 'header__container');
+    this.burger = new ElementTemplate(headerContainer.node, 'div', 'header__burger');
+    new ElementTemplate(this.burger.node, 'span', 'header__burger-line');
+    const overlay = new ElementTemplate(headerContainer.node, 'div', 'header__overlay');
     const mainLogo = new ElementTemplate<HTMLAnchorElement>(headerContainer.node, 'a', 'header__logo');
     mainLogo.node.href = '/';
     new ElementTemplate(mainLogo.node, 'h1', 'header__title', 'RSLang');
