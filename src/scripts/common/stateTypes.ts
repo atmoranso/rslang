@@ -1,3 +1,5 @@
+import Word from './api/models/Word.model';
+
 export interface Authorization {
   isAuth: boolean;
   token: string;
@@ -12,8 +14,42 @@ export interface Textbook {
   group: number;
   page: number;
 }
+export interface SprintState {
+  group: number;
+  score: number;
+  gameWords: Word[];
+  currentWordIndex: number;
+  currentWordRu: string;
+  wordsCorrectIds: string[];
+  wordsInCorrectIds: string[];
+  isGameFinished: boolean;
+  correctAnswerCount: number;
+  correctAnswerCountTotal: number;
+  speedSprint: number;
+  speedIconCount: number;
+  newWords: number;
+  gameLearnedWords: number;
+}
+export interface AudioCallState {
+  group: number;
+  score: number;
+  gameWords: Word[];
+  currentWordIndex: number;
+  currentWordRu: string;
+  wordsCorrectIds: string[];
+  wordsInCorrectIds: string[];
+  isGameFinished: boolean;
+  correctAnswerCount: number;
+  correctAnswerCountTotal: number;
+  speedSprint: number;
+  speedIconCount: number;
+  newWords: number;
+  gameLearnedWords: number;
+}
 
 export interface AppState {
   authorization: Authorization;
   textbook: Textbook;
+  sprint: SprintState;
+  audioCall: AudioCallState;
 }
