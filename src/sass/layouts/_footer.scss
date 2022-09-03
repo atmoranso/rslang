@@ -7,37 +7,33 @@
   margin: auto;
   @include flex($justify-content: space-between);
   padding: 20px 0;
+  @include media-tablet {
+    flex-direction: column-reverse;
+    row-gap: 20px;
+  }
 }
 
 .footer__logo {
   width: $width-logo;
   height: $height-logo;
   fill: $color-light;
+  @include media-tablet {
+    width: 100px;
+  }
 }
 
 .footer__copyright {
   color: $color-light;
-  font-size: calc(1rem + 0.5vw);
+  font-size: calc(10px + 0.5vw);
 }
 
 .github-members {
   @include flex;
   column-gap: 20px;
-  font-size: calc(1rem + 0.5vw);
+  font-size: calc(10px + 0.5vw);
 }
 
 .github-members__member {
   color: $color-light;
   text-decoration: none;
-}
-
-@media screen and (max-width: $width-tablet) {
-  .footer__container {
-    flex-direction: column-reverse;
-    row-gap: 20px;
-  }
-
-  .footer__logo {
-    width: 100px;
-  }
 }
