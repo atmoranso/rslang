@@ -1,8 +1,18 @@
 .account {
+  width: 100%;
+  height: 100vh;
+  background: rgba(41, 41, 41, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  overflow: auto;
+}
+
+.account__overlay {
   max-width: 600px;
   width: 100%;
   position: absolute;
-  z-index: 200;
   top: 0;
   right: 0;
   background-color: $color-primary;

@@ -17,17 +17,20 @@ export default class AuthorizationView extends ElementTemplate {
 
   closeButton: ElementTemplate<HTMLButtonElement>;
 
+  accountOverlay: ElementTemplate;
+
   constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'div', 'account');
-    this.image = new ElementTemplate(this.node, 'div', 'account__img');
+    this.accountOverlay = new ElementTemplate(this.node, 'div', 'account__overlay');
+    this.image = new ElementTemplate(this.accountOverlay.node, 'div', 'account__img');
     this.image.node.innerHTML = img;
-    this.enterButton = new ElementTemplate(this.node, 'button', 'account__button active', 'Войти');
-    const regBtnContainer = new ElementTemplate(this.node, 'div', 'account__button-container');
+    this.enterButton = new ElementTemplate(this.accountOverlay.node, 'button', 'account__button active', 'Войти');
+    const regBtnContainer = new ElementTemplate(this.accountOverlay.node, 'div', 'account__button-container');
     new ElementTemplate(regBtnContainer.node, 'span', 'account__text', 'или');
     this.regButton = new ElementTemplate(regBtnContainer.node, 'button', 'account__button', 'Зарегистрироваться');
-    this.closeButton = new ElementTemplate(this.node, 'button', 'account__close-button');
+    this.closeButton = new ElementTemplate(this.accountOverlay.node, 'button', 'account__close-button');
     this.closeButton.node.innerHTML = crossSvg;
-    this.signIn = new SignIn(this.node);
+    this.signIn = new SignIn(this.accountOverlay.node);
     this.signUp = new SignUp(null);
   }
 
@@ -42,7 +45,7 @@ export default class AuthorizationView extends ElementTemplate {
     this.signIn.passError.node.textContent = '';
     this.signIn.node.remove();
     this.signUp.regForm.node.reset();
-    this.node.append(this.signUp.node);
+    this.accountOverlay.node.append(this.signUp.node);
   }
 
   showSignInWindow() {
@@ -53,7 +56,7 @@ export default class AuthorizationView extends ElementTemplate {
     this.signUp.passError.node.textContent = '';
     this.signUp.node.remove();
     this.signIn.authForm.node.reset();
-    this.node.append(this.signIn.node);
+    this.accountOverlay.node.append(this.signIn.node);
   }
 
   showSignUpErrors(str: string) {
@@ -61,7 +64,7 @@ export default class AuthorizationView extends ElementTemplate {
       this.signUp.regForm.node.reset();
       this.signIn.authForm.node.reset();
       this.signUp.node.remove();
-      this.node.append(this.signIn.node);
+      this.accountOverlay.node.append(this.signIn.node);
     } else if (str === '* Пользователь с таким email существует') {
       this.signUp.passError.node.textContent = '';
       this.signUp.emailError.node.textContent = str;
@@ -70,7 +73,7 @@ export default class AuthorizationView extends ElementTemplate {
 
   showSignInErrors(str: string) {
     if (!str) {
-      this.node.remove();
+      this.accountOverlay.node.remove();
     } else if (str === '* Пользователь с таким email не существует') {
       this.signIn.emailError.node.textContent = str;
       this.signIn.passError.node.textContent = '';
