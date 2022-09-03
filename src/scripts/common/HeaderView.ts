@@ -9,15 +9,24 @@ class HeaderView extends ElementTemplate {
 
   logOut: ElementTemplate;
 
+  burger: ElementTemplate;
+
+  navMenu: ElementTemplate;
+
+  overlay: ElementTemplate;
+
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'header', 'header');
     const headerContainer = new ElementTemplate(this.node, 'div', 'header__container');
+    this.burger = new ElementTemplate(headerContainer.node, 'div', 'header__burger');
+    new ElementTemplate(this.burger.node, 'span', 'header__burger-line');
+    this.overlay = new ElementTemplate(headerContainer.node, 'div', 'header__overlay');
     const mainLogo = new ElementTemplate<HTMLAnchorElement>(headerContainer.node, 'a', 'header__logo');
     mainLogo.node.href = '/';
     new ElementTemplate(mainLogo.node, 'h1', 'header__title', 'RSLang');
     const nav = new ElementTemplate(headerContainer.node, 'nav', 'header__nav nav');
-    const navMenu = new ElementTemplate(nav.node, 'ul', 'nav__list nav-menu');
-    navMenu.node.innerHTML = `
+    this.navMenu = new ElementTemplate(nav.node, 'ul', 'nav__list nav-menu');
+    this.navMenu.node.innerHTML = `
       <li class="nav-menu__item"><a class="nav-menu__link" href="/">Главная</a></li>
       <li class="nav-menu__item"><a class="nav-menu__link" href="#textbook">Учебник</a></li>
       <li class="nav-menu__item dropdown">

@@ -18,5 +18,15 @@ export default class AppController {
 
   start() {
     this.router.init();
+    this.view.header.burger.node.addEventListener('click', this.clickBurgerButtonHandler);
+    this.view.header.navMenu.node.addEventListener('click', this.clickBurgerButtonHandler);
+    this.view.header.overlay.node.addEventListener('click', this.clickBurgerButtonHandler);
   }
+
+  clickBurgerButtonHandler = () => {
+    const burger = this.view.header.burger.node;
+    const menu = this.view.header.navMenu.node;
+    const overlay = this.view.header.overlay.node;
+    this.model.toggleOpenLockClasses(burger, menu, overlay);
+  };
 }

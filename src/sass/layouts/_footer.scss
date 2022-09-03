@@ -6,24 +6,31 @@
   max-width: $width-content;
   margin: auto;
   @include flex($justify-content: space-between);
-  padding: 2rem;
+  padding: 20px 0;
+  @include media-tablet {
+    flex-direction: column-reverse;
+    row-gap: 20px;
+  }
 }
 
 .footer__logo {
   width: $width-logo;
   height: $height-logo;
   fill: $color-light;
+  @include media-tablet {
+    width: 100px;
+  }
 }
 
 .footer__copyright {
   color: $color-light;
-  @include font(1.9rem, 1.9rem);
+  font-size: calc(10px + 0.5vw);
 }
 
 .github-members {
   @include flex;
-  column-gap: 3rem;
-  @include font(1.9rem, 1.9rem);
+  column-gap: 20px;
+  font-size: calc(10px + 0.5vw);
 }
 
 .github-members__member {

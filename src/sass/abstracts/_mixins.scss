@@ -1,37 +1,40 @@
 @mixin fontAtm($size: null, $color: null, $weight: null, $height: null) {
-    @if $size {
-        font-size: $size;
-    }
-    @if $weight {
-        font-weight: $weight;
-    }
-    @if $height {
-        line-height: $height;
-    }
-    @if $color {
-        color: $color;
-    }
+  @if $size {
+    font-size: $size;
+  }
+  @if $weight {
+    font-weight: $weight;
+  }
+  @if $height {
+    line-height: $height;
+  }
+  @if $color {
+    color: $color;
+  }
 }
+
 @mixin flexColumn($justify: null, $align: null) {
-    display: flex;
-    flex-direction: column;
-    @if $justify {
-        justify-content: $justify;
-    }
-    @if $align {
-        align-items: $align;
-    }
+  display: flex;
+  flex-direction: column;
+  @if $justify {
+    justify-content: $justify;
+  }
+  @if $align {
+    align-items: $align;
+  }
 }
+
 @mixin flexRow($justify: null, $align: null) {
-    display: flex;
-    flex-direction: row;
-    @if $justify {
-        justify-content: $justify;
-    }
-    @if $align {
-        align-items: $align;
-    }
+  display: flex;
+  flex-direction: row;
+  @if $justify {
+    justify-content: $justify;
+  }
+  @if $align {
+    align-items: $align;
+  }
 }
+
 @mixin font($size, $height, $weight: normal, $style: normal) {
   font-size: $size;
   font-weight: $weight;
@@ -40,7 +43,7 @@
   user-select: none;
 }
 
-@mixin pseudo($display: block, $pos: absolute, $content: ''){
+@mixin pseudo($display: block, $pos: absolute, $content: '') {
   content: $content;
   display: $display;
   position: $pos;
@@ -51,3 +54,16 @@
   align-items: $align-items;
   justify-content: $justify-content;
 }
+
+@mixin media-tablet {
+  @media (max-width: $width-tablet) {
+    @content;
+  }
+}
+
+@mixin media-mobile {
+  @media (max-width: $width-mobile) {
+    @content;
+  }
+}
+
