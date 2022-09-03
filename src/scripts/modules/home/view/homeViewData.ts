@@ -2,50 +2,61 @@
 
 export const developersData = [
   {
-    title: 'Артем',
-    img: 'https://via.placeholder.com/200?text=аватарка',
+    title: 'Анастасия',
+    img: '../assets/images/developer-3.jpg',
     subtitle: 'Developer',
-    about: 'Разработал ... Принял активное участие... Помог в том-то...',
-    githubName: '@redcliphaloe',
-    githubLink: 'https://github.com/redcliphaloe',
+    about:
+      'Разработала дизайн проекта, внесла вклад в разработку общих компонентов приложения. Создатель главной страницы и функционала авторизации и регистрации пользователя',
+    githubName: '@kirsawka',
+    githubLink: 'https://github.com/Kirsawka',
   },
   {
     title: 'Андрей',
-    img: 'https://via.placeholder.com/200?text=аватарка',
+    img: '../assets/images/developer-2.jpg',
     subtitle: 'TeamLead and Developer',
-    about: 'Разработал ... Принял активное участие... Помог в том-то...',
+    about:
+      'Координировал команду. Разработал и поддерживал архитектуру приложения. Создатель игр Спринт и Аудиовызов, навигации по страницам приложения',
     githubName: '@atmoranso',
     githubLink: 'https://github.com/atmoranso',
   },
   {
-    title: 'Анастасия',
-    img: 'https://via.placeholder.com/200?text=аватарка',
+    title: 'Артем',
+    img: '../assets/images/developer-1.jpg',
     subtitle: 'Developer',
-    about: 'Разработал ... Принял активное участие... Помог в том-то...',
-    githubName: '@Kirsawka',
-    githubLink: 'https://github.com/Kirsawka',
+    about:
+      'Организовал взаимодействие с API, описал основные интерфейсы данных. Создатель электронного учебника, функционала изученных слов, страницы статистики',
+    githubName: '@redcliphaloe',
+    githubLink: 'https://github.com/redcliphaloe',
   },
 ];
 
 export const aboutData = [
   {
+    number: '1',
     title: 'Словарь',
-    img: 'https://via.placeholder.com/250',
-    about: 'Коллекция содержит 3600 часто употребляемых английских слов',
+    img: '../assets/images/textbook.png',
+    about:
+      'Коллекция содержит 3600 английских слов. Пополни свой словарный запас наиболее часто употребляемыми словами',
   },
   {
+    number: '2',
     title: 'Мини-игра Аудиовызов',
-    img: 'https://via.placeholder.com/250',
-    about: 'Качаем навык перевода на слух',
+    img: '../assets/images/audiocall.png',
+    about:
+      'Развиваем навык перевода на слух. Выбери из предложенных вариантов ответа правильный перевод слова, которое услышишь',
   },
   {
+    number: '3',
     title: 'Мини-игра Спринт',
-    img: 'https://via.placeholder.com/250',
-    about: 'Тренировка на скорость, угадай как можно больше слов за 1 минуту',
+    img: '../assets/images/sprint.png',
+    about:
+      'Тренировка на скорость. Угадай как можно больше слов за 1 минуту - выбери, соответствует ли перевод предложенному слову',
   },
   {
+    number: '4',
     title: 'Статистика',
-    img: 'https://via.placeholder.com/250',
-    about: 'Статистика, прогресс изучения',
+    img: '../assets/images/statistics.png',
+    about:
+      'Зарегистрируйся, чтобы собирать статистику по мини-играм и словам за каждый день изучения и отслеживать свой прогресс',
   },
 ];
