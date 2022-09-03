@@ -26,9 +26,18 @@ export default class SprintModel {
     if (this.state.gameWords.length > 1) {
     } else {
       showLoadingPage();
+      const promiseArr = [];
+      const randPages: number[] = [];
+      for (let i = 0; i < 5; i++) {
+        const pageNumber = Math.floor(Math.random() * 20);
+        if (!randPages.includes(pageNumber)) promiseArr.push(this.getWordsArr(this.state.group, pageNumber));
+        else i--;
+      }
 
-      const pageNumber = Math.floor(Math.random() * 20);
-      this.state.gameWords = await this.getWordsArr(this.state.group, pageNumber);
+      const gameWordsArr = await Promise.all(promiseArr);
+      gameWordsArr.forEach((wordsArr) => {
+        this.state.gameWords = this.state.gameWords.concat(wordsArr);
+      });
     }
     this.resetGameState();
     this.statsHelper.resetUserStat('sprint');
