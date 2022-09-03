@@ -2,6 +2,7 @@ import DataAPI from '../../../common/api/DataAPI';
 import ErrorRes from '../../../common/api/models/ErrorRes';
 import UserWord from '../../../common/api/models/UserWord.model';
 import UserWordExt from '../../../common/api/models/UserWordExt.model';
+import Word from '../../../common/api/models/Word.model';
 import YesNo from '../../../common/enums';
 import { AppState, Authorization, SprintState, Textbook } from '../../../common/stateTypes';
 import StatsHelper from '../../../common/StatsHelper';
@@ -22,22 +23,41 @@ export default class SprintModel {
     this.statsHelper = new StatsHelper('sprint', state);
   }
 
+  checkIsBeforeTextbook = () => {
+    return this.state.isFromTextBook;
+  };
+
   async prepareData(showLoadingPage: () => void) {
-    if (this.state.gameWords.length > 1) {
+    if (this.state.gameWords.length > 1 && !this.state.isFromTextBook) {
     } else {
       showLoadingPage();
       const promiseArr = [];
       const randPages: number[] = [];
-      for (let i = 0; i < 5; i++) {
-        const pageNumber = Math.floor(Math.random() * 20);
-        if (!randPages.includes(pageNumber)) promiseArr.push(this.getWordsArr(this.state.group, pageNumber));
-        else i--;
+      this.state.gameWords = [];
+      if (this.state.isFromTextBook) {
+        const currGroup = this.textBookState.group - 1;
+        const currPage = this.textBookState.page - 1;
+        promiseArr.push(this.getWordsArr(currGroup, currPage));
+        if (currPage > 0) {
+          for (let i = currPage - 1, k = 1; i >= 0; i--, k++) {
+            if (k > 4) break;
+            promiseArr.push(this.getWordsArr(currGroup, i));
+          }
+        }
+      } else {
+        for (let i = 0; i < 5; i++) {
+          const pageNumber = Math.floor(Math.random() * 20);
+          if (!randPages.includes(pageNumber)) promiseArr.push(this.getWordsArr(this.state.group, pageNumber));
+          else i--;
+        }
       }
 
       const gameWordsArr = await Promise.all(promiseArr);
+      let allGameWords: Word[] = [];
       gameWordsArr.forEach((wordsArr) => {
-        this.state.gameWords = this.state.gameWords.concat(wordsArr);
+        allGameWords = allGameWords.concat(wordsArr);
       });
+      this.state.gameWords = await this.filterNewWords(allGameWords);
     }
     this.resetGameState();
     this.statsHelper.resetUserStat('sprint');
@@ -58,6 +78,21 @@ export default class SprintModel {
     this.state.gameLearnedWords = 0;
   };
 
+  getAllUserWords = async () => {
+    const getUserWords = await DataAPI.getUserWords(this.authorization.token, this.authorization.userId);
+
+    return getUserWords;
+  };
+
+  filterNewWords = async (allGameWords: Word[]) => {
+    const allUserWords: UserWordExt[] = await this.getAllUserWords();
+    const userWordsFilteredIds = allUserWords
+      .filter((word) => word.optional.learned === YesNo.yes)
+      .map((word) => word.wordId);
+    const filteredGameWords = allGameWords.filter((word) => !userWordsFilteredIds.includes(word.id));
+    return filteredGameWords;
+  };
+
   getWordsArr = async (group: number, pageNumber: number) => {
     const response = await DataAPI.getChunkOfWords(group, pageNumber);
     if ('status' in response) {
@@ -70,7 +105,7 @@ export default class SprintModel {
     this.state.group = level;
   };
 
-  setStartTimer = async (seconds: number, updateCounter: (digit: number) => void) => {
+  setStartTimer = async (isStartTimer: boolean, seconds: number, updateCounter: (digit: number) => void) => {
     const startTimer = seconds;
     updateCounter(seconds);
     seconds--;
@@ -81,7 +116,10 @@ export default class SprintModel {
         if (seconds < 0) {
           clearInterval(timerId);
           updateCounter(startTimer);
-          resolve('result');
+          resolve('timeout');
+        }
+        if (!isStartTimer && this.state.isGameFinished) {
+          resolve('noWords');
         }
       }, 1000);
     });

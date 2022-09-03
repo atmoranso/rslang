@@ -3,7 +3,6 @@ import { AppState } from './stateTypes';
 
 class ModuleClass {
   state: AppState;
-
   constructor(state: AppState) {
     this.state = state;
   }
