@@ -17,10 +17,10 @@ export default class AuthorizationModel {
   async logInUser(user: Pick<User, 'email' | 'password'>) {
     const res = await DataAPI.signIn(user);
     if (res.status == 404) {
-      return 'Пользователь с таким email не существует';
+      return '* Пользователь с таким email не существует';
     }
     if (res.status == 403) {
-      return 'Введен неправильный пароль';
+      return '* Введен неправильный пароль';
     }
     if (!res.status) {
       this.state.authorization.isAuth = true;
@@ -51,7 +51,7 @@ export default class AuthorizationModel {
 
   async createUser(user: User) {
     const res = await DataAPI.createUser(user);
-    return res.status ? 'Пользователь с таким email существует' : '';
+    return res.status ? '* Пользователь с таким email существует' : '';
   }
 
   authDataValidate(user: Pick<User, 'email' | 'password'>) {
@@ -59,10 +59,10 @@ export default class AuthorizationModel {
     const password = user.password;
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!re.test(String(email).toLowerCase())) {
-      return 'Невалидный email';
+      return '* Невалидный email';
     }
     if (!password) {
-      return 'Пароль не может быть пустым';
+      return '* Пароль не может быть пустым';
     }
     return '';
   }
@@ -73,13 +73,13 @@ export default class AuthorizationModel {
     const password = user.password;
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!name) {
-      return 'Укажите имя';
+      return '* Укажите имя';
     }
     if (!re.test(String(email).toLowerCase())) {
-      return 'Невалидный email';
+      return '* Невалидный email';
     }
     if (password.length < this.passMinLength) {
-      return 'Длина пароля 8 символов';
+      return '* Длина пароля 8 символов';
     }
     return '';
   }
