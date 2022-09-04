@@ -1,26 +1,45 @@
 .account {
-  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: rgba(41, 41, 41, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 200;
+  overflow: auto;
+}
+
+.account__overlay {
+  max-width: 600px;
+  width: 100%;
+  position: absolute;
   top: 0;
   right: 0;
-  background-color: #6572c4;
+  background-color: $color-primary;
   padding: 100px;
   border-radius: 10px;
-  display: flex;
+  @include flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+
+  @include media-mobile {
+    padding: 70px 20px;
+  }
+}
+
+.account__authorization,
+.account__registration {
+  width: 100%;
 }
 
 .account__img {
   margin-bottom: 50px;
 }
 
-.account__buttons-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.account__button-container {
+  @include media-tablet {
+    @include flex;
+    flex-direction: column;
+  }
 }
 
 .account__button {
@@ -28,19 +47,21 @@
   border: none;
   outline: none;
   padding: 0;
-  color: #FFFFFF;
+  color: $color-light;
+  @include font(18px, 28px, 500);
+  position: relative;
+
+  &:not(.active):hover::after {
+    @include pseudo;
+    top: 25px;
+    width: 100%;
+    height: 1px;
+    background-color: $color-light;
+  }
 }
 
 .account__reg-button {
   font-weight: normal;
-}
-
-.account__button:hover {
-  border-bottom: 1px solid #FFFFFF;
-}
-
-.account__button.active:hover {
-  border: none;
 }
 
 .account__close-button {
@@ -53,17 +74,21 @@
 }
 
 .account__text {
-  color: #415268;
+  color: $color-auth-button;
   margin-right: 10px;
+  @include font(18px, 28px, 500);
+
+  @include media-tablet {
+    margin: 0;
+  }
 }
 
 .account__error-message {
-  color: #FFFFFF;
+  color: $color-light;
 }
 
 .active {
-  font-weight: bold;
-  font-size: 1rem;
+  @include font(22px, 28px, 700);
 }
 
 .form__container {
@@ -74,12 +99,12 @@
 }
 
 .form__label {
-  color: #FFFFFF;
+  @include font(15px, 20px, 400);
+  color: $color-light;
   margin-bottom: 8px;
 }
 
 .form__input {
-  width: 340px;
   outline: none;
   border: none;
   border-radius: 6px;
@@ -87,24 +112,29 @@
   background: #FFFFFF;
 
   &::placeholder {
-    color: #cccccc;
+    color: $color-placeholder;
   }
 }
 
 .form__button {
+  @include font(20px, 25px, 400);
   padding: 15px 55px;
-  background: #FF7448;
+  background: $color-auth-button;
   border-radius: 25px;
   outline: none;
   border: none;
-  color: #FFFFFF;
+  color: $color-light;
   display: block;
   margin: 100px auto 0;
+
+  @include media-mobile {
+    margin-top: 70px;
+  }
 }
 
 .form__error-message {
-  color: #c9b1b1;
+  @include font(13px, 25px, 400, $style: italic);
+  color: $color-error-message;
   position: absolute;
-  font-style: italic;
   top: 65px;
 }
