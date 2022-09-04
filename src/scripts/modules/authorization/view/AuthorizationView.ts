@@ -73,7 +73,7 @@ export default class AuthorizationView extends ElementTemplate {
 
   showSignInErrors(str: string) {
     if (!str) {
-      this.accountOverlay.node.remove();
+      this.node.remove();
     } else if (str === '* Пользователь с таким email не существует') {
       this.signIn.emailError.node.textContent = str;
       this.signIn.passError.node.textContent = '';
