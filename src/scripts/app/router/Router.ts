@@ -35,7 +35,6 @@ export default class Router {
 
   router = () => {
     this.checkLocalStorage();
-    this.startAuthorizationModule();
     const path = window.location.hash.slice(1);
     const route = this.routes[path] ? this.routes[path] : this.routes['404'];
     const module = new route(this.state);
@@ -47,6 +46,8 @@ export default class Router {
 
   init = () => {
     window.addEventListener('hashchange', this.router);
+    this.checkLocalStorage();
+    this.startAuthorizationModule();
     this.router();
   };
 
