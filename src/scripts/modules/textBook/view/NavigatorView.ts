@@ -22,6 +22,8 @@ export default class NavigatorView extends ElementTemplate {
 
   private state: AppState;
 
+  private navigatorButtonsData = ['A1', 'A2', 'В1', 'В2', 'С1', 'С2', 'D'];
+
   public navigatorOnChange: () => void;
 
   constructor(parentNode: HTMLElement, groupsMaxCount: number, state: AppState, navigatorOnChange: () => void) {
@@ -37,15 +39,20 @@ export default class NavigatorView extends ElementTemplate {
     const groupNumbers = [...Array(this.groupsCount).keys()].map((x) => (x += 1));
     const groups = new ElementTemplate(this.node, 'div', 'navigator__groups');
     groupNumbers.forEach((el, i) => {
-      const groupButton = new ElementTemplate(groups.node, 'button', `navigator__group-button-${i + 1}`, `${i + 1}`);
+      const groupButton = new ElementTemplate(
+        groups.node,
+        'button',
+        `navigator__group-button-${i + 1} btn`,
+        `${this.navigatorButtonsData[i]}`,
+      );
       this.groupButtons.push(groupButton);
     });
     const pages = new ElementTemplate(this.node, 'div', 'navigator__pages');
-    this.pageButtonFirst = new ElementTemplate(pages.node, 'button', 'navigator__page-button-first', 'First');
-    this.pageButtonPrev = new ElementTemplate(pages.node, 'button', 'navigator__page-button-prev', 'Prev');
+    this.pageButtonFirst = new ElementTemplate(pages.node, 'button', 'navigator__page-button-first btn', '<<');
+    this.pageButtonPrev = new ElementTemplate(pages.node, 'button', 'navigator__page-button-prev btn', '<');
     this.pageCurrent = new ElementTemplate(pages.node, 'span', 'navigator__page-current');
-    this.pageButtonNext = new ElementTemplate(pages.node, 'button', 'navigator__page-button-next', 'Next');
-    this.pageButtonLast = new ElementTemplate(pages.node, 'button', 'navigator__page-button-last', 'Last');
+    this.pageButtonNext = new ElementTemplate(pages.node, 'button', 'navigator__page-button-next btn', '>');
+    this.pageButtonLast = new ElementTemplate(pages.node, 'button', 'navigator__page-button-last btn', '>>');
     new ElementTemplate(
       this.node,
       'div',

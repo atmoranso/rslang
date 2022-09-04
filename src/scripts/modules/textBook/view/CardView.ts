@@ -16,7 +16,7 @@ export default class CardView extends ElementTemplate {
 
   private audioExample: HTMLAudioElement | undefined = undefined;
 
-  private auioSrcs: Record<string, string>;
+  private audioSrcs: Record<string, string>;
 
   private isAudioInit = false;
 
@@ -58,7 +58,7 @@ export default class CardView extends ElementTemplate {
     this.state = state;
     this.setNewSpeaker = setNewSpeaker;
     this.onChangeUserWord = onChangeUserWord;
-    this.auioSrcs = {
+    this.audioSrcs = {
       audio: `${baseURL}${data.audio}`,
       audioMeaning: `${baseURL}${data.audioMeaning}`,
       audioExample: `${baseURL}${data.audioExample}`,
@@ -73,21 +73,25 @@ export default class CardView extends ElementTemplate {
         this.gamesStatistic = initUserWordData.optional.gamesStatistic;
       }
     }
-    new ElementTemplate(this.node, 'span', 'card__word', data.word);
-    new ElementTemplate(this.node, 'span', 'card__transcription', data.transcription);
-    new ElementTemplate(this.node, 'span', 'card__word-translate', data.wordTranslate);
-    new ElementTemplate(this.node, 'p', 'card__text-meaning', data.textMeaning);
-    new ElementTemplate(this.node, 'p', 'card__text-meaning-translate', data.textMeaningTranslate);
-    new ElementTemplate(this.node, 'p', 'card__text-example', data.textExample);
-    new ElementTemplate(this.node, 'p', 'card__text-example-translate', data.textExampleTranslate);
     const image = new ElementTemplate(this.node, 'div', 'card__image');
     image.node.style.backgroundImage = `url(${baseURL}${data.image})`;
-    const listenButton = new ElementTemplate(this.node, 'button', 'card__listen-button');
-    const difficultButton = new ElementTemplate(this.node, 'button', 'card__difficult-button');
+    const cardWrapper = new ElementTemplate(this.node, 'div', 'card__wrapper');
+    new ElementTemplate(cardWrapper.node, 'span', 'card__word', data.word);
+    const listenWrapper = new ElementTemplate(cardWrapper.node, 'div', 'card__listen-wrapper');
+    const listenButton = new ElementTemplate(listenWrapper.node, 'button', 'card__listen-button');
+    new ElementTemplate(listenWrapper.node, 'span', 'card__transcription', data.transcription);
+    new ElementTemplate(cardWrapper.node, 'span', 'card__word-translate', data.wordTranslate);
+    new ElementTemplate(cardWrapper.node, 'p', 'card__text-meaning', data.textMeaning);
+    new ElementTemplate(cardWrapper.node, 'p', 'card__text-meaning-translate', data.textMeaningTranslate);
+    new ElementTemplate(cardWrapper.node, 'p', 'card__text-example', data.textExample);
+    new ElementTemplate(cardWrapper.node, 'p', 'card__text-example-translate', data.textExampleTranslate);
+    const buttonsWrapper = new ElementTemplate(cardWrapper.node, 'div', 'card__buttons-wrapper');
+    const difficultButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__difficult-button');
     this.difficultButtonAction = new ElementTemplate(difficultButton.node, 'div', 'card__difficult-button-plus');
-    const learnedButton = new ElementTemplate(this.node, 'button', 'card__learned-button');
+    const learnedButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__learned-button');
     this.learnedButtonAction = new ElementTemplate(learnedButton.node, 'div', 'card__learned-button-plus');
-    const statisticButton = new ElementTemplate(this.node, 'button', 'card__statistic-button');
+    const statisticButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__statistic-button');
+
     if (!this.state.authorization.isAuth) {
       difficultButton.node.hidden = true;
       this.difficultButtonAction.node.hidden = true;
@@ -200,9 +204,9 @@ export default class CardView extends ElementTemplate {
   };
 
   private initSpeech = () => {
-    this.audio = new Audio(this.auioSrcs.audio);
-    this.audioMeaning = new Audio(this.auioSrcs.audioMeaning);
-    this.audioExample = new Audio(this.auioSrcs.audioExample);
+    this.audio = new Audio(this.audioSrcs.audio);
+    this.audioMeaning = new Audio(this.audioSrcs.audioMeaning);
+    this.audioExample = new Audio(this.audioSrcs.audioExample);
   };
 
   private loadSpeech = () => {
