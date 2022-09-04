@@ -51,8 +51,8 @@ export default class NavigatorView extends ElementTemplate {
       'div',
       'navigator__links',
       `<ul class="dropdown-menu">
-         <li class="dropdown-menu__item"><a class="dropdown-menu__link" href="#sprint">Спринт</a></li>
-         <li class="dropdown-menu__item"><a class="dropdown-menu__link" href="#audiocall">Аудиовызов</a></li>
+         <li class="dropdown-menu__item"><a class="dropdown-menu__link" href="#sprint?textbook">Спринт</a></li>
+         <li class="dropdown-menu__item"><a class="dropdown-menu__link" href="#audiocall?textbook">Аудиовызов</a></li>
        </ul>`,
     );
     this.navigatorOnChange();

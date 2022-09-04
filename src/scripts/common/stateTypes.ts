@@ -29,6 +29,7 @@ export interface SprintState {
   speedIconCount: number;
   newWords: number;
   gameLearnedWords: number;
+  isFromTextBook: boolean;
 }
 export interface AudioCallState {
   group: number;
@@ -45,6 +46,7 @@ export interface AudioCallState {
   speedIconCount: number;
   newWords: number;
   gameLearnedWords: number;
+  isFromTextBook: boolean;
 }
 
 export interface AppState {

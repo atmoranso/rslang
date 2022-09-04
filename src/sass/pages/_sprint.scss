@@ -61,7 +61,20 @@
         display: block;
     }
 }
-
+.board__word-en-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.board__audio {
+    cursor: pointer;
+    width: 32px;
+    height: 30px;
+    svg {
+        fill: $color-main;
+    }
+}
 .board__word-en {
     @include fontAtm(32px, $color-main, bold);
 }
@@ -107,7 +120,7 @@
     width: 100vw;
     height: 100vh;
     top: 0;
-    position: absolute;
+    position: fixed;
     display: none;
     z-index: 100;
     &.show {

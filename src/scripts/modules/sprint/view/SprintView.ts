@@ -69,6 +69,10 @@ export default class SprintView extends ElementTemplate {
     this.node.append(this.countDownWindow.node);
   };
 
+  hideStartWindow = () => {
+    this.startWindow.delete();
+  };
+
   showBoard = () => {
     this.hideWaitingWindow();
     this.startWindow.delete();

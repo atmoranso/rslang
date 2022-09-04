@@ -22,6 +22,8 @@ export default class Router {
     textbook: Textbook,
     sprint: Sprint,
     audiocall: AudioCall,
+    'sprint?textbook': Sprint,
+    'audiocall?textbook': AudioCall,
     statistics: Statistic,
   };
 
@@ -37,6 +39,8 @@ export default class Router {
     const path = window.location.hash.slice(1);
     const route = this.routes[path] ? this.routes[path] : this.routes['404'];
     const module = new route(this.state);
+    this.state.sprint.isFromTextBook = path.match(/\?textbook/i) ? true : false;
+    this.state.audioCall.isFromTextBook = path.match(/\?textbook/i) ? true : false;
     module.start();
     this.view.update(module.view);
   };
