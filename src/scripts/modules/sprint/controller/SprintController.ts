@@ -56,8 +56,8 @@ export default class SprintController {
         this.view.showBoard();
         return this.model.setStartTimer(false, 60, this.view.updateGameTimer);
       })
-      .then(() => {
-        this.finishGame();
+      .then((timerStatus) => {
+        if (timerStatus !== 'noWords') this.finishGame();
       });
   };
 
@@ -92,7 +92,6 @@ export default class SprintController {
     document.removeEventListener('keydown', this.clickTrueHandler);
     this.view.board.btnFalse.node.removeEventListener('click', this.clickFalseHandler);
     document.removeEventListener('keydown', this.clickFalseHandler);
-    this.view.btnPlayAgain?.node.removeEventListener('click', this.clickPlayAgainHandler);
   };
 
   clickPlayAgainHandler = () => {

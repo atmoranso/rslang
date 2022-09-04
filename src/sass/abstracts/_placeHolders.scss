@@ -6,6 +6,12 @@
     border: 1px solid;
     border-radius: 15px;
 }
+%audio-board {
+    margin: 10px auto;
+    @include flexColumn(space-around);
+    border: 1px solid;
+    border-radius: 15px;
+}
 %transition {
   transition: all 0.3s ease-out;
 }

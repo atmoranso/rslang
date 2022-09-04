@@ -6,4 +6,9 @@
     &:active {
         box-shadow: 2px 2px 8px 2px rgb(0 0 0 / 73%);
     }
+
+    &:disabled {
+        cursor: unset;
+        box-shadow: unset;
+    }
 }
