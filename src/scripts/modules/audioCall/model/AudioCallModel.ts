@@ -22,7 +22,7 @@ export default class AudioCallModel {
     this.state = state.audioCall;
     this.textBookState = state.textbook;
     this.authorization = state.authorization;
-    this.statsHelper = new StatsHelper('sprint', state);
+    this.statsHelper = new StatsHelper('audioCall', state);
   }
 
   checkIsBeforeTextbook = () => {
@@ -66,7 +66,6 @@ export default class AudioCallModel {
         word.image = DataAPI.baseURL + word.image;
       });
     }
-    console.log(this.state.gameWords);
 
     this.resetGameState();
     this.statsHelper.resetUserStat('audioCall');
