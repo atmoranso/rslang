@@ -13,26 +13,40 @@ export default class SprintController {
 
   start = () => {
     this.setListeners();
+    if (this.model.checkIsBeforeTextbook()) this.clickPlayAgainHandler();
   };
 
   startGame = async () => {
+    this.view.hideStartWindow();
     await this.model.prepareData(this.view.showWaitingWindow);
     this.view.hideWaitingWindow();
     this.view.showCountDown();
-    await this.model.setStartTimer(3, this.view.updateContDown);
+    await this.model.setStartTimer(true, 3, this.view.updateContDown);
     this.model.setNextWord(this.view.updateBoard);
+    this.view.board.btnTrue.node.addEventListener('click', this.clickTrueHandler);
+    this.view.board.audio.node.addEventListener('click', this.clickAudio);
+    document.addEventListener('keydown', this.clickTrueHandler);
+    this.view.board.btnFalse.node.addEventListener('click', this.clickFalseHandler);
+    document.addEventListener('keydown', this.clickFalseHandler);
   };
 
   setListeners = () => {
     this.view.startWindow.level.forEach((btn, index) => {
       btn.node.addEventListener('click', () => this.clickLevelHandler(index));
     });
-    this.view.board.btnTrue.node.addEventListener('click', this.clickTrueHandler);
-    document.addEventListener('keydown', this.clickTrueHandler);
-    this.view.board.btnFalse.node.addEventListener('click', this.clickFalseHandler);
-    document.addEventListener('keydown', this.clickFalseHandler);
 
     this.view.finishWindow.btnPlayAgain.node.addEventListener('click', this.clickPlayAgainHandler);
+  };
+
+  clickAudio = () => {
+    this.model.playPauseWord(this.view.board.playPauseWord);
+    if (this.view.board.audioSrc)
+      this.view.board.audioSrc.addEventListener('ended', () => {
+        console.log('aaa');
+
+        this.view.board.changePlayIcon(true);
+        this.model.isPLaying = false;
+      });
   };
 
   clickLevelHandler = (level: number) => {
@@ -40,7 +54,7 @@ export default class SprintController {
     this.startGame()
       .then(() => {
         this.view.showBoard();
-        return this.model.setStartTimer(10, this.view.updateGameTimer);
+        return this.model.setStartTimer(false, 60, this.view.updateGameTimer);
       })
       .then(() => {
         this.finishGame();
@@ -50,6 +64,7 @@ export default class SprintController {
   clickTrueHandler = (e: KeyboardEvent | MouseEvent) => {
     if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'ArrowRight')) {
       e.preventDefault();
+
       this.model.checkAnswer(true);
       if (!this.model.state.isGameFinished) {
         this.model.setNextWord(this.view.updateBoard);
@@ -62,6 +77,7 @@ export default class SprintController {
   clickFalseHandler = (e: KeyboardEvent | MouseEvent) => {
     if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'ArrowLeft')) {
       e.preventDefault();
+
       this.model.checkAnswer(false);
       if (!this.model.state.isGameFinished) this.model.setNextWord(this.view.updateBoard);
       else {
@@ -72,17 +88,21 @@ export default class SprintController {
 
   finishGame = () => {
     this.model.finishGame(this.view.showTheEnd);
-    this.view.btnPlayAgain?.node.addEventListener('click', this.clickPlayAgainHandler);
+    this.view.board.btnTrue.node.removeEventListener('click', this.clickTrueHandler);
+    document.removeEventListener('keydown', this.clickTrueHandler);
+    this.view.board.btnFalse.node.removeEventListener('click', this.clickFalseHandler);
+    document.removeEventListener('keydown', this.clickFalseHandler);
+    this.view.btnPlayAgain?.node.removeEventListener('click', this.clickPlayAgainHandler);
   };
 
   clickPlayAgainHandler = () => {
     this.startGame()
       .then(() => {
         this.view.showBoard();
-        return this.model.setStartTimer(10, this.view.updateGameTimer);
+        return this.model.setStartTimer(false, 60, this.view.updateGameTimer);
       })
-      .then(() => {
-        this.finishGame();
+      .then((timerStatus) => {
+        if (timerStatus !== 'noWords') this.finishGame();
       });
   };
 }

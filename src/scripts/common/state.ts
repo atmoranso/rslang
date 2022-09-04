@@ -18,6 +18,7 @@ const state: AppState = {
     speedIconCount: 1,
     newWords: 0,
     gameLearnedWords: 0,
+    isFromTextBook: false,
   },
   audioCall: {
     group: 0,
@@ -34,6 +35,7 @@ const state: AppState = {
     speedIconCount: 1,
     newWords: 0,
     gameLearnedWords: 0,
+    isFromTextBook: false,
   },
 };
 
