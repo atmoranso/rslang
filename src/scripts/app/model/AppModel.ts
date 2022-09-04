@@ -5,4 +5,11 @@ export default class AppModel {
     overlay.classList.toggle('open');
     document.body.classList.toggle('lock');
   }
+
+  removeLockClass(burger: HTMLElement, menu: HTMLElement, overlay: HTMLElement) {
+    burger.classList.remove('open');
+    menu.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.classList.remove('lock');
+  }
 }
