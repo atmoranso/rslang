@@ -29,7 +29,10 @@ export default class StatisticModel {
   };
 
   public loadData = async () => {
-    this.data = await DataAPI.getUserStatistic(this.state.authorization.token, this.state.authorization.userId);
+    const data = await DataAPI.getUserStatistic(this.state.authorization.token, this.state.authorization.userId);
+    if (!data.status) {
+      this.data = data;
+    }
   };
 
   public getShortGamesStat = () => {
