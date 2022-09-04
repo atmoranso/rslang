@@ -1,18 +1,28 @@
-import ElementTemplate from '../../common/ElementTemplate';
 import { AppState } from '../../common/stateTypes';
 import { Module } from '../../common/types';
+import StatisticModel from './model/StatisticModel';
 import StatisticView from './view/StatisticView';
+import StatisticController from './controller/StatisticController';
 
 export default class Statistic implements Module {
-  view: ElementTemplate;
+  private model: StatisticModel;
 
-  state: AppState;
+  public view: StatisticView;
+
+  private controller: StatisticController;
+
+  public state: AppState;
 
   constructor(state: AppState) {
     this.state = state;
-
+    this.model = new StatisticModel(this.state);
     this.view = new StatisticView(null);
+    this.controller = new StatisticController(this.model, this.view);
   }
 
-  start() {}
+  public start = () => {
+    if (this.state.authorization.isAuth) {
+      this.controller.start();
+    }
+  };
 }
