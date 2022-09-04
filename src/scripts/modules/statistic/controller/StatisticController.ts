@@ -14,5 +14,6 @@ export default class StatisticController {
   public start = async () => {
     await this.model.loadData();
     this.view.renderShortGamesStat(this.model.getShortGamesStat());
+    this.view.renderShortWordsStat(this.model.getShortWordsStat());
   };
 }

@@ -1,13 +1,15 @@
 .statistic {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
 canvas {
-  width: 100%;
   height: 100%;
 }
 
-.short-games-stat {
+.short-games-stat,
+.short-words-stat {
   height: 300px;
 }

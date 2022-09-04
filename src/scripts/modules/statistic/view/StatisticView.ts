@@ -1,5 +1,5 @@
 import ElementTemplate from '../../../common/ElementTemplate';
-import ShortGamesStat from '../ShortGamesStat.model';
+import { ShortGamesStat, ShortWordsStat } from '../ShortStat.model';
 import {
   Chart,
   ArcElement,
@@ -58,6 +58,14 @@ Chart.register(
 export default class StatisticView extends ElementTemplate {
   private shortGamesStatCtx: CanvasRenderingContext2D | null;
 
+  private shortWordsStatCtx: CanvasRenderingContext2D | null;
+
+  private lightCoral = '#F08080';
+
+  private lightGreen = '#90EE90';
+
+  private lightBlue = '#ADD8E6';
+
   constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'section', 'statistic');
     const shortGamesStatBlock = new ElementTemplate(this.node, 'div', 'short-games-stat');
@@ -66,6 +74,12 @@ export default class StatisticView extends ElementTemplate {
       'canvas',
     );
     this.shortGamesStatCtx = shortGamesStatCanvas.node.getContext('2d');
+    const shortWordsStatBlock = new ElementTemplate(this.node, 'div', 'short-words-stat');
+    const shortWordsStatCanvas: ElementTemplate<HTMLCanvasElement> = new ElementTemplate(
+      shortWordsStatBlock.node,
+      'canvas',
+    );
+    this.shortWordsStatCtx = shortWordsStatCanvas.node.getContext('2d');
   }
 
   public renderShortGamesStat = (gameData: ShortGamesStat) => {
@@ -78,17 +92,17 @@ export default class StatisticView extends ElementTemplate {
         {
           label: 'Количество новых слов',
           data: [gameData.sprint.newWords, gameData.audioCall.newWords],
-          backgroundColor: '#F08080',
+          backgroundColor: this.lightCoral,
         },
         {
           label: 'Процент правильных ответов',
           data: [gameData.sprint.correctPercent, gameData.audioCall.correctPercent],
-          backgroundColor: '#90EE90',
+          backgroundColor: this.lightGreen,
         },
         {
           label: 'Серия правильных ответов',
           data: [gameData.sprint.correctChain, gameData.audioCall.correctChain],
-          backgroundColor: '#ADD8E6',
+          backgroundColor: this.lightBlue,
         },
       ],
     };
@@ -104,6 +118,48 @@ export default class StatisticView extends ElementTemplate {
           title: {
             display: true,
             text: `Статистика по играм на ${gameData.date}`,
+          },
+        },
+      },
+    });
+  };
+
+  public renderShortWordsStat = (gameData: ShortWordsStat) => {
+    if (this.shortWordsStatCtx === null) {
+      return;
+    }
+    const data = {
+      labels: [''],
+      datasets: [
+        {
+          label: 'Количество новых слов',
+          data: [gameData.newWords],
+          backgroundColor: this.lightCoral,
+        },
+        {
+          label: 'Процент правильных ответов',
+          data: [gameData.correctPercent],
+          backgroundColor: this.lightGreen,
+        },
+        {
+          label: 'Количество изученных слов',
+          data: [gameData.learnedWords],
+          backgroundColor: this.lightBlue,
+        },
+      ],
+    };
+    new Chart(this.shortWordsStatCtx, {
+      type: 'bar',
+      data: data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: true,
+            text: `Статистика по словам на ${gameData.date}`,
           },
         },
       },

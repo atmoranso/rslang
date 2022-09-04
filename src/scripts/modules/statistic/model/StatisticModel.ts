@@ -54,4 +54,23 @@ export default class StatisticModel {
     }
     return res;
   };
+
+  public getShortWordsStat = () => {
+    const res = {
+      date: this.timeStampToDateStr(Date.now(), true),
+      newWords: 0,
+      learnedWords: 0,
+      correctPercent: 0,
+    };
+    if (this.data && this.date === this.data.optional.dailyStat.todayDate) {
+      const wordsData = this.data.optional.dailyStat;
+      res.newWords = wordsData.newWords;
+      res.learnedWords = wordsData.learnedWords;
+      const correctAnswers = wordsData.correctAnswers;
+      const incorrectAnswers = wordsData.incorrectAnswers;
+      const correctPercent = Math.floor((correctAnswers / (correctAnswers + incorrectAnswers)) * 100);
+      res.correctPercent = correctPercent | 0;
+    }
+    return res;
+  };
 }
