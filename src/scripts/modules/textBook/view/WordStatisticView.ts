@@ -4,13 +4,13 @@ import GamesStatistic from '../../../common/api/models/GamesStatistic.model';
 class WordStatistic extends ElementTemplate {
   constructor(parentNode: HTMLElement, gamesStatistic: GamesStatistic) {
     super(parentNode, 'div', 'black-out');
-    const docBody = document.body;
-    const prevOverflow = docBody.style.overflow;
-    const prevPaddingRigh = docBody.style.paddingRight;
-    const widthWithScroll = docBody.clientWidth;
-    docBody.style.overflow = 'hidden';
-    const widthWithoutScroll = docBody.clientWidth;
-    docBody.style.paddingRight = `${widthWithoutScroll - widthWithScroll}px`;
+    // const docBody = document.body;
+    // const prevOverflow = docBody.style.overflow;
+    // const prevPaddingRigh = docBody.style.paddingRight;
+    // const widthWithScroll = docBody.clientWidth;
+    // docBody.style.overflow = 'hidden';
+    // const widthWithoutScroll = docBody.clientWidth;
+    // docBody.style.paddingRight = `${widthWithoutScroll - widthWithScroll}px`;
     const popUp = new ElementTemplate(
       parentNode,
       'div',
@@ -40,8 +40,8 @@ class WordStatistic extends ElementTemplate {
     const button = new ElementTemplate(popUp.node, 'button', 'pop-up__close-button');
     button.node.focus();
     const closeMessage = () => {
-      docBody.style.overflow = prevOverflow;
-      docBody.style.paddingRight = prevPaddingRigh;
+      // docBody.style.overflow = prevOverflow;
+      // docBody.style.paddingRight = prevPaddingRigh;
       this.delete();
       popUp.delete();
     };

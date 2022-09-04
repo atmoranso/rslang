@@ -22,6 +22,8 @@ export default class NavigatorView extends ElementTemplate {
 
   private state: AppState;
 
+  private navigatorButtonsData = ['A1', 'A2', 'В1', 'В2', 'С1', 'С2', 'D'];
+
   public navigatorOnChange: () => void;
 
   constructor(parentNode: HTMLElement, groupsMaxCount: number, state: AppState, navigatorOnChange: () => void) {
@@ -35,26 +37,27 @@ export default class NavigatorView extends ElementTemplate {
     }
     this.groupsCount = this.state.authorization.isAuth ? this.groupsMaxCount : this.groupsMaxCount - 1;
     const groupNumbers = [...Array(this.groupsCount).keys()].map((x) => (x += 1));
-    const groups = new ElementTemplate(this.node, 'div', 'navigator__groups');
+    const buttonsWrapper = new ElementTemplate(this.node, 'div', 'navigator__buttons-wrapper');
+    const groups = new ElementTemplate(buttonsWrapper.node, 'div', 'navigator__groups');
     groupNumbers.forEach((el, i) => {
-      const groupButton = new ElementTemplate(groups.node, 'button', `navigator__group-button-${i + 1}`, `${i + 1}`);
+      const groupButton = new ElementTemplate(
+        groups.node,
+        'button',
+        `navigator__group-button-${i + 1} btn`,
+        `${this.navigatorButtonsData[i]}`,
+      );
       this.groupButtons.push(groupButton);
     });
-    const pages = new ElementTemplate(this.node, 'div', 'navigator__pages');
-    this.pageButtonFirst = new ElementTemplate(pages.node, 'button', 'navigator__page-button-first', 'First');
-    this.pageButtonPrev = new ElementTemplate(pages.node, 'button', 'navigator__page-button-prev', 'Prev');
+    const pages = new ElementTemplate(buttonsWrapper.node, 'div', 'navigator__pages');
+    const sprintLink = new ElementTemplate(pages.node, 'div', 'navigator__game-link');
+    sprintLink.node.innerHTML = '<a class="navigator__link" href="#sprint?textbook">Спринт</a>';
+    this.pageButtonFirst = new ElementTemplate(pages.node, 'button', 'navigator__page-button-first btn', '<<');
+    this.pageButtonPrev = new ElementTemplate(pages.node, 'button', 'navigator__page-button-prev btn', '<');
     this.pageCurrent = new ElementTemplate(pages.node, 'span', 'navigator__page-current');
-    this.pageButtonNext = new ElementTemplate(pages.node, 'button', 'navigator__page-button-next', 'Next');
-    this.pageButtonLast = new ElementTemplate(pages.node, 'button', 'navigator__page-button-last', 'Last');
-    new ElementTemplate(
-      this.node,
-      'div',
-      'navigator__links',
-      `<ul class="dropdown-menu">
-         <li class="dropdown-menu__item"><a class="dropdown-menu__link" href="#sprint?textbook">Спринт</a></li>
-         <li class="dropdown-menu__item"><a class="dropdown-menu__link" href="#audiocall?textbook">Аудиовызов</a></li>
-       </ul>`,
-    );
+    this.pageButtonNext = new ElementTemplate(pages.node, 'button', 'navigator__page-button-next btn', '>');
+    this.pageButtonLast = new ElementTemplate(pages.node, 'button', 'navigator__page-button-last btn', '>>');
+    const audioCallLink = new ElementTemplate(pages.node, 'div', 'navigator__game-link');
+    audioCallLink.node.innerHTML = '<a class="navigator__link" href="#sprint?textbook">Аудиовызов</a>';
     this.navigatorOnChange();
     this.groupesInit();
     this.pagesInit();

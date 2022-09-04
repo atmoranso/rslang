@@ -35,5 +35,5 @@ export default class AppController {
     const menu = this.view.header.navMenu.node;
     const overlay = this.view.header.overlay.node;
     this.model.removeLockClass(burger, menu, overlay);
-  }
+  };
 }

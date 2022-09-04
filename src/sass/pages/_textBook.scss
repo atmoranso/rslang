@@ -1,110 +1,204 @@
-button {
-  cursor: pointer;
-}
-
 .navigator {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  margin: 20px auto 20px;
-  gap: 10px;
+  @include flex;
+  gap: 40px;
+  padding: 20px;
   position: relative;
+
+  @include media-netbook {
+    flex-direction: column;
+    max-width: 600px;
+    margin: auto;
+  }
 }
 
-.navigator__groups,
-.navigator__pages {
-  width: 100%;
-  display: flex;
-  gap: 10px;
-  justify-content: center;
+.navigator__group-button-1,
+.navigator__group-button-2,
+.navigator__group-button-3,
+.navigator__group-button-4,
+.navigator__group-button-5,
+.navigator__group-button-6,
+.navigator__group-button-7 {
+  @extend %navigator-group-button;
 }
 
-.navigator__group-button_active {
-  border: 3px solid $color-dark;
+.navigator__group-button-1 {
+  background-color: $color-nav-btn-1;
 }
 
-.navigator__pages {
-  gap: 10px;
+.navigator__group-button-2 {
+  background-color: $color-nav-btn-2;
+}
+
+.navigator__group-button-3 {
+  background-color: $color-nav-btn-3;
+}
+
+.navigator__group-button-4 {
+  background-color: $color-nav-btn-4;
+}
+
+.navigator__group-button-5 {
+  background-color: $color-nav-btn-5;
+}
+
+.navigator__group-button-6 {
+  background-color: $color-nav-btn-6;
+}
+
+.navigator__group-button-7 {
+  background-color: $color-nav-btn-7;
+}
+
+.navigator__group-button-text {
+  @include font(17px, 17px, 400);
+}
+
+.navigator__page-button-first,
+.navigator__page-button-prev,
+.navigator__page-button-next,
+.navigator__page-button-last {
+  @extend %navigator-page-button;
+
+  &:disabled {
+    pointer-events: none;
+    border: 1px solid $color-nav-btn-page-bg;
+    color: $color-nav-btn-page-bg;
+    background: transparent;
+  }
 }
 
 .navigator__page-current {
   display: block;
-  width: 30px;
-  border: 1px solid $color-dark;
-  padding: 0 5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 35%;
+  border: 1px solid $color-nav-btn-page-bg;
+  @include font(22px, 40px, 500);
+  text-align: center;
+  color: $color-primary;
+  margin: 0 15px;
+  position: relative;
+
+  @include media-tablet {
+    margin: 0;
+  }
 }
 
-.navigator__page-current_show-medal {
-  background-image: url(../assets/svg/medal-purple.svg);
-  background-repeat: no-repeat;
-  background-size: 45%;
-  background-position: 90%;
-}
-
-.navigator__links {
-  position: absolute;
-  top: -5px;
-  right: 0px;
-}
-
-.navigator__links .dropdown-menu {
-  margin-top: 0;
-  display: block;
-}
-
-.navigator__links .dropdown-menu__item {
-  padding: 0.5rem 2rem;
-}
-
-.navigator__links .dropdown-menu__link::after {
-  top: 1.5rem;
-}
-
-.cards {
-  display: flex;
+.navigator__groups,
+.navigator__pages {
+  @include flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  min-height: 100vh;
-  margin-bottom: 20px;
-  align-content: flex-start;
+  gap: 30px;
+
+  @include media-tablet {
+    position: relative;
+    gap: 10px;
+  }
+}
+
+.navigator__group-button_active {
+  border: 1px solid $color-dark;
+}
+
+.navigator__pages {
+  margin-top: 20px;
+  gap: 10px;
+
+  @include media-tablet {
+    margin-bottom: 50px;
+  }
+}
+
+.navigator__page-current_show-medal:after {
+  @include pseudo;
+  width: 40px;
+  height: 40px;
+  right: -20px;
+  top: 15px;
+  background-size: cover;
+  background: url(../assets/svg/medal-purple.svg) no-repeat center;
+  z-index: -1;
+  opacity: .8;
+}
+
+.navigator__link {
+  text-decoration: none;
+  border-radius: 20px;
+  color: $color-light;
+  display: block;
+  background-color: $color-primary;
+  width: 130px;
+  height: 60px;
+  text-align: center;
+  @include font(15px, 60px, 600);
+  @extend %transition;
+
+  &:hover {
+    transform: scale(1.04);
+  }
+
+  @include media-tablet {
+    width: 110px;
+    height: 50px;
+    line-height: 50px;
+  }
+}
+
+.navigator__game-link {
+  @include media-tablet {
+    position: absolute;
+    top: 50px;
+    &:first-of-type {
+      right: 30px;
+    }
+    &:last-of-type {
+      left: 30px;
+    }
+  }
+
+  @include media-mobile {
+    &:first-of-type {
+      right: 10px;
+    }
+    &:last-of-type {
+      left: 10px;
+    }
+  }
 }
 
 .card {
-  position: relative;
-  display: flex;
+  max-width: 450px;
+  width: 100%;
+  min-height: 400px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white 100%);
+  @include flex($align-items: flex-start, $justify-content: end);
   flex-direction: column;
-  align-items: flex-start;
   gap: 10px;
-  width: 23.75%;
-  box-sizing: border-box;
-  padding: 20px;
   border: 1px solid $color-dark;
-  background-color: $color-card-bg;
-  font-size: 1.5rem;
-
-  @media (max-width: 1600px) {
-    width: 31.67%;
-  }
-
-  @media (max-width: 1200px) {
-    width: 47.5%;
-  }
-
-  @media (max-width: 800px) {
-    width: 95%;
-  }
+  border-radius: 10px;
+  @include font(15px, 20px, 400);
+  position: relative;
 }
 
-.card__word {
-  font-size: 2rem;
-  font-weight: bold;
+.card__wrapper {
+  width: 100%;
+  height: 100%;
+  @include flex($align-items: start, $justify-content: space-between);
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 130px;
+  padding: 20px;
+  background: linear-gradient(transparent, #e0e0e0);
+  border-radius: 10px;
 }
 
-.card__transcription,
-.card__word-translate {
-  font-size: 1.75rem;
-  font-weight: bold;
+.card__listen-wrapper {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.card__image {
+  border-radius: 10px;
 }
 
 .card__word,
@@ -115,56 +209,96 @@ button {
 .card__text-example,
 .card__text-example-translate {
   margin: 0;
-  text-shadow: 0px 0px 5px $color-light;
+  text-shadow: 0 0 5px $color-light;
+}
+
+.card__word {
+  @include font(27px, 27px, 700);
+  margin-bottom: 15px;
+}
+
+.card__transcription {
+  margin-left: 40px;
+}
+
+.card__word-translate {
+  margin-bottom: 15px;
+}
+
+.card__text-meaning,
+.card__text-example {
+  @include font(17px, 17px, 700);
+}
+
+.card__text-meaning-translate,
+.card__text-example-translate {
+  @include font(15px, 15px, 700, $style: italic);
+}
+
+.card__buttons-wrapper {
+  @include flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.cards {
+  @include flex($align-items: normal);
+  flex-wrap: wrap;
+  gap: 20px;
+  min-height: 100vh;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.card__transcription,
+.card__word-translate {
+  @include font(20px, 20px, 700);
 }
 
 .card__image {
-  z-index: -1;
   width: 100%;
   height: 100%;
   position: absolute;
   left: 0;
   top: 0;
-  background-repeat: no-repeat;
+  z-index: -1;
+  background: no-repeat center;
   background-size: cover;
-  background-position: center;
 }
 
 .card__listen-button,
 .card__difficult-button,
 .card__learned-button,
 .card__statistic-button {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 10px;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-color: transparent;
-  border: none;
+  @extend %card-main-button;
+
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 .card__listen-button {
-  width: 50px;
-  height: 50px;
-  top: 60px;
-  right: 15px;
-  background-image: url(../assets/svg/listen.svg);
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: transparent url(../assets/svg/listen.svg) no-repeat center;
+
+  &:hover {
+    transform: scale(1.04);
+  }
 }
 
 .card__difficult-button {
-  right: 135px;
   background-image: url(../assets/svg/difficult.svg);
 }
 
 .card__learned-button {
-  right: 75px;
   background-image: url(../assets/svg/learned.svg);
 }
 
 .card__statistic-button {
-  right: 15px;
   background-image: url(../assets/svg/statistic.svg);
 }
 
@@ -172,17 +306,9 @@ button {
 .card__difficult-button-plus_remove,
 .card__learned-button-plus,
 .card__learned-button-plus_remove {
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  bottom: -5px;
-  right: -5px;
-  background-image: url(../assets/svg/plus-green.svg);
-  background-repeat: no-repeat;
+  background: transparent url(../assets/svg/plus-green.svg) no-repeat center;
   background-size: cover;
-  background-position: center;
-  background-color: transparent;
-  border: none;
+  @extend %card-additional-button;
 }
 
 .card__difficult-button-plus_remove,
@@ -203,18 +329,13 @@ button {
 .pop-up {
   z-index: 2;
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
   width: 100%;
-  box-sizing: border-box;
-  left: 0;
   top: 0;
-  border: 1px solid $color-dark;
-  padding: 10px;
-  background-color: $color-light;
+  padding: 35px 20px;
+  background-color: $color-pop-up-bg;
   text-align: center;
+  border-radius: 10px;
+  border: 1px solid $color-dark;
 }
 
 .pop-up__close-button {
@@ -223,10 +344,9 @@ button {
   top: 5px;
   width: 20px;
   height: 20px;
-  border: 1px solid $color-dark;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-image: url(../assets/svg/cross.svg);
+  border: none;
+  background: url(../assets/svg/cross.svg) no-repeat center center;
+  cursor: pointer;
 }
 
 .pop-up__table {

@@ -55,6 +55,12 @@
   justify-content: $justify-content;
 }
 
+@mixin media-netbook {
+  @media (max-width: $width-netbook) {
+    @content;
+  }
+}
+
 @mixin media-tablet {
   @media (max-width: $width-tablet) {
     @content;
