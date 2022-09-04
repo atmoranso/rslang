@@ -61,8 +61,10 @@ export default class TextbookView extends ElementTemplate {
   };
 
   private onChangeUserWord = () => {
-    const visible = this.cards.every((card: Card) => card.isLearned || card.isDifficult);
-    this.navigator.displayMedal(visible);
+    if (this.state.textbook.group !== this.groupsMaxCount) {
+      const visible = this.cards.every((card: Card) => card.isLearned || card.isDifficult);
+      this.navigator.displayMedal(visible);
+    }
   };
 
   private getWords = async () => {

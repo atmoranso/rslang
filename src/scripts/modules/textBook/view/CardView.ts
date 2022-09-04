@@ -87,10 +87,13 @@ export default class CardView extends ElementTemplate {
     new ElementTemplate(cardWrapper.node, 'p', 'card__text-example-translate', data.textExampleTranslate);
     const buttonsWrapper = new ElementTemplate(cardWrapper.node, 'div', 'card__buttons-wrapper');
     const difficultButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__difficult-button');
+    difficultButton.node.title = 'добавить в раздел "Сложные слова"';
     this.difficultButtonAction = new ElementTemplate(difficultButton.node, 'div', 'card__difficult-button-plus');
     const learnedButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__learned-button');
+    learnedButton.node.title = 'слово изучено';
     this.learnedButtonAction = new ElementTemplate(learnedButton.node, 'div', 'card__learned-button-plus');
     const statisticButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__statistic-button');
+    statisticButton.node.title = 'посмотреть статистику';
 
     if (!this.state.authorization.isAuth) {
       difficultButton.node.hidden = true;

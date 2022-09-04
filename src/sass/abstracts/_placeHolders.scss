@@ -19,3 +19,45 @@
   padding: 0;
   list-style-type: none;
 }
+
+%navigator-group-button {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  @include flex;
+  @include font(21px, 21px, 500);
+  @extend %transition;
+}
+
+%navigator-page-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 35%;
+  @include font(18px, 18px, 400);
+  padding: 5px;
+  border: 1px solid $color-primary;
+  color: $color-light;
+  background-color: $color-nav-btn-page-bg;
+  @extend %transition;
+}
+
+%card-main-button {
+  width: 35px;
+  height: 35px;
+  background: transparent no-repeat center;
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+%card-additional-button {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  border: none;
+}
