@@ -16,3 +16,10 @@ export interface ShortWordsStat {
   learnedWords: number;
   correctPercent: number;
 }
+
+export interface LongStat {
+  [date: string]: {
+    newWords: number;
+    learnedWords: number;
+  };
+}

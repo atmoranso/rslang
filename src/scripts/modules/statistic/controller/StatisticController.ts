@@ -15,5 +15,8 @@ export default class StatisticController {
     await this.model.loadData();
     this.view.renderShortGamesStat(this.model.getShortGamesStat());
     this.view.renderShortWordsStat(this.model.getShortWordsStat());
+    const longStat = this.model.getLongStat();
+    this.view.renderLongNewWords(longStat);
+    this.view.renderLongLearnedWords(longStat);
   };
 }

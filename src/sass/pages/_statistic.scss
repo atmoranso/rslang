@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
+  margin: 20px 0;
 }
 
 canvas {
@@ -10,6 +11,8 @@ canvas {
 }
 
 .short-games-stat,
-.short-words-stat {
+.short-words-stat,
+.long-new-words-stat,
+.long-learned-words-stat {
   height: 300px;
 }
