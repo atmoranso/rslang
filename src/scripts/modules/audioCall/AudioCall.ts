@@ -1,4 +1,3 @@
-import ElementTemplate from '../../common/ElementTemplate';
 import { AppState } from '../../common/stateTypes';
 import { Module } from '../../common/types';
 import AudioCallController from './controller/AudioCallController';

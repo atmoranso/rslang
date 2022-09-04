@@ -4,73 +4,86 @@ import playSvg from './play.svg';
 import stopSvg from './stop.svg';
 
 export default class Board extends ElementTemplate {
-  bullets: ElementTemplate[] = [];
-
-  bulletText: ElementTemplate;
-
-  speedIcon: ElementTemplate[] = [];
-
-  wordEn: ElementTemplate;
-
-  wordEnContainer: ElementTemplate;
-
   audio: ElementTemplate;
 
   audioSrc: HTMLAudioElement | undefined;
 
-  wordRu: ElementTemplate;
+  wordImgContainer: ElementTemplate;
+
+  wordImg: ElementTemplate<HTMLImageElement>;
+
+  wordRuContainer: ElementTemplate;
+
+  wordRu: ElementTemplate<HTMLButtonElement>[] = [];
+
+  wordEn: ElementTemplate;
 
   btnDontKnow: ElementTemplate<HTMLButtonElement>;
 
+  btnNext: ElementTemplate<HTMLButtonElement>;
+
   constructor(parentNode: HTMLElement | null) {
-    super(parentNode, 'div', 'board');
-    const ratioContainer = new ElementTemplate(this.node, 'div', 'board__bullet-container');
-    for (let i = 0; i < 3; i++) {
-      this.bullets.push(new ElementTemplate(ratioContainer.node, 'div', 'board__bullet'));
-    }
-    this.bulletText = new ElementTemplate(this.node, 'p', 'board__bullet-desc', '+10 очков за слово');
-    const speedContainer = new ElementTemplate(this.node, 'div', 'board__speed-container');
+    super(parentNode, 'div', 'audio-board');
 
-    for (let i = 0; i < 4; i++) {
-      this.speedIcon.push(new ElementTemplate(speedContainer.node, 'div', 'board__speed'));
-    }
-
-    this.wordEnContainer = new ElementTemplate(this.node, 'div', 'board__word-en-container', '');
-    this.audio = new ElementTemplate(this.wordEnContainer.node, 'div', 'board__audio', '');
+    this.audio = new ElementTemplate(this.node, 'div', 'audio-board__audio', '');
     this.audio.node.innerHTML = playSvg;
-    this.wordEn = new ElementTemplate(this.wordEnContainer.node, 'div', 'board__word-en', '');
-    this.wordRu = new ElementTemplate(this.node, 'div', 'board__word-ru', '');
+    this.wordImgContainer = new ElementTemplate(null, 'div', 'audio-board__img-container', '');
+    this.wordEn = new ElementTemplate(null, 'div', 'audio-board__word-en', '');
+    this.wordImg = new ElementTemplate<HTMLImageElement>(this.wordImgContainer.node, 'img', 'audio-board__img', '');
+    this.wordRuContainer = new ElementTemplate(this.node, 'div', 'audio-board__words-container', '');
 
-    const buttonContainer = new ElementTemplate(this.node, 'div', 'board__button-container');
+    for (let i = 0; i < 5; i++) {
+      const word = new ElementTemplate<HTMLButtonElement>(
+        this.wordRuContainer.node,
+        'button',
+        'audio-board__word-ru btn',
+        '',
+      );
+      this.wordRu.push(word);
+    }
 
     this.btnDontKnow = new ElementTemplate<HTMLButtonElement>(
-      buttonContainer.node,
+      this.node,
       'button',
-      'btn board__btn board__btn_dont-know',
+      'btn board__btn audio-board__btn_dont-know',
       'Не знаю',
     );
 
+    this.btnNext = new ElementTemplate<HTMLButtonElement>(
+      null,
+      'button',
+      'btn board__btn audio-board__btn_next',
+      'Далее...',
+    );
   }
 
-  update = (state: AudioCallState) => {};
+  update = (state: AudioCallState) => {
+    this.audioSrc = new Audio(state.gameWords[state.currentWordIndex].audio);
+    this.wordImgContainer.delete();
+    this.wordEn.delete();
+    this.wordRu.forEach((wordElement, i) => {
+      wordElement.node.classList.remove('correct', 'incorrect');
+      this.audio.node.classList.remove('answered');
 
-  updateBullets = (correctAnswerCount: number) => {
-    this.bullets.forEach((item, index) => {
-      if (index < correctAnswerCount) item.node.classList.add('active');
-      else item.node.classList.remove('active');
+      wordElement.node.innerHTML = i + '&nbsp;&nbsp;' + state.currentWordRu[i];
     });
   };
 
-  updateSpeedIcon = (speedIconCount: number) => {
-    this.speedIcon.forEach((item, index) => {
-      if (index < speedIconCount) item.node.classList.add('active');
-      else item.node.classList.remove('active');
-    });
-  };
+  showAnswer = (correctAnswerNum: number, pressed: number, state: AudioCallState) => {
+    this.audio.node.classList.add('answered');
+    this.wordEn.node.innerText = state.gameWords[state.currentWordIndex].word;
+    this.audio.node.append(this.wordEn.node);
+    console.log(state.gameWords[state.currentWordIndex].word);
 
-  updateBulletText = (speedSprint: number) => {
-    this.bulletText.node.style.backgroundColor = this.speedColors[speedSprint];
-    this.bulletText.node.innerText = `+${10 * speedSprint} очков за слово`;
+    this.wordImg.node.src = state.gameWords[state.currentWordIndex].image;
+    this.audio.node.before(this.wordImgContainer.node);
+    this.wordRu[correctAnswerNum - 1].node.classList.remove('incorrect');
+    this.wordRu[correctAnswerNum - 1].node.classList.add('correct');
+
+    if (pressed !== correctAnswerNum && pressed) {
+      this.wordRu[pressed - 1].node.classList.remove('correct');
+      this.wordRu[pressed - 1].node.classList.add('incorrect');
+    }
   };
 
   playPauseWord = (play: boolean) => {
@@ -88,5 +101,23 @@ export default class Board extends ElementTemplate {
 
   changePlayIcon = (isPlay: boolean) => {
     this.audio.node.innerHTML = isPlay ? playSvg : stopSvg;
+  };
+
+  showNextBtn = () => {
+    this.btnDontKnow.delete();
+    this.node.append(this.btnNext.node);
+  };
+
+  showDontKnowBtn = () => {
+    this.btnNext.delete();
+    this.node.append(this.btnDontKnow.node);
+  };
+
+  disableButtons = () => {
+    this.wordRu.forEach((word) => (word.node.disabled = true));
+  };
+
+  enableButtons = () => {
+    this.wordRu.forEach((word) => (word.node.disabled = false));
   };
 }

@@ -61,22 +61,24 @@ export default class AudioCallModel {
       });
       if (this.authorization.isAuth) this.state.gameWords = (await this.filterNewWords(allGameWords)).splice(0, 10);
       else this.state.gameWords = allGameWords.splice(0, 10);
+      this.state.gameWords.forEach((word) => {
+        word.audio = DataAPI.baseURL + word.audio;
+        word.image = DataAPI.baseURL + word.image;
+      });
     }
+    console.log(this.state.gameWords);
+
     this.resetGameState();
     this.statsHelper.resetUserStat('audioCall');
   }
 
   resetGameState = () => {
-    this.state.speedSprint = 1;
-    this.state.speedIconCount = 1;
-    this.state.score = 0;
     this.state.currentWordIndex = -1;
     this.state.isGameFinished = false;
-    this.state.correctAnswerCount = 0;
     this.state.correctAnswerCountTotal = 0;
     this.state.wordsCorrectIds = [];
     this.state.wordsInCorrectIds = [];
-    this.state.currentWordRu = '';
+    this.state.currentWordRu = [];
     this.state.newWords = 0;
     this.state.gameLearnedWords = 0;
   };
@@ -131,11 +133,11 @@ export default class AudioCallModel {
 
   setNextWord(updateView: (state: AudioCallState) => void) {
     this.state.currentWordIndex++;
-    this.state.gameWords[this.state.currentWordIndex].audio =
-      DataAPI.baseURL + this.state.gameWords[this.state.currentWordIndex].audio;
+
     if (this.state.currentWordIndex === this.state.gameWords.length - 1) {
       this.state.isGameFinished = true;
     }
+    this.state.currentWordRu = [];
     this.state.currentWordRu.push(this.state.gameWords[this.state.currentWordIndex].wordTranslate);
     for (let i = 0; i < 4; i++) {
       const pageNumber = Math.floor(Math.random() * this.state.gameWords.length);
@@ -143,10 +145,11 @@ export default class AudioCallModel {
         this.state.currentWordRu.push(this.state.gameWords[pageNumber].wordTranslate);
       else i--;
     }
+    this.shuffleArray(this.state.currentWordRu);
     updateView(this.state);
   }
 
-  shuffleArray = (array: []) => {
+  shuffleArray = (array: string[]) => {
     array.sort(() => Math.random() - 0.5);
   };
 
@@ -168,13 +171,17 @@ export default class AudioCallModel {
     }
   }
 
-  checkAnswer(answer: number) {
+  checkAnswer(showAnswer: (correctAnswerNum: number, pressed: number, state: AudioCallState) => void, answer: number) {
     const condition =
       answer &&
       this.state.gameWords[this.state.currentWordIndex].wordTranslate === this.state.currentWordRu[answer - 1];
 
     if (condition) this.doAnswerCorrect();
     else this.doAnswerIncorrect();
+    const corrAnswerNum = this.state.currentWordRu.indexOf(
+      this.state.gameWords[this.state.currentWordIndex].wordTranslate,
+    );
+    showAnswer(corrAnswerNum + 1, answer, this.state);
   }
 
   doAnswerCorrect() {

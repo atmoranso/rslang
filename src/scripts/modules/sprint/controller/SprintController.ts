@@ -92,7 +92,6 @@ export default class SprintController {
     document.removeEventListener('keydown', this.clickTrueHandler);
     this.view.board.btnFalse.node.removeEventListener('click', this.clickFalseHandler);
     document.removeEventListener('keydown', this.clickFalseHandler);
-    this.view.btnPlayAgain?.node.removeEventListener('click', this.clickPlayAgainHandler);
   };
 
   clickPlayAgainHandler = () => {

@@ -11,8 +11,6 @@ export default class AudioCallView extends ElementTemplate {
 
   countDownWindow: CountDownWindow;
 
-  boardContainer: ElementTemplate;
-
   waitingWindow: WaitingWindow;
 
   board: Board;
@@ -20,11 +18,10 @@ export default class AudioCallView extends ElementTemplate {
   finishWindow: FinishWindow;
 
   constructor(parentNode: HTMLElement | null) {
-    super(parentNode, 'div', 'sprint', 'Игра Аудиовызов');
+    super(parentNode, 'div', 'audiocall', '');
     this.startWindow = new StartWindow(this.node);
     this.countDownWindow = new CountDownWindow(null);
-    this.boardContainer = new ElementTemplate(null, 'div', 'audiocall__board-container');
-    this.board = new Board(this.boardContainer.node);
+    this.board = new Board(null);
 
     this.finishWindow = new FinishWindow(null);
 
@@ -32,7 +29,7 @@ export default class AudioCallView extends ElementTemplate {
   }
 
   showTheEnd = (state: AudioCallState) => {
-    this.boardContainer.delete();
+    this.board.delete();
     this.finishWindow.update(state);
     this.node.append(this.finishWindow.node);
   };
@@ -64,7 +61,7 @@ export default class AudioCallView extends ElementTemplate {
     this.startWindow.delete();
     this.countDownWindow.delete();
     this.finishWindow.delete();
-    this.node.append(this.boardContainer.node);
+    this.node.append(this.board.node);
   };
 
   updateBoard = (state: AudioCallState) => {
