@@ -2,12 +2,13 @@ import DataAPI from '../../../common/api/DataAPI';
 import ErrorRes from '../../../common/api/models/ErrorRes';
 import UserWord from '../../../common/api/models/UserWord.model';
 import UserWordExt from '../../../common/api/models/UserWordExt.model';
+import Word from '../../../common/api/models/Word.model';
 import YesNo from '../../../common/enums';
-import { AppState, Authorization, SprintState, Textbook } from '../../../common/stateTypes';
+import { AppState, AudioCallState, Authorization, Textbook } from '../../../common/stateTypes';
 import StatsHelper from '../../../common/StatsHelper';
 
-export default class SprintModel {
-  state: SprintState;
+export default class AudioCallModel {
+  state: AudioCallState;
 
   statsHelper: StatsHelper;
 
@@ -15,32 +16,54 @@ export default class SprintModel {
 
   authorization: Authorization;
 
+  isPLaying = false;
+
   constructor(state: AppState) {
-    this.state = state.sprint;
+    this.state = state.audioCall;
     this.textBookState = state.textbook;
     this.authorization = state.authorization;
     this.statsHelper = new StatsHelper('sprint', state);
   }
 
+  checkIsBeforeTextbook = () => {
+    return this.state.isFromTextBook;
+  };
+
   async prepareData(showLoadingPage: () => void) {
-    if (this.state.gameWords.length > 1) {
+    if (this.state.gameWords.length > 1 && !this.state.isFromTextBook) {
     } else {
       showLoadingPage();
       const promiseArr = [];
       const randPages: number[] = [];
-      for (let i = 0; i < 5; i++) {
-        const pageNumber = Math.floor(Math.random() * 20);
-        if (!randPages.includes(pageNumber)) promiseArr.push(this.getWordsArr(this.state.group, pageNumber));
-        else i--;
+      this.state.gameWords = [];
+      if (this.state.isFromTextBook) {
+        const currGroup = this.textBookState.group - 1;
+        const currPage = this.textBookState.page - 1;
+        promiseArr.push(this.getWordsArr(currGroup, currPage));
+        if (currPage > 0) {
+          for (let i = currPage - 1, k = 1; i >= 0; i--, k++) {
+            if (k > 4) break;
+            promiseArr.push(this.getWordsArr(currGroup, i));
+          }
+        }
+      } else {
+        for (let i = 0; i < 5; i++) {
+          const pageNumber = Math.floor(Math.random() * 20);
+          if (!randPages.includes(pageNumber)) promiseArr.push(this.getWordsArr(this.state.group, pageNumber));
+          else i--;
+        }
       }
 
       const gameWordsArr = await Promise.all(promiseArr);
+      let allGameWords: Word[] = [];
       gameWordsArr.forEach((wordsArr) => {
-        this.state.gameWords = this.state.gameWords.concat(wordsArr);
+        allGameWords = allGameWords.concat(wordsArr);
       });
+      if (this.authorization.isAuth) this.state.gameWords = (await this.filterNewWords(allGameWords)).splice(0, 10);
+      else this.state.gameWords = allGameWords.splice(0, 10);
     }
     this.resetGameState();
-    this.statsHelper.resetUserStat('sprint');
+    this.statsHelper.resetUserStat('audioCall');
   }
 
   resetGameState = () => {
@@ -58,6 +81,21 @@ export default class SprintModel {
     this.state.gameLearnedWords = 0;
   };
 
+  getAllUserWords = async () => {
+    const getUserWords = await DataAPI.getUserWords(this.authorization.token, this.authorization.userId);
+
+    return getUserWords;
+  };
+
+  filterNewWords = async (allGameWords: Word[]) => {
+    const allUserWords: UserWordExt[] = await this.getAllUserWords();
+    const userWordsFilteredIds = allUserWords
+      .filter((word) => word.optional.learned === YesNo.yes)
+      .map((word) => word.wordId);
+    const filteredGameWords = allGameWords.filter((word) => !userWordsFilteredIds.includes(word.id));
+    return filteredGameWords;
+  };
+
   getWordsArr = async (group: number, pageNumber: number) => {
     const response = await DataAPI.getChunkOfWords(group, pageNumber);
     if ('status' in response) {
@@ -70,7 +108,7 @@ export default class SprintModel {
     this.state.group = level;
   };
 
-  setStartTimer = async (seconds: number, updateCounter: (digit: number) => void) => {
+  setStartTimer = async (isStartTimer: boolean, seconds: number, updateCounter: (digit: number) => void) => {
     const startTimer = seconds;
     updateCounter(seconds);
     seconds--;
@@ -81,21 +119,46 @@ export default class SprintModel {
         if (seconds < 0) {
           clearInterval(timerId);
           updateCounter(startTimer);
-          resolve('result');
+          resolve('timeout');
+        }
+        if (!isStartTimer && this.state.isGameFinished) {
+          resolve('noWords');
         }
       }, 1000);
     });
     return promise;
   };
 
-  setNextWord(updateView: (state: SprintState) => void) {
+  setNextWord(updateView: (state: AudioCallState) => void) {
     this.state.currentWordIndex++;
+    this.state.gameWords[this.state.currentWordIndex].audio =
+      DataAPI.baseURL + this.state.gameWords[this.state.currentWordIndex].audio;
     if (this.state.currentWordIndex === this.state.gameWords.length - 1) {
       this.state.isGameFinished = true;
     }
-    this.state.currentWordRu = this.getWordTranslate();
+    this.state.currentWordRu.push(this.state.gameWords[this.state.currentWordIndex].wordTranslate);
+    for (let i = 0; i < 4; i++) {
+      const pageNumber = Math.floor(Math.random() * this.state.gameWords.length);
+      if (!this.state.currentWordRu.includes(this.state.gameWords[pageNumber].wordTranslate))
+        this.state.currentWordRu.push(this.state.gameWords[pageNumber].wordTranslate);
+      else i--;
+    }
     updateView(this.state);
   }
+
+  shuffleArray = (array: []) => {
+    array.sort(() => Math.random() - 0.5);
+  };
+
+  playPauseWord = (play: (play: boolean) => void) => {
+    if (this.isPLaying) {
+      this.isPLaying = false;
+      play(false);
+    } else {
+      this.isPLaying = true;
+      play(true);
+    }
+  };
 
   getWordTranslate() {
     if (Math.floor(Math.random() * 2)) return this.state.gameWords[this.state.currentWordIndex].wordTranslate;
@@ -105,37 +168,26 @@ export default class SprintModel {
     }
   }
 
-  checkAnswer(answer: boolean) {
-    const condition1 =
-      answer && this.state.gameWords[this.state.currentWordIndex].wordTranslate === this.state.currentWordRu;
-    const condition2 =
-      !answer && this.state.gameWords[this.state.currentWordIndex].wordTranslate !== this.state.currentWordRu;
-    if (condition1 || condition2) this.doAnswerCorrect();
+  checkAnswer(answer: number) {
+    const condition =
+      answer &&
+      this.state.gameWords[this.state.currentWordIndex].wordTranslate === this.state.currentWordRu[answer - 1];
+
+    if (condition) this.doAnswerCorrect();
     else this.doAnswerIncorrect();
   }
 
   doAnswerCorrect() {
     this.state.wordsCorrectIds.push(this.state.gameWords[this.state.currentWordIndex].id);
     this.state.correctAnswerCountTotal++;
-    this.statsHelper.setMostLongCorrectChain('sprint');
-
+    this.statsHelper.setMostLongCorrectChain('audioCall');
     this.setWordStat(this.state.gameWords[this.state.currentWordIndex].id, true);
-
-    this.state.score += 10 * this.state.speedSprint;
-    if (this.state.correctAnswerCount === 3) {
-      this.state.speedSprint = this.state.speedSprint < 8 ? this.state.speedSprint * 2 : 8;
-      this.state.speedIconCount++;
-      this.state.correctAnswerCount = 0;
-    } else this.state.correctAnswerCount++;
   }
 
   doAnswerIncorrect() {
     this.state.correctAnswerCountTotal = 0;
-    this.state.correctAnswerCount = 0;
     this.state.wordsInCorrectIds.push(this.state.gameWords[this.state.currentWordIndex].id);
     this.setWordStat(this.state.gameWords[this.state.currentWordIndex].id, false);
-    this.state.speedSprint = 1;
-    this.state.speedIconCount = 1;
   }
 
   setWordStat = (wordId: string, isAnswerCorrect: boolean) => {
@@ -173,26 +225,26 @@ export default class SprintModel {
     delete userWordExt.wordId;
     const userWord = userWordExt as UserWord;
 
-    const sprintStat = userWord.optional.gamesStatistic.sprint;
+    const AudioCallStat = userWord.optional.gamesStatistic.audioCall;
     if (isAnswerCorrect) {
-      sprintStat.correct++;
-      sprintStat.correctChain++;
-      sprintStat.lastUpdate = Date.now();
+      AudioCallStat.correct++;
+      AudioCallStat.correctChain++;
+      AudioCallStat.lastUpdate = Date.now();
       if (
-        (sprintStat.correctChain === 3 && userWord.difficulty === YesNo.no) ||
-        (sprintStat.correctChain === 5 && userWord.difficulty === YesNo.yes)
+        (AudioCallStat.correctChain === 3 && userWord.difficulty === YesNo.no) ||
+        (AudioCallStat.correctChain === 5 && userWord.difficulty === YesNo.yes)
       ) {
         userWord.difficulty = YesNo.no;
         userWord.optional.learned = YesNo.yes;
         this.state.gameLearnedWords++;
       }
     } else {
-      sprintStat.wrong++;
-      sprintStat.correctChain = 0;
-      sprintStat.lastUpdate = Date.now();
+      AudioCallStat.wrong++;
+      AudioCallStat.correctChain = 0;
+      AudioCallStat.lastUpdate = Date.now();
       userWord.optional.learned = YesNo.no;
     }
-    userWord.optional.gamesStatistic.sprint = sprintStat;
+    userWord.optional.gamesStatistic.audioCall = AudioCallStat;
     return userWord;
   };
 
@@ -206,16 +258,16 @@ export default class SprintModel {
         gamesStatistic: {
           wasInGames: true,
           sprint: {
-            correct: isAnswerCorrect ? 1 : 0,
-            wrong: isAnswerCorrect ? 0 : 1,
-            correctChain: isAnswerCorrect ? 1 : 0,
-            lastUpdate: Date.now(),
-          },
-          audioCall: {
             correct: 0,
             wrong: 0,
             correctChain: 0,
             lastUpdate: 0,
+          },
+          audioCall: {
+            correct: isAnswerCorrect ? 1 : 0,
+            wrong: isAnswerCorrect ? 0 : 1,
+            correctChain: isAnswerCorrect ? 1 : 0,
+            lastUpdate: Date.now(),
           },
         },
       },
@@ -223,9 +275,9 @@ export default class SprintModel {
     return userWord;
   };
 
-  finishGame = (showFinishPage: (state: SprintState) => void) => {
+  finishGame = (showFinishPage: (state: AudioCallState) => void) => {
     if (this.authorization.isAuth) {
-      this.statsHelper.manageStats('sprint');
+      this.statsHelper.manageStats('audioCall');
     }
 
     showFinishPage(this.state);

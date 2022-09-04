@@ -56,8 +56,8 @@ export default class SprintController {
         this.view.showBoard();
         return this.model.setStartTimer(false, 60, this.view.updateGameTimer);
       })
-      .then(() => {
-        this.finishGame();
+      .then((timerStatus) => {
+        if (timerStatus !== 'noWords') this.finishGame();
       });
   };
 

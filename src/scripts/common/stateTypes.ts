@@ -33,17 +33,13 @@ export interface SprintState {
 }
 export interface AudioCallState {
   group: number;
-  score: number;
   gameWords: Word[];
   currentWordIndex: number;
-  currentWordRu: string;
+  currentWordRu: string[];
   wordsCorrectIds: string[];
   wordsInCorrectIds: string[];
   isGameFinished: boolean;
-  correctAnswerCount: number;
   correctAnswerCountTotal: number;
-  speedSprint: number;
-  speedIconCount: number;
   newWords: number;
   gameLearnedWords: number;
   isFromTextBook: boolean;

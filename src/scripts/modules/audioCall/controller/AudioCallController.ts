@@ -1,68 +1,56 @@
-import SprintModel from '../model/SprintModel';
-import SprintView from '../view/SprintView';
+import AudioCallModel from '../model/AudioCallModel';
+import AudioCallView from '../view/AudioCallView';
 
-export default class SprintController {
-  model: SprintModel;
+export default class AudioCallController {
+  model: AudioCallModel;
 
-  view: SprintView;
+  view: AudioCallView;
 
-  constructor(view: SprintView, model: SprintModel) {
+  constructor(view: AudioCallView, model: AudioCallModel) {
     this.view = view;
     this.model = model;
   }
 
   start = () => {
     this.setListeners();
+    if (this.model.checkIsBeforeTextbook()) this.clickPlayAgainHandler();
   };
 
   startGame = async () => {
+    this.view.hideStartWindow();
     await this.model.prepareData(this.view.showWaitingWindow);
     this.view.hideWaitingWindow();
     this.view.showCountDown();
-    await this.model.setStartTimer(3, this.view.updateContDown);
+    await this.model.setStartTimer(true, 3, this.view.updateContDown);
     this.model.setNextWord(this.view.updateBoard);
+    this.view.board.audio.node.addEventListener('click', this.clickAudio);
+
+    this.view.board.btnDontKnow.node.addEventListener('click', this.clickDontKnowHandler);
+    document.addEventListener('keydown', this.clickDontKnowHandler);
   };
 
   setListeners = () => {
     this.view.startWindow.level.forEach((btn, index) => {
       btn.node.addEventListener('click', () => this.clickLevelHandler(index));
     });
-    this.view.board.btnTrue.node.addEventListener('click', this.clickTrueHandler);
-    document.addEventListener('keydown', this.clickTrueHandler);
-    this.view.board.btnFalse.node.addEventListener('click', this.clickFalseHandler);
-    document.addEventListener('keydown', this.clickFalseHandler);
+    // this.view.board.btnTrue.node.addEventListener('click', this.clickTrueHandler);
+    // document.addEventListener('keydown', this.clickTrueHandler);
 
     this.view.finishWindow.btnPlayAgain.node.addEventListener('click', this.clickPlayAgainHandler);
   };
 
   clickLevelHandler = (level: number) => {
     this.model.setLevel(level);
-    this.startGame()
-      .then(() => {
-        this.view.showBoard();
-        return this.model.setStartTimer(10, this.view.updateGameTimer);
-      })
-      .then(() => {
-        this.finishGame();
-      });
+    this.startGame().then(() => {
+      this.view.showBoard();
+    });
   };
 
-  clickTrueHandler = (e: KeyboardEvent | MouseEvent) => {
-    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'ArrowRight')) {
+  clickDontKnowHandler = (e: KeyboardEvent | MouseEvent) => {
+    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'Space')) {
       e.preventDefault();
-      this.model.checkAnswer(true);
-      if (!this.model.state.isGameFinished) {
-        this.model.setNextWord(this.view.updateBoard);
-      } else {
-        this.finishGame();
-      }
-    }
-  };
 
-  clickFalseHandler = (e: KeyboardEvent | MouseEvent) => {
-    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'ArrowLeft')) {
-      e.preventDefault();
-      this.model.checkAnswer(false);
+      this.model.checkAnswer(0);
       if (!this.model.state.isGameFinished) this.model.setNextWord(this.view.updateBoard);
       else {
         this.finishGame();
@@ -70,19 +58,17 @@ export default class SprintController {
     }
   };
 
-  finishGame = () => {
-    this.model.finishGame(this.view.showTheEnd);
-    this.view.btnPlayAgain?.node.addEventListener('click', this.clickPlayAgainHandler);
+  clickPlayAgainHandler = () => {
+    this.startGame().then(() => {
+      this.view.showBoard();
+    });
   };
 
-  clickPlayAgainHandler = () => {
-    this.startGame()
-      .then(() => {
-        this.view.showBoard();
-        return this.model.setStartTimer(10, this.view.updateGameTimer);
-      })
-      .then(() => {
-        this.finishGame();
-      });
+  finishGame = () => {
+    this.model.finishGame(this.view.showTheEnd);
+
+    this.view.board.btnDontKnow.node.removeEventListener('click', this.clickDontKnowHandler);
+    document.removeEventListener('keydown', this.clickDontKnowHandler);
+    this.view.btnPlayAgain?.node.removeEventListener('click', this.clickPlayAgainHandler);
   };
 }
