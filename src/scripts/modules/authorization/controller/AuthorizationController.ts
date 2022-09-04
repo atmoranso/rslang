@@ -18,14 +18,16 @@ export default class AuthorizationController {
     this.header = header;
     this.header.logIn.node.addEventListener('click', this.clickLogInHandler);
     this.header.logOut.node.addEventListener('click', this.clickLogOutHandler);
-    this.checkUser().then((isAuth) => {
-      if (isAuth) {
-        const name = this.model.getUserName();
-        this.header?.showLogOutIcon(name);
-      } else {
-        this.header?.showLogInIcon();
-      }
-    });
+    setTimeout(() => {
+      this.checkUser().then((isAuth) => {
+        if (isAuth) {
+          const name = this.model.getUserName();
+          this.header?.showLogOutIcon(name);
+        } else {
+          this.header?.showLogInIcon();
+        }
+      });
+    }, 1000);
     this.view.enterButton.node.addEventListener('click', this.enterButtonHandler);
     this.view.regButton.node.addEventListener('click', this.regButtonHandler);
     this.view.signIn.authButton.node.addEventListener('click', this.signInButtonHandler);
