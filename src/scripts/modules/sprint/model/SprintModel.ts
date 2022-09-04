@@ -16,6 +16,8 @@ export default class SprintModel {
 
   authorization: Authorization;
 
+  isPLaying = false;
+
   constructor(state: AppState) {
     this.state = state.sprint;
     this.textBookState = state.textbook;
@@ -57,7 +59,8 @@ export default class SprintModel {
       gameWordsArr.forEach((wordsArr) => {
         allGameWords = allGameWords.concat(wordsArr);
       });
-      this.state.gameWords = await this.filterNewWords(allGameWords);
+      if (this.authorization.isAuth) this.state.gameWords = await this.filterNewWords(allGameWords);
+      else this.state.gameWords = allGameWords;
     }
     this.resetGameState();
     this.statsHelper.resetUserStat('sprint');
@@ -128,12 +131,24 @@ export default class SprintModel {
 
   setNextWord(updateView: (state: SprintState) => void) {
     this.state.currentWordIndex++;
+    this.state.gameWords[this.state.currentWordIndex].audio =
+      DataAPI.baseURL + this.state.gameWords[this.state.currentWordIndex].audio;
     if (this.state.currentWordIndex === this.state.gameWords.length - 1) {
       this.state.isGameFinished = true;
     }
     this.state.currentWordRu = this.getWordTranslate();
     updateView(this.state);
   }
+
+  playPauseWord = (play: (play: boolean) => void) => {
+    if (this.isPLaying) {
+      this.isPLaying = false;
+      play(false);
+    } else {
+      this.isPLaying = true;
+      play(true);
+    }
+  };
 
   getWordTranslate() {
     if (Math.floor(Math.random() * 2)) return this.state.gameWords[this.state.currentWordIndex].wordTranslate;
