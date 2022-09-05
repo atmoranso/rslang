@@ -11,9 +11,9 @@ class FooterView extends ElementTemplate {
     logoLink.node.innerHTML = svg;
     const githubsContainer = new ElementTemplate(footerContainer.node, 'div', 'footer__github-members github-members');
     githubsContainer.node.innerHTML = `
-      <a class="github-members__member" href="https://github.com/redcliphaloe" target="_blank">@Redcliphaloe</a>
-      <a class="github-members__member" href="https://github.com/atmoranso" target="_blank">@Atmoranso</a>
       <a class="github-members__member" href="https://github.com/Kirsawka" target="_blank">@Kirsawka</a>
+      <a class="github-members__member" href="https://github.com/atmoranso" target="_blank">@Atmoranso</a>
+      <a class="github-members__member" href="https://github.com/redcliphaloe" target="_blank">@Redcliphaloe</a>
     `;
     new ElementTemplate(footerContainer.node, 'span', 'footer__copyright', '© RSLang, 2022');
   }
