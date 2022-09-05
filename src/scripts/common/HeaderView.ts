@@ -1,6 +1,7 @@
 import ElementTemplate from './ElementTemplate';
 import personSvg from './person-svg.svg';
 import exitSvg from './exit-svg.svg';
+import logo from './logo.svg';
 
 class HeaderView extends ElementTemplate {
   logoAccount: ElementTemplate;
@@ -23,7 +24,7 @@ class HeaderView extends ElementTemplate {
     this.overlay = new ElementTemplate(headerContainer.node, 'div', 'header__overlay');
     const mainLogo = new ElementTemplate<HTMLAnchorElement>(headerContainer.node, 'a', 'header__logo');
     mainLogo.node.href = '#';
-    new ElementTemplate(mainLogo.node, 'h1', 'header__title', 'RSLang');
+    mainLogo.node.innerHTML = logo;
     const nav = new ElementTemplate(headerContainer.node, 'nav', 'header__nav nav');
     this.navMenu = new ElementTemplate(nav.node, 'ul', 'nav__list nav-menu');
     this.navMenu.node.innerHTML = `
