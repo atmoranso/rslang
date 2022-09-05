@@ -26,7 +26,7 @@ export default class SprintView extends ElementTemplate {
   waitingWindow: WaitingWindow;
 
   constructor(parentNode: HTMLElement | null) {
-    super(parentNode, 'div', 'sprint');
+    super(parentNode, 'div', 'sprint', 'СПРИНТ');
 
     this.startWindow = new StartWindow(this.node);
     this.countDownWindow = new CountDownWindow(null);
