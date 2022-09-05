@@ -21,7 +21,7 @@ export default class FinishWindow extends ElementTemplate {
       this.node,
       'button',
       'btn finish__btn-play',
-      'Еще разок?',
+      'Новая игра',
     );
   }
 

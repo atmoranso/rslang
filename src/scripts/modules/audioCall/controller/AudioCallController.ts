@@ -26,8 +26,7 @@ export default class AudioCallController {
     this.clickAudio();
     this.view.board.audio.node.addEventListener('click', this.clickAudio);
     this.view.board.btnDontKnow.node.addEventListener('click', this.clickDontKnowHandler);
-
-    document.addEventListener('keydown', this.clickDontKnowHandler);
+    window.removeEventListener('keydown', this.clickPlayAgainHandler);
   };
 
   setListeners = () => {
@@ -39,7 +38,9 @@ export default class AudioCallController {
         this.wordClickHandler(i, e);
       });
     });
+    window.addEventListener('keydown', this.clickDontKnowHandler);
 
+    window.addEventListener('keydown', this.clickKeyHandler);
     this.view.board.btnNext.node.addEventListener('click', this.clickNextHandler);
     // this.view.board.btnTrue.node.addEventListener('click', this.clickTrueHandler);
     // document.addEventListener('keydown', this.clickTrueHandler);
@@ -47,26 +48,43 @@ export default class AudioCallController {
     this.view.finishWindow.btnPlayAgain.node.addEventListener('click', this.clickPlayAgainHandler);
   };
 
-  wordClickHandler = (answer: number, e: MouseEvent | KeyboardEvent) => {
-    if (e.type === 'click') {
+  clickKeyHandler = (e: KeyboardEvent) => {
+    if (+e.key > 0 && +e.key <= 5) {
       e.preventDefault();
-
-      this.model.checkAnswer(this.view.board.showAnswer, answer + 1);
+      window.removeEventListener('keydown', this.clickKeyHandler);
+      window.removeEventListener('keydown', this.clickDontKnowHandler);
+      window.addEventListener('keydown', this.clickNextHandler);
+      this.model.checkAnswer(this.view.board.showAnswer, +e.key);
       this.view.board.disableButtons();
       this.view.board.showNextBtn();
     }
   };
 
-  clickNextHandler = () => {
-    this.view.board.enableButtons();
+  wordClickHandler = (answer: number, e: MouseEvent) => {
+    e.preventDefault();
+    window.removeEventListener('keydown', this.clickKeyHandler);
+    window.removeEventListener('keydown', this.clickDontKnowHandler);
+    window.addEventListener('keydown', this.clickNextHandler);
+    this.model.checkAnswer(this.view.board.showAnswer, answer + 1);
+    this.view.board.disableButtons();
+    this.view.board.showNextBtn();
+  };
 
-    if (!this.model.state.isGameFinished) {
-      this.model.setNextWord(this.view.updateBoard);
-      this.clickAudio();
-    } else {
-      this.finishGame();
+  clickNextHandler = (e: MouseEvent | KeyboardEvent) => {
+    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'Space')) {
+      this.view.board.enableButtons();
+      window.addEventListener('keydown', this.clickKeyHandler);
+      window.removeEventListener('keydown', this.clickNextHandler);
+      window.addEventListener('keydown', this.clickDontKnowHandler);
+
+      if (!this.model.state.isGameFinished) {
+        this.model.setNextWord(this.view.updateBoard);
+        this.clickAudio();
+      } else {
+        this.finishGame();
+      }
+      this.view.board.showDontKnowBtn();
     }
-    this.view.board.showDontKnowBtn();
   };
 
   clickAudio = () => {
@@ -93,7 +111,9 @@ export default class AudioCallController {
   clickDontKnowHandler = (e: KeyboardEvent | MouseEvent) => {
     if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'Space')) {
       e.preventDefault();
-
+      window.removeEventListener('keydown', this.clickDontKnowHandler);
+      window.addEventListener('keydown', this.clickNextHandler);
+      window.removeEventListener('keydown', this.clickKeyHandler);
       this.model.checkAnswer(this.view.board.showAnswer, 0);
       this.view.board.showNextBtn();
     }
@@ -109,6 +129,9 @@ export default class AudioCallController {
     this.model.finishGame(this.view.showTheEnd);
 
     this.view.board.btnDontKnow.node.removeEventListener('click', this.clickDontKnowHandler);
-    document.removeEventListener('keydown', this.clickDontKnowHandler);
+    window.removeEventListener('keydown', this.clickDontKnowHandler);
+    window.removeEventListener('keydown', this.clickNextHandler);
+    window.removeEventListener('keydown', this.clickKeyHandler);
+    window.addEventListener('keydown', this.clickPlayAgainHandler);
   };
 }

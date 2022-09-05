@@ -62,6 +62,15 @@ export default class AudioCallView extends ElementTemplate {
     this.countDownWindow.delete();
     this.finishWindow.delete();
     this.node.append(this.board.node);
+
+    const hints = new ElementTemplate(
+      null,
+      'div',
+      'hints',
+      'Управление с клавиатуры:<br> варианты ответов: <b>1-5</b><br>"Не знаю", "Далее", "Новая игра": <b>Space</b>',
+    );
+
+    this.node.after(hints.node);
   };
 
   updateBoard = (state: AudioCallState) => {

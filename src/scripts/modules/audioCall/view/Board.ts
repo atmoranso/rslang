@@ -65,8 +65,9 @@ export default class Board extends ElementTemplate {
       wordElement.node.classList.remove('correct', 'incorrect');
       this.audio.node.classList.remove('answered');
 
-      wordElement.node.innerHTML = i + '&nbsp;&nbsp;' + state.currentWordRu[i];
+      wordElement.node.innerHTML = i + 1 + '&nbsp;&nbsp;' + state.currentWordRu[i];
     });
+    console.log(this.node);
   };
 
   showAnswer = (correctAnswerNum: number, pressed: number, state: AudioCallState) => {
