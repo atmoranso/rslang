@@ -14,6 +14,12 @@ export default class AuthorizationModel {
     this.state = state;
   }
 
+  private reloadHash = () => {
+    const currentHash = window.location.hash;
+    window.location.hash = '#404';
+    window.location.hash = currentHash;
+  };
+
   async logInUser(user: Pick<User, 'email' | 'password'>) {
     const res = await DataAPI.signIn(user);
     if (res.status == 404) {
@@ -30,6 +36,7 @@ export default class AuthorizationModel {
       this.state.authorization.userId = res.userId;
       this.state.authorization.date = Date.now();
       localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
+      this.reloadHash();
     }
     return '';
   }
@@ -47,6 +54,7 @@ export default class AuthorizationModel {
     this.state.authorization.date = 0;
     localStorage.setItem('rsLang-appState-DT', JSON.stringify(this.state));
     clearInterval(this.state.authorization.timeoutId);
+    this.reloadHash();
   }
 
   async createUser(user: User) {
