@@ -16,6 +16,8 @@ export default class Router {
 
   state: AppState;
 
+  previousPage: Module;
+
   private routes: Record<string, new (state: AppState) => Module> = {
     '404': ErrorPage,
     '': Home,
@@ -31,9 +33,22 @@ export default class Router {
     this.view = view;
     this.state = state;
     this.authorization = new AuthorizationModule(state);
+    this.previousPage = this.authorization;
   }
 
   router = () => {
+    if (this.previousPage instanceof AudioCall) {
+      window.removeEventListener('keyup', this.previousPage.controller.clickDontKnowHandler);
+      window.removeEventListener('keyup', this.previousPage.controller.clickNextHandler);
+      window.removeEventListener('keyup', this.previousPage.controller.clickKeyHandler);
+      window.removeEventListener('keyup', this.previousPage.controller.clickPlayAgainHandler);
+    }
+    if (this.previousPage instanceof Sprint) {
+      window.removeEventListener('keyup', this.previousPage.controller.clickFalseHandler);
+      window.removeEventListener('keyup', this.previousPage.controller.clickTrueHandler);
+      window.removeEventListener('keyup', this.previousPage.controller.clickPlayAgainHandler);
+    }
+
     this.checkLocalStorage();
     const path = window.location.hash.slice(1);
 
@@ -48,6 +63,7 @@ export default class Router {
     this.state.audioCall.isFromTextBook = path.match(/\?textbook/i) ? true : false;
     module.start();
     this.view.update(module.view);
+    this.previousPage = module;
   };
 
   init = () => {

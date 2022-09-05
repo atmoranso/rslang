@@ -25,9 +25,9 @@ export default class SprintController {
     this.model.setNextWord(this.view.updateBoard);
     this.view.board.btnTrue.node.addEventListener('click', this.clickTrueHandler);
     this.view.board.audio.node.addEventListener('click', this.clickAudio);
-    document.addEventListener('keydown', this.clickTrueHandler);
+    window.addEventListener('keyup', this.clickTrueHandler);
     this.view.board.btnFalse.node.addEventListener('click', this.clickFalseHandler);
-    document.addEventListener('keydown', this.clickFalseHandler);
+    window.addEventListener('keyup', this.clickFalseHandler);
   };
 
   setListeners = () => {
@@ -62,7 +62,7 @@ export default class SprintController {
   };
 
   clickTrueHandler = (e: KeyboardEvent | MouseEvent) => {
-    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'ArrowRight')) {
+    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keyup' && e.code === 'ArrowRight')) {
       e.preventDefault();
 
       this.model.checkAnswer(true);
@@ -75,7 +75,7 @@ export default class SprintController {
   };
 
   clickFalseHandler = (e: KeyboardEvent | MouseEvent) => {
-    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keydown' && e.code === 'ArrowLeft')) {
+    if (e.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keyup' && e.code === 'ArrowLeft')) {
       e.preventDefault();
 
       this.model.checkAnswer(false);
@@ -89,9 +89,9 @@ export default class SprintController {
   finishGame = () => {
     this.model.finishGame(this.view.showTheEnd);
     this.view.board.btnTrue.node.removeEventListener('click', this.clickTrueHandler);
-    document.removeEventListener('keydown', this.clickTrueHandler);
+    window.removeEventListener('keyup', this.clickTrueHandler);
     this.view.board.btnFalse.node.removeEventListener('click', this.clickFalseHandler);
-    document.removeEventListener('keydown', this.clickFalseHandler);
+    window.removeEventListener('keyup', this.clickFalseHandler);
   };
 
   clickPlayAgainHandler = () => {

@@ -1,15 +1,23 @@
 .audiocall {
     width: 100%;
-    margin: 10px 0;
     @include flexColumn(center, center);
     text-align: center;
+
+    min-height: calc(100vh - 85px);
+    margin: 0;
+
+    background: url("../assets/images/bg-main-2.png") no-repeat;
+    background-size: cover;
 }
 
 .audio-board {
     @include flexColumn(center, center);
     gap: 40px;
 }
-
+.audio-board__question {
+    @include flexColumn(center, center);
+    height: 230px;
+}
 .audio-board__audio {
     cursor: pointer;
     width: 128px;
