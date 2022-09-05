@@ -16,6 +16,8 @@ class HeaderView extends ElementTemplate {
 
   overlay: ElementTemplate;
 
+  private statisticsItem: ElementTemplate | undefined;
+
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'header', 'header');
     const headerContainer = new ElementTemplate(this.node, 'div', 'header__container');
@@ -40,7 +42,6 @@ class HeaderView extends ElementTemplate {
           <li class="dropdown-menu__item"><a class="dropdown-menu__link" href="#audiocall">Аудиовызов</a></li>
         </ul>
       </li>
-      <li class="nav-menu__item"><a class="nav-menu__link" href="#statistics">Статистика</a></li>
     `;
     this.logoAccount = new ElementTemplate(headerContainer.node, 'div', 'header__account');
     this.logIn = new ElementTemplate(null, 'div', 'header__log-in');
@@ -51,6 +52,7 @@ class HeaderView extends ElementTemplate {
     this.logOut.node.remove();
     this.logIn.node.innerHTML = personSvg;
     this.logoAccount.node.append(this.logIn.node);
+    this.statisticsItem?.delete();
   }
 
   showLogOutIcon(name: string) {
@@ -59,6 +61,12 @@ class HeaderView extends ElementTemplate {
     new ElementTemplate(this.logOut.node, 'span', 'header__name', name);
     this.logOut.node.insertAdjacentHTML('beforeend', exitSvg);
     this.logoAccount.node.append(this.logOut.node);
+    this.statisticsItem = new ElementTemplate(
+      this.navMenu.node,
+      'li',
+      'nav-menu__item',
+      '<a class="nav-menu__link" href="#statistics">Статистика</a>',
+    );
   }
 }
 
