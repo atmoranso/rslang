@@ -32,7 +32,7 @@ export default class FinishWindow extends ElementTemplate {
     const correctWordsArr = state.gameWords.filter((word) => state.wordsCorrectIds.includes(word.id));
     const inCorrectWordsArr = state.gameWords.filter((word) => state.wordsInCorrectIds.includes(word.id));
     this.correctBlock = new ElementTemplate(this.node, 'div', 'finish__correct-block');
-    new ElementTemplate(this.correctBlock.node, 'h3', 'finish__correct-block-title', '<b>Угаданные:</b>');
+    new ElementTemplate(this.correctBlock.node, 'h3', 'finish__correct-block-title', 'Угаданные:');
     correctWordsArr.forEach((word) => {
       new ElementTemplate(
         this.correctBlock.node,
@@ -43,7 +43,7 @@ export default class FinishWindow extends ElementTemplate {
     });
     this.hr = new ElementTemplate(this.node, 'hr');
     this.inCorrectBlock = new ElementTemplate(this.node, 'div', 'finish__incorrect-block');
-    new ElementTemplate(this.inCorrectBlock.node, 'h3', 'finish__incorrect-block-title', '<b>Неугаданные:</b>');
+    new ElementTemplate(this.inCorrectBlock.node, 'h3', 'finish__incorrect-block-title', 'Неугаданные:');
 
     inCorrectWordsArr.forEach((word) => {
       new ElementTemplate(

@@ -1,16 +1,25 @@
 .sprint {
   width: 100%;
-  padding: 30px 0;
+  padding: 30px 10px;
   text-align: center;
-  background: url('../assets/images/bg-about-2.png') no-repeat center center;
-  background-size: cover;
-  @include font(30px, 10px, 600);
+  background: url('../assets/images/bg-about-2.png') no-repeat center bottom -30%;
+  background-size: 100% 50%;
+  @include font(30px, 30px, 600);
   color: $color-main;
+  @include flex($justify-content: flex-start);
+  flex-direction: column;
+  height: calc(100vh - 85px);
+
+  @include media-mobile {
+    background: none;
+  }
 }
 
 .sprint__board-container {
   position: relative;
   margin: 10px auto;
+  max-width: 500px;
+  width: 100%;
 }
 
 .sprint__word-count {
@@ -20,11 +29,11 @@
   margin-top: 30px;
 }
 
-.sprint__timer {
-}
-
 .start {
   @extend %sprint-board;
+}
+
+.sprint__start-window {
   margin-top: 50px;
 }
 
@@ -86,6 +95,7 @@
   width: 40px;
   height: 40px;
   background-color: $color-btn-true;
+  border-radius: 15px;
 
   &.active {
     display: block;
@@ -146,9 +156,36 @@
   gap: 30px;
 }
 
+.sprint__finish-window {
+  overflow: auto;
+  border-radius: 5px;
+  padding: 0;
+  margin-top: 20px;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+    border-radius: 35px;
+  }
+}
+
 .finish__correct-block,
 .finish__incorrect-block {
   @include flexColumn(flex-start, flex-start);
+}
+
+.finish__correct-block-title,
+.finish__incorrect-block-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.finish__correct-block-item,
+.finish__incorrect-block-item {
+  font-size: 15px;
 }
 
 .finish__btn-play {
@@ -197,10 +234,16 @@
   width: 70px;
   height: 70px;
   top: 0;
-  right: 60px;
+  right: 0;
   position: absolute;
   @include fontAtm(42px, $color-main, bold);
   @include flex;
   border: 1px solid;
   border-radius: 100px;
+
+  @include media-tablet {
+    width: 60px;
+    height: 60px;
+    @include fontAtm(32px, $color-main, bold);
+  }
 }
