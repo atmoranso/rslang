@@ -50,6 +50,7 @@
   color: $color-light;
   @include font(18px, 28px, 500);
   position: relative;
+  cursor: pointer;
 
   &:not(.active):hover::after {
     @include pseudo;
@@ -71,6 +72,7 @@
   position: absolute;
   top: 30px;
   right: 30px;
+  cursor: pointer;
 }
 
 .account__text {
@@ -126,6 +128,7 @@
   color: $color-light;
   display: block;
   margin: 100px auto 0;
+  cursor: pointer;
 
   @include media-mobile {
     margin-top: 70px;
