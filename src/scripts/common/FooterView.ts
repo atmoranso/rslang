@@ -2,7 +2,7 @@ import ElementTemplate from './ElementTemplate';
 import svg from './rs-school-logo.svg';
 
 class FooterView extends ElementTemplate {
-  constructor(parentNode: HTMLElement) {
+  constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'footer', 'footer');
     const footerContainer = new ElementTemplate(this.node, 'div', 'footer__container');
     const logoLink = new ElementTemplate<HTMLAnchorElement>(footerContainer.node, 'a', 'footer__logo-link');

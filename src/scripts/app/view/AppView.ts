@@ -17,7 +17,7 @@ export default class AppView {
     this.header = new HeaderView(this.node);
     this.main = new ElementTemplate(this.node, 'main', 'main');
     this.module = new ElementTemplate(this.main.node, 'div');
-    this.footer = new FooterView(this.node);
+    this.footer = new FooterView(null);
   }
 
   update(module: ElementTemplate) {
