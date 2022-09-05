@@ -61,7 +61,7 @@ export default class NavigatorView extends ElementTemplate {
     this.pageButtonNext = new ElementTemplate(pages.node, 'button', 'navigator__page-button-next btn', '>');
     this.pageButtonLast = new ElementTemplate(pages.node, 'button', 'navigator__page-button-last btn', '>>');
     this.audioCallLink = new ElementTemplate(pages.node, 'div', 'navigator__game-link');
-    this.audioCallLink.node.innerHTML = '<a class="navigator__link" href="#sprint?textbook">Аудиовызов</a>';
+    this.audioCallLink.node.innerHTML = '<a class="navigator__link" href="#audiocall?textbook">Аудиовызов</a>';
     this.navigatorOnChange();
     this.groupesInit();
     this.pagesInit();

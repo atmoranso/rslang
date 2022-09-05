@@ -15,7 +15,7 @@ export default class AuthorizationModel {
   }
 
   private reloadHash = () => {
-    const currentHash = window.location.hash;
+    const currentHash = window.location.hash === '#statistics' ? '#' : window.location.hash;
     window.location.hash = '#404';
     window.location.hash = currentHash;
   };
