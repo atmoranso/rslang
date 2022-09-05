@@ -33,7 +33,7 @@ export const developersData = [
 export const aboutData = [
   {
     number: '1',
-    title: 'Словарь',
+    title: 'Учебник',
     url: '#textbook',
     img: '../assets/images/textbook.png',
     about:
