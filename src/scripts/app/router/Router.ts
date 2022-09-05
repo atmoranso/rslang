@@ -38,9 +38,6 @@ export default class Router {
     const path = window.location.hash.slice(1);
 
     if (!path.match(/sprint|audiocall/i)) {
-      console.log(path);
-      console.log('aaa');
-
       this.view.node.append(this.view.footer.node);
     } else {
       this.view.footer.delete();
