@@ -3,9 +3,10 @@
   text-align: center;
   min-height: calc(100vh - 85px);
   margin: 0;
-  @include flex;
+  @include flexColumn(center, center);
   background: url("../assets/images/bg-main-2.png") no-repeat;
   background-size: cover;
+  @include fontAtm(32px, $color-primary, bold);
 }
 
 .sprint__finish-window {
@@ -47,6 +48,7 @@
 
 .start {
   @extend %sprint-board;
+  margin-top: 40px;
 }
 
 .start__title {
@@ -97,6 +99,10 @@
   }
 }
 
+.board__bullet-desc {
+  @include fontAtm(20px, $color-inactive);
+}
+
 .board__speed-container {
   height: 40px;
   @include flexRow(center);
@@ -116,9 +122,7 @@
 }
 
 .board__word-en-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex;
   gap: 10px;
 }
 
@@ -230,7 +234,7 @@
   left: 0;
   top: 50%;
   background-color: white;
-  @include fontAtm(25px);
+  @include font(25px, 25px, normal);
   padding: 30px;
 }
 
@@ -242,6 +246,7 @@
   border-radius: 50%;
   @include flex;
   border: 1px solid;
+  margin-top: 20px;
 }
 
 .sprint__timer {
