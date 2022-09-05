@@ -176,6 +176,7 @@
 
 .finish__correct-block,
 .finish__incorrect-block {
+  width: 260px;
   @include flexColumn(flex-start, flex-start);
   margin-top: 70px;
 }

@@ -3,11 +3,14 @@ import { AudioCallState } from '../../../common/stateTypes';
 import Board from './Board';
 import CountDownWindow from './CountDownWindow';
 import FinishWindow from './FinishWindow';
+import NoWordsWindow from './NoWordsWindow';
 import StartWindow from './StartWindow';
 import WaitingWindow from './WaitingWindow';
 
 export default class AudioCallView extends ElementTemplate {
   startWindow: StartWindow;
+
+  hints: ElementTemplate | undefined;
 
   countDownWindow: CountDownWindow;
 
@@ -17,6 +20,8 @@ export default class AudioCallView extends ElementTemplate {
 
   finishWindow: FinishWindow;
 
+  noWordsWindow: NoWordsWindow;
+
   constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'div', 'audiocall', '');
     this.startWindow = new StartWindow(this.node);
@@ -25,12 +30,19 @@ export default class AudioCallView extends ElementTemplate {
 
     this.finishWindow = new FinishWindow(null);
 
+    this.noWordsWindow = new NoWordsWindow(null);
+
     this.waitingWindow = new WaitingWindow(this.node);
   }
 
   showTheEnd = (state: AudioCallState) => {
+    this.hints?.delete();
     this.board.delete();
     this.finishWindow.update(state);
+    this.node.append(this.finishWindow.node);
+  };
+
+  shownoWordsWindow = () => {
     this.node.append(this.finishWindow.node);
   };
 
@@ -62,6 +74,15 @@ export default class AudioCallView extends ElementTemplate {
     this.countDownWindow.delete();
     this.finishWindow.delete();
     this.node.append(this.board.node);
+
+    this.hints = new ElementTemplate(
+      null,
+      'div',
+      'hints',
+      'Управление с клавиатуры:<br> варианты ответов: <b>1-5</b><br>"Не знаю", "Далее", "Новая игра": <b>Space</b>',
+    );
+
+    this.board.node.after(this.hints.node);
   };
 
   updateBoard = (state: AudioCallState) => {

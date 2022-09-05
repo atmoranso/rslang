@@ -6,14 +6,11 @@ export default class FinishWindow extends ElementTemplate {
 
   correctBlock: ElementTemplate;
 
-  hr: ElementTemplate;
-
   inCorrectBlock: ElementTemplate;
 
   constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'div', 'sprint__finish-window finish');
     this.correctBlock = new ElementTemplate(this.node, 'div', 'finish__correct-block');
-    this.hr = new ElementTemplate(this.node, 'hr');
 
     this.inCorrectBlock = new ElementTemplate(this.node, 'div', 'finish__incorrect-block');
 
@@ -21,14 +18,13 @@ export default class FinishWindow extends ElementTemplate {
       this.node,
       'button',
       'btn finish__btn-play',
-      'Еще разок?',
+      'Новая игра',
     );
   }
 
   update = (state: AudioCallState) => {
     this.correctBlock.delete();
     this.inCorrectBlock.delete();
-    this.hr.delete();
     const correctWordsArr = state.gameWords.filter((word) => state.wordsCorrectIds.includes(word.id));
     const inCorrectWordsArr = state.gameWords.filter((word) => state.wordsInCorrectIds.includes(word.id));
     this.correctBlock = new ElementTemplate(this.node, 'div', 'finish__correct-block');
@@ -41,7 +37,6 @@ export default class FinishWindow extends ElementTemplate {
         `<b>${word.word}</b> - ${word.wordTranslate}`,
       );
     });
-    this.hr = new ElementTemplate(this.node, 'hr');
     this.inCorrectBlock = new ElementTemplate(this.node, 'div', 'finish__incorrect-block');
     new ElementTemplate(this.inCorrectBlock.node, 'h3', 'finish__incorrect-block-title', '<b>Неугаданные:</b>');
 

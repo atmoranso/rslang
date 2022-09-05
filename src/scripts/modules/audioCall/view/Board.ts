@@ -10,6 +10,8 @@ export default class Board extends ElementTemplate {
 
   wordImgContainer: ElementTemplate;
 
+  questionBlock: ElementTemplate;
+
   wordImg: ElementTemplate<HTMLImageElement>;
 
   wordRuContainer: ElementTemplate;
@@ -25,7 +27,8 @@ export default class Board extends ElementTemplate {
   constructor(parentNode: HTMLElement | null) {
     super(parentNode, 'div', 'audio-board');
 
-    this.audio = new ElementTemplate(this.node, 'div', 'audio-board__audio', '');
+    this.questionBlock = new ElementTemplate(this.node, 'div', 'audio-board__question', '');
+    this.audio = new ElementTemplate(this.questionBlock.node, 'div', 'audio-board__audio', '');
     this.audio.node.innerHTML = playSvg;
     this.wordImgContainer = new ElementTemplate(null, 'div', 'audio-board__img-container', '');
     this.wordEn = new ElementTemplate(null, 'div', 'audio-board__word-en', '');
@@ -65,15 +68,14 @@ export default class Board extends ElementTemplate {
       wordElement.node.classList.remove('correct', 'incorrect');
       this.audio.node.classList.remove('answered');
 
-      wordElement.node.innerHTML = i + '&nbsp;&nbsp;' + state.currentWordRu[i];
+      wordElement.node.innerHTML = i + 1 + '&nbsp;&nbsp;' + state.currentWordRu[i];
     });
   };
 
   showAnswer = (correctAnswerNum: number, pressed: number, state: AudioCallState) => {
     this.audio.node.classList.add('answered');
     this.wordEn.node.innerText = state.gameWords[state.currentWordIndex].word;
-    this.audio.node.append(this.wordEn.node);
-    console.log(state.gameWords[state.currentWordIndex].word);
+    this.audio.node.after(this.wordEn.node);
 
     this.wordImg.node.src = state.gameWords[state.currentWordIndex].image;
     this.audio.node.before(this.wordImgContainer.node);

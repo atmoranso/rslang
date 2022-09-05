@@ -10,6 +10,8 @@ import StatsHelper from '../../../common/StatsHelper';
 export default class AudioCallModel {
   state: AudioCallState;
 
+  isNoWords = false;
+
   statsHelper: StatsHelper;
 
   textBookState: Textbook;
@@ -66,7 +68,7 @@ export default class AudioCallModel {
         word.image = DataAPI.baseURL + word.image;
       });
     }
-
+    if (this.state.gameWords.length === 0) this.isNoWords = true;
     this.resetGameState();
     this.statsHelper.resetUserStat('audioCall');
   }
