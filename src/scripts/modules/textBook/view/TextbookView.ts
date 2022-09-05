@@ -99,7 +99,7 @@ export default class TextbookView extends ElementTemplate {
   };
 
   private setNewSpeaker = (newSpeaker: Card) => {
-    if (this.currentSpeaker) {
+    if (this.currentSpeaker && this.currentSpeaker !== newSpeaker) {
       this.currentSpeaker.pauseSpeech();
     }
     this.currentSpeaker = newSpeaker;
