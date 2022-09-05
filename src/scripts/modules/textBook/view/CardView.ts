@@ -9,6 +9,15 @@ import WordStatistic from './WordStatisticView';
 import GamesStatistic from '../../../common/api/models/GamesStatistic.model';
 import GameStatistic from '../../../common/api/models/GameStatistic.model';
 
+enum Titles {
+  listenSpeech = 'Прослушать произношение',
+  addDifficult = 'Добавить в сложные слова',
+  removeDifficult = 'Удалить из сложных слов',
+  addLearned = 'Добавить в изученные слова',
+  removeLearned = 'Удалить из изученных слов',
+  seeStatistics = 'Посмотреть статистику',
+}
+
 export default class CardView extends ElementTemplate {
   private audio: HTMLAudioElement | undefined = undefined;
 
@@ -37,8 +46,6 @@ export default class CardView extends ElementTemplate {
   private learnedButtonAction: ElementTemplate;
 
   private isRemoveAble = false;
-
-  private learnedDate = 0;
 
   private state: AppState;
 
@@ -83,6 +90,7 @@ export default class CardView extends ElementTemplate {
     new ElementTemplate(cardWrapper.node, 'span', 'card__word', data.word);
     const listenWrapper = new ElementTemplate(cardWrapper.node, 'div', 'card__listen-wrapper');
     const listenButton = new ElementTemplate(listenWrapper.node, 'button', 'card__listen-button');
+    listenButton.node.title = Titles.listenSpeech;
     new ElementTemplate(listenWrapper.node, 'span', 'card__transcription', data.transcription);
     new ElementTemplate(cardWrapper.node, 'span', 'card__word-translate', data.wordTranslate);
     new ElementTemplate(cardWrapper.node, 'p', 'card__text-meaning', data.textMeaning);
@@ -91,13 +99,11 @@ export default class CardView extends ElementTemplate {
     new ElementTemplate(cardWrapper.node, 'p', 'card__text-example-translate', data.textExampleTranslate);
     const buttonsWrapper = new ElementTemplate(cardWrapper.node, 'div', 'card__buttons-wrapper');
     this.difficultButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__difficult-button');
-    this.difficultButton.node.title = 'добавить в раздел "Сложные слова"';
     this.difficultButtonAction = new ElementTemplate(this.difficultButton.node, 'div', 'card__difficult-button-plus');
     this.learnedButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__learned-button');
-    this.learnedButton.node.title = 'слово изучено';
     this.learnedButtonAction = new ElementTemplate(this.learnedButton.node, 'div', 'card__learned-button-plus');
     const statisticButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__statistic-button');
-    statisticButton.node.title = 'посмотреть статистику';
+    statisticButton.node.title = Titles.seeStatistics;
 
     if (!this.state.authorization.isAuth) {
       this.difficultButton.node.hidden = true;
@@ -140,7 +146,7 @@ export default class CardView extends ElementTemplate {
         this.userWordId = data.id;
       }
       this.isLearned = false;
-      this.changelearnedStyle();
+      this.changeLearnedStyle();
     } else {
       userWord.difficulty = YesNo.no;
       await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
@@ -154,8 +160,10 @@ export default class CardView extends ElementTemplate {
   private changeDifficultStyle = () => {
     if (this.isDifficult) {
       this.difficultButtonAction.node.classList.add('card__difficult-button-plus_remove');
+      this.difficultButton.node.title = Titles.removeDifficult;
     } else {
       this.difficultButtonAction.node.classList.remove('card__difficult-button-plus_remove');
+      this.difficultButton.node.title = Titles.addDifficult;
     }
     if (this.isRemoveAble && !this.isDifficult) {
       super.delete();
@@ -187,17 +195,19 @@ export default class CardView extends ElementTemplate {
       userWord.optional.learnedDate = 0;
       await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
     }
-    this.changelearnedStyle();
+    this.changeLearnedStyle();
     this.onChangeUserWord();
     this.difficultButton.node.disabled = false;
     this.learnedButton.node.disabled = false;
   };
 
-  private changelearnedStyle = () => {
+  private changeLearnedStyle = () => {
     if (this.isLearned) {
       this.learnedButtonAction.node.classList.add('card__learned-button-plus_remove');
+      this.learnedButton.node.title = Titles.removeLearned;
     } else {
       this.learnedButtonAction.node.classList.remove('card__learned-button-plus_remove');
+      this.learnedButton.node.title = Titles.addLearned;
     }
   };
 
@@ -216,7 +226,7 @@ export default class CardView extends ElementTemplate {
       this.isDifficult = initUserWordData.difficulty === YesNo.yes;
       this.isLearned = initUserWordData.optional.learned === YesNo.yes;
       this.changeDifficultStyle();
-      this.changelearnedStyle();
+      this.changeLearnedStyle();
     }
   };
 
