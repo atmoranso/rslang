@@ -11,9 +11,10 @@ export default class About extends ElementTemplate {
       'about__subtitle subtitle',
       'Всего 4 шага для эффективного изучения',
     );
-    const aboutContainer = new ElementTemplate(sectionContainer.node, 'ul', 'about__list list');
+    const aboutContainer = new ElementTemplate(sectionContainer.node, 'div', 'about__list list');
     aboutData.forEach((item) => {
-      const listItem = new ElementTemplate(aboutContainer.node, 'li', 'list__item item');
+      const listItem = new ElementTemplate<HTMLAnchorElement>(aboutContainer.node, 'a', 'list__item item');
+      listItem.node.href = item.url;
       const itemContainer = new ElementTemplate(listItem.node, 'div', 'item__container');
       new ElementTemplate(itemContainer.node, 'span', 'item__number', item.number);
       new ElementTemplate(itemContainer.node, 'h3', 'item__subtitle', item.title);
