@@ -6,7 +6,7 @@
 
 .greet {
   @include flex($justify-content: space-between);
-  background: url('../assets/images/bg-main.png') no-repeat;
+  background: url("../assets/images/bg-main.png") no-repeat;
   background-size: cover;
   padding: 195px 0 295px;
 }
@@ -29,7 +29,7 @@
 }
 
 .about {
-  background: url('../assets/images/bg-about-1.png') no-repeat center center;
+  background: url("../assets/images/bg-about-1.png") no-repeat center center;
   background-size: cover;
   padding-bottom: 140px;
 }
@@ -57,6 +57,7 @@
   position: relative;
   overflow: hidden;
   @extend %transition;
+  text-decoration: none;
 
   &:before {
     @include pseudo;
@@ -71,6 +72,7 @@
 
   &:hover {
     transform: scale(1.04);
+    box-shadow: 2px 5px 10px 3px rgb(0 0 0 / 37%);
   }
 }
 
@@ -104,7 +106,7 @@
 }
 
 .team {
-  background: url('../assets/images/bg-about-2.png') no-repeat center center;
+  background: url("../assets/images/bg-about-2.png") no-repeat center center;
   background-size: cover;
   margin-bottom: 30px;
   padding: 140px 0;
@@ -175,5 +177,3 @@
     top: -20px;
   }
 }
-
-
