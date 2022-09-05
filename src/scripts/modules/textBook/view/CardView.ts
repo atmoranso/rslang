@@ -29,6 +29,8 @@ export default class CardView extends ElementTemplate {
 
   private isAudioInit = false;
 
+  private isPlay = false;
+
   private wordId = '';
 
   private userWordId = '';
@@ -36,6 +38,8 @@ export default class CardView extends ElementTemplate {
   public isDifficult = false;
 
   public isLearned = false;
+
+  private listenButton: ElementTemplate;
 
   private difficultButton: ElementTemplate<HTMLButtonElement>;
 
@@ -89,8 +93,8 @@ export default class CardView extends ElementTemplate {
     const cardWrapper = new ElementTemplate(this.node, 'div', 'card__wrapper');
     new ElementTemplate(cardWrapper.node, 'span', 'card__word', data.word);
     const listenWrapper = new ElementTemplate(cardWrapper.node, 'div', 'card__listen-wrapper');
-    const listenButton = new ElementTemplate(listenWrapper.node, 'button', 'card__listen-button');
-    listenButton.node.title = Titles.listenSpeech;
+    this.listenButton = new ElementTemplate(listenWrapper.node, 'button', 'card__listen-button');
+    this.listenButton.node.title = Titles.listenSpeech;
     new ElementTemplate(listenWrapper.node, 'span', 'card__transcription', data.transcription);
     new ElementTemplate(cardWrapper.node, 'span', 'card__word-translate', data.wordTranslate);
     new ElementTemplate(cardWrapper.node, 'p', 'card__text-meaning', data.textMeaning);
@@ -104,7 +108,6 @@ export default class CardView extends ElementTemplate {
     this.learnedButtonAction = new ElementTemplate(this.learnedButton.node, 'div', 'card__learned-button-plus');
     const statisticButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__statistic-button');
     statisticButton.node.title = Titles.seeStatistics;
-
     if (!this.state.authorization.isAuth) {
       this.difficultButton.node.hidden = true;
       this.difficultButtonAction.node.hidden = true;
@@ -116,10 +119,10 @@ export default class CardView extends ElementTemplate {
     }
     this.difficultButton.node.addEventListener('click', this.difficultButtonOnClick);
     this.learnedButton.node.addEventListener('click', this.learnedButtonOnClick);
-    listenButton.node.addEventListener('click', this.listenButtonOnClick);
     statisticButton.node.addEventListener('click', () => {
       new WordStatistic(this.node, this.gamesStatistic);
     });
+    this.listenButtonOnClick();
   }
 
   private correctChainZeroing = () => {
@@ -216,6 +219,11 @@ export default class CardView extends ElementTemplate {
     if (!this.isAudioInit) {
       this.isAudioInit = true;
       this.initSpeech();
+      return;
+    }
+    if (this.isPlay) {
+      this.pauseSpeech();
+      return;
     }
     this.loadSpeech();
     this.playSpeech();
@@ -234,6 +242,11 @@ export default class CardView extends ElementTemplate {
     this.audio = new Audio(this.audioSrcs.audio);
     this.audioMeaning = new Audio(this.audioSrcs.audioMeaning);
     this.audioExample = new Audio(this.audioSrcs.audioExample);
+    this.audio.addEventListener('loadeddata', () => {
+      if (this.audio && this.audio.readyState >= 2) {
+        this.listenButton.node.addEventListener('click', this.listenButtonOnClick);
+      }
+    });
   };
 
   private loadSpeech = () => {
@@ -243,13 +256,16 @@ export default class CardView extends ElementTemplate {
   };
 
   private playSpeech = () => {
+    this.isPlay = true;
+    this.listenButton.node.classList.add('card__listen-button__stop');
     this.audio?.play();
     this.audio?.addEventListener('ended', () => {
       this.audioMeaning?.play();
       this.audioMeaning?.addEventListener('ended', () => {
         this.audioExample?.play();
         this.audioExample?.addEventListener('ended', () => {
-          this.audioExample?.pause();
+          this.isPlay = false;
+          this.listenButton.node.classList.remove('card__listen-button__stop');
         });
       });
     });
@@ -259,5 +275,7 @@ export default class CardView extends ElementTemplate {
     this.audio?.pause();
     this.audioMeaning?.pause();
     this.audioExample?.pause();
+    this.isPlay = false;
+    this.listenButton.node.classList.remove('card__listen-button__stop');
   };
 }

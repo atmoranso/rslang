@@ -10,6 +10,8 @@ export default class NavigatorView extends ElementTemplate {
 
   private pagesCount = 30;
 
+  private sprintLink: ElementTemplate;
+
   private pageButtonFirst: ElementTemplate<HTMLButtonElement>;
 
   private pageButtonPrev: ElementTemplate<HTMLButtonElement>;
@@ -19,6 +21,8 @@ export default class NavigatorView extends ElementTemplate {
   private pageButtonNext: ElementTemplate<HTMLButtonElement>;
 
   private pageButtonLast: ElementTemplate<HTMLButtonElement>;
+
+  private audioCallLink: ElementTemplate;
 
   private state: AppState;
 
@@ -49,15 +53,15 @@ export default class NavigatorView extends ElementTemplate {
       this.groupButtons.push(groupButton);
     });
     const pages = new ElementTemplate(buttonsWrapper.node, 'div', 'navigator__pages');
-    const sprintLink = new ElementTemplate(pages.node, 'div', 'navigator__game-link');
-    sprintLink.node.innerHTML = '<a class="navigator__link" href="#sprint?textbook">Спринт</a>';
+    this.sprintLink = new ElementTemplate(pages.node, 'div', 'navigator__game-link');
+    this.sprintLink.node.innerHTML = '<a class="navigator__link" href="#sprint?textbook">Спринт</a>';
     this.pageButtonFirst = new ElementTemplate(pages.node, 'button', 'navigator__page-button-first btn', '<<');
     this.pageButtonPrev = new ElementTemplate(pages.node, 'button', 'navigator__page-button-prev btn', '<');
     this.pageCurrent = new ElementTemplate(pages.node, 'span', 'navigator__page-current');
     this.pageButtonNext = new ElementTemplate(pages.node, 'button', 'navigator__page-button-next btn', '>');
     this.pageButtonLast = new ElementTemplate(pages.node, 'button', 'navigator__page-button-last btn', '>>');
-    const audioCallLink = new ElementTemplate(pages.node, 'div', 'navigator__game-link');
-    audioCallLink.node.innerHTML = '<a class="navigator__link" href="#audiocall?textbook">Аудиовызов</a>';
+    this.audioCallLink = new ElementTemplate(pages.node, 'div', 'navigator__game-link');
+    this.audioCallLink.node.innerHTML = '<a class="navigator__link" href="#audiocall?textbook">Аудиовызов</a>';
     this.navigatorOnChange();
     this.groupesInit();
     this.pagesInit();
@@ -66,8 +70,12 @@ export default class NavigatorView extends ElementTemplate {
   public displayMedal = (visible: boolean) => {
     if (visible) {
       this.pageCurrent.node.classList.add('navigator__page-current_show-medal');
+      this.sprintLink.node.hidden = true;
+      this.audioCallLink.node.hidden = true;
     } else {
       this.pageCurrent.node.classList.remove('navigator__page-current_show-medal');
+      this.sprintLink.node.hidden = false;
+      this.audioCallLink.node.hidden = false;
     }
   };
 
