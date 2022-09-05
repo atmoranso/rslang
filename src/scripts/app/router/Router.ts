@@ -36,6 +36,15 @@ export default class Router {
   router = () => {
     this.checkLocalStorage();
     const path = window.location.hash.slice(1);
+
+    if (!path.match(/sprint|audiocall/i)) {
+      console.log(path);
+      console.log('aaa');
+
+      this.view.node.append(this.view.footer.node);
+    } else {
+      this.view.footer.delete();
+    }
     const route = this.routes[path] ? this.routes[path] : this.routes['404'];
     const module = new route(this.state);
     this.state.sprint.isFromTextBook = path.match(/\?textbook/i) ? true : false;
