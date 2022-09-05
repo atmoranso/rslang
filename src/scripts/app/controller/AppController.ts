@@ -30,10 +30,13 @@ export default class AppController {
     this.model.toggleOpenLockClasses(burger, menu, overlay);
   };
 
-  clickMenuHandler = () => {
+  clickMenuHandler = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
     const burger = this.view.header.burger.node;
     const menu = this.view.header.navMenu.node;
     const overlay = this.view.header.overlay.node;
-    this.model.removeLockClass(burger, menu, overlay);
+    if (target.classList.contains('dropdown-menu__link') || target.classList.contains('nav-menu__link')) {
+      this.model.removeLockClass(burger, menu, overlay);
+    }
   };
 }
