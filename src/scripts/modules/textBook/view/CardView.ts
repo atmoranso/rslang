@@ -28,6 +28,10 @@ export default class CardView extends ElementTemplate {
 
   public isLearned = false;
 
+  private difficultButton: ElementTemplate<HTMLButtonElement>;
+
+  private learnedButton: ElementTemplate<HTMLButtonElement>;
+
   private difficultButtonAction: ElementTemplate;
 
   private learnedButtonAction: ElementTemplate;
@@ -86,26 +90,26 @@ export default class CardView extends ElementTemplate {
     new ElementTemplate(cardWrapper.node, 'p', 'card__text-example', data.textExample);
     new ElementTemplate(cardWrapper.node, 'p', 'card__text-example-translate', data.textExampleTranslate);
     const buttonsWrapper = new ElementTemplate(cardWrapper.node, 'div', 'card__buttons-wrapper');
-    const difficultButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__difficult-button');
-    difficultButton.node.title = 'добавить в раздел "Сложные слова"';
-    this.difficultButtonAction = new ElementTemplate(difficultButton.node, 'div', 'card__difficult-button-plus');
-    const learnedButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__learned-button');
-    learnedButton.node.title = 'слово изучено';
-    this.learnedButtonAction = new ElementTemplate(learnedButton.node, 'div', 'card__learned-button-plus');
+    this.difficultButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__difficult-button');
+    this.difficultButton.node.title = 'добавить в раздел "Сложные слова"';
+    this.difficultButtonAction = new ElementTemplate(this.difficultButton.node, 'div', 'card__difficult-button-plus');
+    this.learnedButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__learned-button');
+    this.learnedButton.node.title = 'слово изучено';
+    this.learnedButtonAction = new ElementTemplate(this.learnedButton.node, 'div', 'card__learned-button-plus');
     const statisticButton = new ElementTemplate(buttonsWrapper.node, 'button', 'card__statistic-button');
     statisticButton.node.title = 'посмотреть статистику';
 
     if (!this.state.authorization.isAuth) {
-      difficultButton.node.hidden = true;
+      this.difficultButton.node.hidden = true;
       this.difficultButtonAction.node.hidden = true;
-      learnedButton.node.hidden = true;
+      this.learnedButton.node.hidden = true;
       this.learnedButtonAction.node.hidden = true;
       statisticButton.node.hidden = true;
     } else {
       this.initUserWord(initUserWordData);
     }
-    difficultButton.node.addEventListener('click', this.difficultButtonOnClick);
-    learnedButton.node.addEventListener('click', this.learnedButtonOnClick);
+    this.difficultButton.node.addEventListener('click', this.difficultButtonOnClick);
+    this.learnedButton.node.addEventListener('click', this.learnedButtonOnClick);
     listenButton.node.addEventListener('click', this.listenButtonOnClick);
     statisticButton.node.addEventListener('click', () => {
       new WordStatistic(this.node, this.gamesStatistic);
@@ -118,6 +122,8 @@ export default class CardView extends ElementTemplate {
   };
 
   private difficultButtonOnClick = async () => {
+    this.difficultButton.node.disabled = true;
+    this.learnedButton.node.disabled = true;
     const token = this.state.authorization.token;
     const userId = this.state.authorization.userId;
     const userWord: UserWord = {
@@ -130,7 +136,8 @@ export default class CardView extends ElementTemplate {
       if (this.userWordId) {
         await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
       } else {
-        await DataAPI.createUserWord(token, userId, this.wordId, userWord);
+        const data = await DataAPI.createUserWord(token, userId, this.wordId, userWord);
+        this.userWordId = data.id;
       }
       this.isLearned = false;
       this.changelearnedStyle();
@@ -140,6 +147,8 @@ export default class CardView extends ElementTemplate {
     }
     this.changeDifficultStyle();
     this.onChangeUserWord();
+    this.difficultButton.node.disabled = false;
+    this.learnedButton.node.disabled = false;
   };
 
   private changeDifficultStyle = () => {
@@ -154,6 +163,8 @@ export default class CardView extends ElementTemplate {
   };
 
   private learnedButtonOnClick = async () => {
+    this.difficultButton.node.disabled = true;
+    this.learnedButton.node.disabled = true;
     const token = this.state.authorization.token;
     const userId = this.state.authorization.userId;
     const userWord: UserWord = {
@@ -165,7 +176,8 @@ export default class CardView extends ElementTemplate {
       if (this.userWordId) {
         await DataAPI.updateUserWord(token, userId, this.wordId, userWord);
       } else {
-        await DataAPI.createUserWord(token, userId, this.wordId, userWord);
+        const data = await DataAPI.createUserWord(token, userId, this.wordId, userWord);
+        this.userWordId = data.id;
       }
       this.isDifficult = false;
       this.changeDifficultStyle();
@@ -177,6 +189,8 @@ export default class CardView extends ElementTemplate {
     }
     this.changelearnedStyle();
     this.onChangeUserWord();
+    this.difficultButton.node.disabled = false;
+    this.learnedButton.node.disabled = false;
   };
 
   private changelearnedStyle = () => {
