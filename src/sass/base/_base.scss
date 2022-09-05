@@ -12,6 +12,7 @@
 
 html {
   font-size: 10px;
+  height: 100%;
 }
 
 body {
@@ -19,6 +20,7 @@ body {
   min-height: 100vh;
   font-family: "Montserrat", "Verdana", sans-serif;
   @include flexColumn(space-between);
+  height: 100%;
 }
 
 .hidden {
