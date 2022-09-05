@@ -1,156 +1,206 @@
 .sprint {
-    width: 100%;
-    margin: 10px 0;
-    text-align: center;
+  width: 100%;
+  padding: 30px 0;
+  text-align: center;
+  background: url('../assets/images/bg-about-2.png') no-repeat center center;
+  background-size: cover;
+  @include font(30px, 10px, 600);
+  color: $color-main;
 }
 
 .sprint__board-container {
-    position: relative;
-    margin: 10px auto;
+  position: relative;
+  margin: 10px auto;
 }
+
 .sprint__word-count {
-    text-align: center;
-    @include fontAtm(42px, $color-main, bold);
+  text-align: center;
+  @include fontAtm(42px, $color-main, bold);
+  line-height: 50px;
+  margin-top: 30px;
 }
+
 .sprint__timer {
 }
+
 .start {
-    @extend %sprint-board;
+  @extend %sprint-board;
+  margin-top: 50px;
 }
+
+.start__title {
+  @include font(20px, 25px, 600);
+}
+
 .start__level-container {
-    @include flexRow(space-around);
+  @include flexRow(space-around);
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
+
 .start__level-btn {
-    width: 40px;
-    height: 40px;
-    border: 1px solid;
-    &:hover {
-        cursor: pointer;
-    }
+  width: 200px;
+  height: 50px;
+  border: 2px solid $color-text-logo;
+  border-radius: 15px;
+  background: transparent;
+  font-size: 25px;
+  color: $color-primary;
+  @extend %transition;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
+
 .board {
-    @extend %sprint-board;
+  @extend %sprint-board;
 }
 
 .board__bullet-container {
-    margin: 15px;
-    @include flexRow(center);
-    gap: 15px;
+  margin: 15px;
+  @include flexRow(center);
+  gap: 15px;
 }
+
 .board__bullet {
-    width: 20px;
-    height: 20px;
-    border-radius: 50px;
-    background-color: $color-inactive;
-    &.active {
-        background-color: $color-main;
-    }
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  background-color: $color-inactive;
+
+  &.active {
+    background-color: $color-main;
+  }
 }
 
 .board__speed-container {
-    height: 40px;
-    @include flexRow(center);
-    gap: 15px;
+  height: 40px;
+  @include flexRow(center);
+  gap: 15px;
 }
+
 .board__speed {
-    display: none;
-    width: 40px;
-    height: 40px;
-    background-color: $color-btn-true;
-    &.active {
-        display: block;
-    }
+  display: none;
+  width: 40px;
+  height: 40px;
+  background-color: $color-btn-true;
+
+  &.active {
+    display: block;
+  }
 }
+
 .board__word-en-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+  @include flex;
+  gap: 10px;
 }
+
 .board__audio {
-    cursor: pointer;
-    width: 32px;
-    height: 30px;
-    svg {
-        fill: $color-main;
-    }
+  cursor: pointer;
+  width: 32px;
+  height: 30px;
+
+  svg {
+    fill: $color-main;
+  }
 }
+
 .board__word-en {
-    @include fontAtm(32px, $color-main, bold);
+  @include fontAtm(32px, $color-main, bold);
 }
+
 .board__word-ru {
-    @include fontAtm(24px, $color-inactive);
+  @include fontAtm(24px, $color-inactive);
 }
+
 .board__btn,
 .finish__btn-play {
-    width: 100px;
-    margin: 5px;
-    padding: 10px 0;
-    border: 0;
-    border-radius: 5px;
-    @include fontAtm(16px, $color-text-main, bold);
+  width: 100px;
+  margin: 5px;
+  padding: 10px 0;
+  border: 0;
+  border-radius: 5px;
+  @include fontAtm(16px, $color-text-main, bold);
 
-    transition: 0.3s;
+  transition: 0.3s;
 }
+
 .board__btn_false {
-    background-color: $color-btn-false;
-    color: $color-text-light;
+  background-color: $color-btn-false;
+  color: $color-text-light;
 }
+
 .board__btn_true {
-    background-color: $color-btn-true;
-    color: $color-text-light;
+  background-color: $color-btn-true;
+  color: $color-text-light;
 }
+
 .finish {
-    @extend %sprint-board;
-    height: auto;
-    padding: 20px 0;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 30px;
+  @extend %sprint-board;
+  height: auto;
+  padding: 20px 0;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 30px;
 }
+
 .finish__correct-block,
 .finish__incorrect-block {
-    @include flexColumn(flex-start, flex-start);
+  @include flexColumn(flex-start, flex-start);
 }
+
 .finish__btn-play {
-    width: 150px;
-    margin: 5px;
+  width: 150px;
+  margin: 5px;
 }
+
 .waiting-window {
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    position: fixed;
-    display: none;
-    z-index: 100;
-    &.show {
-        display: block;
-    }
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  position: fixed;
+  display: none;
+  z-index: 100;
+
+  &.show {
+    display: block;
+  }
 }
+
 .waiting-window__overlay {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background-color: black;
-    opacity: 0.5;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: black;
+  opacity: 0.5;
 }
+
 .waiting-window__box {
-    position: relative;
-    left: 0;
-    top: 50%;
-    background-color: white;
-    @include fontAtm(25px);
+  position: relative;
+  left: 0;
+  top: calc(50% - 65px);
+  background-color: white;
+  @include fontAtm(25px);
+  padding: 60px;
 }
+
 .countdown__count {
-    @include fontAtm(42px, $color-main, bold);
+  @include fontAtm(42px, $color-main, bold);
+  background: none;
+  margin-top: 20px;
+  line-height: 50px;
 }
+
 .sprint__timer {
-    width: 60px;
-    height: 60px;
-    top: 0;
-    right: 60px;
-    position: absolute;
-    @include fontAtm(42px, $color-main, bold);
-    border: 1px solid;
-    border-radius: 100px;
+  width: 70px;
+  height: 70px;
+  top: 0;
+  right: 60px;
+  position: absolute;
+  @include fontAtm(42px, $color-main, bold);
+  @include flex;
+  border: 1px solid;
+  border-radius: 100px;
 }
