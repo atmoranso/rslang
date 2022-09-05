@@ -70,12 +70,14 @@ export default class NavigatorView extends ElementTemplate {
   public displayMedal = (visible: boolean) => {
     if (visible) {
       this.pageCurrent.node.classList.add('navigator__page-current_show-medal');
-      this.sprintLink.node.hidden = true;
-      this.audioCallLink.node.hidden = true;
+      this.sprintLink.node.style.visibility = 'hidden';
+      this.audioCallLink.node.style.visibility = 'hidden';
+      this.node.classList.add('navigator__fill');
     } else {
       this.pageCurrent.node.classList.remove('navigator__page-current_show-medal');
-      this.sprintLink.node.hidden = false;
-      this.audioCallLink.node.hidden = false;
+      this.sprintLink.node.style.visibility = 'visible';
+      this.audioCallLink.node.style.visibility = 'visible';
+      this.node.classList.remove('navigator__fill');
     }
   };
 
