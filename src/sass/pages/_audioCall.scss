@@ -88,3 +88,13 @@
         box-shadow: unset;
     }
 }
+.finish__word-line {
+    @include flexRow(flex-start, center);
+    gap: 10px;
+}
+.finish__word-audio-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
