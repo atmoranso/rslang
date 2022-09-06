@@ -140,6 +140,8 @@ export default class AudioCallModel {
     }
     this.state.currentWordRu = [];
     this.state.currentWordRu.push(this.state.gameWords[this.state.currentWordIndex].wordTranslate);
+    console.log(this.state.gameWords.length);
+
     for (let i = 0; i < 4; i++) {
       const pageNumber = Math.floor(Math.random() * this.state.gameWords.length);
       if (!this.state.currentWordRu.includes(this.state.gameWords[pageNumber].wordTranslate))
