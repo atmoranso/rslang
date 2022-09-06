@@ -1,0 +1,14 @@
+.btn {
+    &:hover {
+        cursor: pointer;
+        box-shadow: 2px 2px 5px 2px rgb(0 0 0 / 37%);
+    }
+    &:active {
+        box-shadow: 2px 2px 8px 2px rgb(0 0 0 / 73%);
+    }
+
+    &:disabled {
+        cursor: unset;
+        box-shadow: unset;
+    }
+}

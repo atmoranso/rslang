@@ -1,0 +1,26 @@
+.statistic {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.short-games-stat,
+.short-words-stat,
+.long-new-words-stat,
+.long-learned-words-stat {
+  width: calc((100% - 50px) / 2);
+
+  @include media-netbook {
+    width: calc(100% - 40px);
+  }
+
+  @include media-tablet {
+    width: calc(100% - 40px);
+  }
+
+  @include media-mobile {
+    width: calc(100% - 20px);
+  }
+}

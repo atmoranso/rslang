@@ -1,0 +1,263 @@
+.sprint {
+  width: 100%;
+  text-align: center;
+  min-height: calc(100vh - 85px);
+  margin: 0;
+  @include flexColumn(center, center);
+  background: url("../assets/images/bg-main-2.png") no-repeat;
+  background-size: cover;
+  @include fontAtm(32px, $color-primary, bold);
+}
+
+.sprint__finish-window {
+  max-width: 700px;
+  padding: 20px;
+  overflow: auto;
+  position: relative;
+  border-radius: 5px;
+  margin-top: 20px;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+    border-radius: 35px;
+  }
+}
+
+.finish__correct-block-item,
+.finish__incorrect-block-item {
+  @include font(20px, 20px);
+  width: 260px;
+  text-align: left;
+}
+
+.sprint__board-container {
+  position: relative;
+  margin: 10px auto;
+  max-width: 500px;
+  width: 100%;
+}
+
+.sprint__word-count {
+  text-align: center;
+  @include fontAtm(42px, $color-main, bold);
+}
+
+.start {
+  @extend %sprint-board;
+  margin-top: 40px;
+}
+
+.start__title {
+  @include font(20px, 25px, 600);
+  color: $color-primary;
+}
+
+.start__level-container {
+  @include flexRow(space-around);
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.start__level-btn {
+  width: 200px;
+  height: 50px;
+  border: 2px solid $color-primary;
+  border-radius: 15px;
+  background: transparent;
+  @include font(25px, 25px);
+  color: $color-primary;
+  @extend %transition;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.board {
+  @extend %sprint-board;
+}
+
+.board__bullet-container {
+  margin: 15px;
+  @include flexRow(center);
+  gap: 15px;
+}
+
+.board__bullet {
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  background-color: $color-inactive;
+
+  &.active {
+    background-color: $color-main;
+  }
+}
+
+.board__bullet-desc {
+  @include fontAtm(20px, $color-inactive);
+}
+
+.board__speed-container {
+  height: 40px;
+  @include flexRow(center);
+  gap: 15px;
+}
+
+.board__speed {
+  display: none;
+  width: 40px;
+  height: 40px;
+  background-color: $color-btn-true;
+  border-radius: 15px;
+
+  &.active {
+    display: block;
+  }
+}
+
+.board__word-en-container {
+  @include flex;
+  gap: 10px;
+}
+
+.board__audio {
+  cursor: pointer;
+  width: 32px;
+  height: 30px;
+
+  svg {
+    fill: $color-main;
+  }
+}
+
+.board__word-en {
+  @include fontAtm(32px, $color-main, bold);
+}
+
+.board__word-ru {
+  @include fontAtm(24px, $color-inactive);
+}
+
+.board__btn,
+.finish__btn-play {
+  width: 100px;
+  margin: 5px;
+  padding: 10px 0;
+  border: 0;
+  border-radius: 5px;
+  @include fontAtm(16px, $color-text-main, bold);
+
+  transition: 0.3s;
+}
+
+.board__btn_false {
+  background-color: $color-btn-false;
+  color: $color-text-light;
+}
+
+.board__btn_true {
+  background-color: $color-btn-true;
+  color: $color-text-light;
+}
+
+.finish {
+  @extend %sprint-board;
+  padding: 20px 0;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 30px;
+}
+
+.finish__correct-block,
+.finish__incorrect-block {
+  width: 260px;
+  @include flexColumn(flex-start, flex-start);
+  margin-top: 70px;
+}
+
+.finish__incorrect-block {
+  margin-top: 10px;
+}
+
+.finish__correct-block-title {
+  @include font(20px, 20px);
+  color: $color-btn-true;
+}
+
+.finish__incorrect-block-title {
+  @include font(20px, 20px);
+  color: $color-btn-false;
+  margin-top: 0;
+}
+
+.finish__btn-play {
+  margin: 5px;
+  position: absolute;
+  left: calc(50% - 75px);
+  width: 200px;
+  height: 50px;
+  border: 2px solid $color-primary;
+  border-radius: 15px;
+  background: transparent;
+  @include font(25px, 25px);
+  color: $color-primary;
+}
+
+.waiting-window {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  position: fixed;
+  display: none;
+  z-index: 100;
+
+  &.show {
+    display: block;
+  }
+}
+
+.waiting-window__overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.waiting-window__box {
+  position: relative;
+  left: 0;
+  top: 50%;
+  background-color: white;
+  @include font(25px, 25px, normal);
+  padding: 30px;
+}
+
+.countdown__count {
+  @include fontAtm(45px, $color-main, bold);
+  width: 70px;
+  height: 70px;
+  background-color: #fff;
+  border-radius: 50%;
+  @include flex;
+  border: 1px solid;
+  margin-top: 20px;
+}
+
+.sprint__timer {
+  width: 70px;
+  height: 70px;
+  top: 145px;
+  right: 10px;
+  position: absolute;
+  @include fontAtm(42px, $color-main, bold);
+  border: 1px solid;
+  border-radius: 100px;
+  @include flex;
+}

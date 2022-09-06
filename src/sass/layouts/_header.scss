@@ -1,0 +1,146 @@
+.header {
+  background-color: $color-primary;
+}
+
+.header__container {
+  max-width: $width-content;
+  @include flex($justify-content: space-between);
+  margin: auto;
+  padding: 20px 0;
+  height: 85px;
+
+  @include media-tablet {
+    padding: 13px 0;
+  }
+}
+
+.header__title {
+  font-size: calc(15px + 0.5vw);
+  color: $color-text-logo;
+  margin: 0;
+}
+
+.header__logo {
+  width: $width-logo;
+  height: $height-logo;
+  text-decoration: none;
+  z-index: 5;
+  @include flex;
+  @extend %transition;
+  svg {
+    fill: $color-light;
+  }
+
+  &:hover {
+    box-shadow: 0 2px 15px 20px rgb(13 13 13 / 10%);
+  }
+}
+
+.header__nav {
+  margin-left: auto;
+}
+
+.header__account {
+  cursor: pointer;
+  border-radius: 18px;
+  margin-left: 20px;
+  max-width: 145px;
+  @include flex($justify-content: end);
+}
+
+.header__log-out {
+  @include flex;
+  flex-direction: row-reverse;
+  @include media-mobile {
+    flex-direction: column;
+  }
+}
+
+.header__name {
+  margin-left: 10px;
+  color: $color-light;
+  @include font(15px, 20px, 400);
+  @include media-mobile {
+    margin: 0;
+  }
+}
+
+.header__burger {
+  display: none;
+  @include media-tablet {
+    display: block;
+    position: relative;
+    width: 33px;
+    height: 22px;
+    margin-right: 15px;
+    transition: 0.3s;
+    z-index: 2;
+    cursor: pointer;
+
+    &::before,
+    &::after {
+      @include pseudo;
+      background-color: $color-light;
+      width: 100%;
+      height: 2px;
+      left: 0;
+    }
+
+    &::before {
+      top: 0;
+    }
+
+    &::after {
+      bottom: 0;
+    }
+  }
+}
+
+.header__burger.open {
+  @include media-tablet {
+    transform: rotate(90deg);
+    transition: all 0.3s ease-out;
+
+    &::before {
+      transform: rotate(-45deg) translate(-12px, 5px);
+      width: 33px;
+    }
+
+    &::after {
+      transform: rotate(45deg) translate(-10px, -2px);
+      width: 33px;
+    }
+
+    .header__burger-line {
+      display: none;
+    }
+  }
+}
+
+.header__burger-line {
+  @include media-tablet {
+    background-color: $color-light;
+    width: 100%;
+    height: 2px;
+    left: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.header__overlay.open {
+  display: none;
+  @include media-tablet {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(41, 41, 41, 0.6);
+    padding: 50px;
+    cursor: pointer;
+    z-index: 1;
+  }
+}

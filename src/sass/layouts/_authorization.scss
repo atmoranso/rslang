@@ -1,0 +1,143 @@
+.account {
+  width: 100%;
+  height: 100vh;
+  background: rgba(41, 41, 41, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  overflow: auto;
+}
+
+.account__overlay {
+  max-width: 600px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: $color-primary;
+  padding: 100px;
+  border-radius: 10px;
+  @include flex;
+  flex-direction: column;
+
+  @include media-mobile {
+    padding: 70px 20px;
+  }
+}
+
+.account__authorization,
+.account__registration {
+  width: 100%;
+}
+
+.account__img {
+  margin-bottom: 50px;
+}
+
+.account__button-container {
+  @include media-tablet {
+    @include flex;
+    flex-direction: column;
+  }
+}
+
+.account__button {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  color: $color-light;
+  @include font(18px, 28px, 500);
+  position: relative;
+  cursor: pointer;
+
+  &:not(.active):hover::after {
+    @include pseudo;
+    top: 25px;
+    width: 100%;
+    height: 1px;
+    background-color: $color-light;
+  }
+}
+
+.account__reg-button {
+  font-weight: normal;
+}
+
+.account__close-button {
+  background: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+
+.account__text {
+  color: $color-auth-button;
+  margin-right: 10px;
+  @include font(18px, 28px, 500);
+
+  @include media-tablet {
+    margin: 0;
+  }
+}
+
+.account__error-message {
+  color: $color-light;
+}
+
+.active {
+  @include font(22px, 28px, 700);
+}
+
+.form__container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+  position: relative;
+}
+
+.form__label {
+  @include font(15px, 20px, 400);
+  color: $color-light;
+  margin-bottom: 8px;
+}
+
+.form__input {
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 8px 8px 16px;
+  background: #FFFFFF;
+
+  &::placeholder {
+    color: $color-placeholder;
+  }
+}
+
+.form__button {
+  @include font(20px, 25px, 400);
+  padding: 15px 55px;
+  background: $color-auth-button;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  color: $color-light;
+  display: block;
+  margin: 100px auto 0;
+  cursor: pointer;
+
+  @include media-mobile {
+    margin-top: 70px;
+  }
+}
+
+.form__error-message {
+  @include font(13px, 25px, 400, $style: italic);
+  color: $color-error-message;
+  position: absolute;
+  top: 65px;
+}
