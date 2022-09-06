@@ -27,6 +27,7 @@ import {
   Tooltip,
   SubTitle,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 Chart.register(
   ArcElement,
@@ -139,8 +140,15 @@ export default class StatisticView extends ElementTemplate {
             display: true,
             text: `Статистика по играм на ${gameData.date}`,
           },
+          datalabels: {
+            color: 'black',
+            font: {
+              weight: 'bold',
+            },
+          },
         },
       },
+      plugins: [ChartDataLabels],
     });
   };
 
@@ -181,8 +189,15 @@ export default class StatisticView extends ElementTemplate {
             display: true,
             text: `Статистика по словам на ${gameData.date}`,
           },
+          datalabels: {
+            color: 'black',
+            font: {
+              weight: 'bold',
+            },
+          },
         },
       },
+      plugins: [ChartDataLabels],
     });
   };
 
@@ -215,8 +230,18 @@ export default class StatisticView extends ElementTemplate {
             display: true,
             text: 'Количество новых слов за каждый день',
           },
+          datalabels: {
+            backgroundColor: this.lightSalmon,
+            borderRadius: 4,
+            color: 'black',
+            font: {
+              weight: 'bold',
+            },
+            padding: 6,
+          },
         },
       },
+      plugins: [ChartDataLabels],
     });
   };
 
@@ -253,8 +278,18 @@ export default class StatisticView extends ElementTemplate {
             display: true,
             text: 'Количество изученных слов за весь период',
           },
+          datalabels: {
+            backgroundColor: this.lightSeaGreen,
+            borderRadius: 4,
+            color: 'black',
+            font: {
+              weight: 'bold',
+            },
+            padding: 6,
+          },
         },
       },
+      plugins: [ChartDataLabels],
     });
   };
 }
