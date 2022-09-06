@@ -7,6 +7,11 @@
   @include flex($justify-content: space-between);
   margin: auto;
   padding: 20px 0;
+  height: 85px;
+
+  @include media-tablet {
+    padding: 13px 0;
+  }
 }
 
 .header__title {

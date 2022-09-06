@@ -12,6 +12,8 @@ export default class AudioCallView extends ElementTemplate {
 
   hints: ElementTemplate | undefined;
 
+  rules: ElementTemplate | undefined;
+
   countDownWindow: CountDownWindow;
 
   waitingWindow: WaitingWindow;
@@ -23,7 +25,7 @@ export default class AudioCallView extends ElementTemplate {
   noWordsWindow: NoWordsWindow;
 
   constructor(parentNode: HTMLElement | null) {
-    super(parentNode, 'div', 'audiocall', '');
+    super(parentNode, 'div', 'audiocall', 'АУДИОВЫЗОВ');
     this.startWindow = new StartWindow(this.node);
     this.countDownWindow = new CountDownWindow(null);
     this.board = new Board(null);
@@ -75,6 +77,13 @@ export default class AudioCallView extends ElementTemplate {
     this.finishWindow.delete();
     this.node.append(this.board.node);
 
+    this.rules = new ElementTemplate(
+      null,
+      'div',
+      'rules',
+      '<b>Правила игры:</b><br> выберите из предложенных вариантов ответа правильный перевод услышанного слова',
+    );
+
     this.hints = new ElementTemplate(
       null,
       'div',
@@ -82,6 +91,7 @@ export default class AudioCallView extends ElementTemplate {
       'Управление с клавиатуры:<br> варианты ответов: <b>1-5</b><br>"Не знаю", "Далее", "Новая игра": <b>Space</b>',
     );
 
+    this.board.node.before(this.rules.node);
     this.board.node.after(this.hints.node);
   };
 
