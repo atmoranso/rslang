@@ -23,7 +23,7 @@ export default class AudioCallView extends ElementTemplate {
   noWordsWindow: NoWordsWindow;
 
   constructor(parentNode: HTMLElement | null) {
-    super(parentNode, 'div', 'audiocall', '');
+    super(parentNode, 'div', 'audiocall', 'АУДИОВЫЗОВ');
     this.startWindow = new StartWindow(this.node);
     this.countDownWindow = new CountDownWindow(null);
     this.board = new Board(null);

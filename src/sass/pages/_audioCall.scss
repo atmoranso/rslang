@@ -8,11 +8,13 @@
 
     background: url("../assets/images/bg-main-2.png") no-repeat;
     background-size: cover;
+    @include fontAtm(32px, $color-primary, bold);
 }
 
 .audio-board {
     @include flexColumn(center, center);
     gap: 40px;
+    padding: 0 10px;
 }
 .audio-board__question {
     @include flexColumn(center, center);
@@ -32,8 +34,9 @@
 }
 
 .audio-board__words-container {
-    @include flexRow(space-around, center);
+    @include flexRow(center, center);
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .audio-board__word-ru {
