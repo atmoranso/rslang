@@ -33,6 +33,8 @@ export default class AudioCallController {
     // this.view.showCountDown();
     // await this.model.setStartTimer(true, 3, this.view.updateContDown);
     this.model.setNextWord(this.view.updateBoard);
+    window.addEventListener('keyup', this.clickKeyHandler);
+
     this.clickAudio();
     this.isAnswerView = false;
     this.view.board.audio.node.addEventListener('click', this.clickAudio);
@@ -109,6 +111,7 @@ export default class AudioCallController {
     if (!this.model.isPLaying) {
       window.removeEventListener('keyup', this.clickDontKnowHandler);
       window.removeEventListener('keyup', this.clickNextHandler);
+
       this.view.board.btnDontKnow.node.disabled = true;
       this.view.board.btnNext.node.disabled = true;
       this.view.board.wordRu.forEach((wordEl) => {
@@ -168,13 +171,16 @@ export default class AudioCallController {
     }
   };
 
-  clickPlayAgainHandler = () => {
-    window.removeEventListener('keyup', this.clickPlayAgainHandler);
+  clickPlayAgainHandler = (e?: KeyboardEvent | MouseEvent) => {
+    if (e?.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keyup' && e.code === 'Space')) {
+      e.preventDefault();
+      window.removeEventListener('keyup', this.clickPlayAgainHandler);
 
-    this.startGame().then(() => {
-      this.view.showBoard();
-      this.isAnswerView = false;
-    });
+      this.startGame().then(() => {
+        this.view.showBoard();
+        this.isAnswerView = false;
+      });
+    }
   };
 
   finishGame = () => {
