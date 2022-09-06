@@ -171,16 +171,13 @@ export default class AudioCallController {
     }
   };
 
-  clickPlayAgainHandler = (e?: KeyboardEvent | MouseEvent) => {
-    if (e?.type === 'click' || (e instanceof KeyboardEvent && e.type === 'keyup' && e.code === 'Space')) {
-      e.preventDefault();
-      window.removeEventListener('keyup', this.clickPlayAgainHandler);
+  clickPlayAgainHandler = () => {
+    window.removeEventListener('keyup', this.clickPlayAgainHandler);
 
-      this.startGame().then(() => {
-        this.view.showBoard();
-        this.isAnswerView = false;
-      });
-    }
+    this.startGame().then(() => {
+      this.view.showBoard();
+      this.isAnswerView = false;
+    });
   };
 
   finishGame = () => {
