@@ -61,13 +61,43 @@ export default class FinishWindow extends ElementTemplate {
     );
 
     inCorrectWordsArr.forEach((word) => {
+      const wordLine = new ElementTemplate(this.inCorrectBlock.node, 'div', 'finish__word-line');
+      const audioImg = new ElementTemplate(wordLine.node, 'div', 'finish__word-audio-icon');
+      audioImg.node.innerHTML = playSvg;
+      this.audioEl.push(audioImg);
+      this.audioSrc.push(new Audio(word.audio));
       new ElementTemplate(
-        this.inCorrectBlock.node,
+        wordLine.node,
         'div',
         'finish__incorrect-block-item',
         `<b>${word.word}</b> - ${word.wordTranslate}`,
       );
     });
     this.node.append(this.btnPlayAgain.node);
+    this.setAudioListeners();
+  };
+
+  setAudioListeners = () => {
+    this.audioEl.forEach((item, i) => {
+      item.node.addEventListener('click', () => {
+        this.clickAudioHandler(i);
+      });
+    });
+  };
+
+  clickAudioHandler = (i: number) => {
+    this.audioSrc.forEach((audio, index) => {
+      audio.pause();
+      this.changePlayIcon(true, index);
+    });
+    this.audioSrc[i].play();
+    this.changePlayIcon(false, i);
+    this.audioSrc[i].addEventListener('ended', () => {
+      this.changePlayIcon(true, i);
+    });
+  };
+
+  changePlayIcon = (isPlay: boolean, i: number) => {
+    this.audioEl[i].node.innerHTML = isPlay ? playSvg : stopSvg;
   };
 }
