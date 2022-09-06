@@ -82,7 +82,7 @@ export default class AudioCallController {
     e.preventDefault();
     window.removeEventListener('keyup', this.clickKeyHandler);
     window.removeEventListener('keyup', this.clickDontKnowHandler);
-    window.addEventListener('keyup', this.clickNextHandler, { once: true });
+    window.addEventListener('keyup', this.clickNextHandler);
     this.model.checkAnswer(this.view.board.showAnswer, answer + 1);
     this.view.board.disableButtons();
     this.view.board.showNextBtn();
@@ -93,9 +93,9 @@ export default class AudioCallController {
       this.isAnswerView = false;
 
       this.view.board.enableButtons();
-      window.addEventListener('keyup', this.clickKeyHandler, { once: true });
+      window.addEventListener('keyup', this.clickKeyHandler);
       window.removeEventListener('keyup', this.clickNextHandler);
-      window.addEventListener('keyup', this.clickDontKnowHandler, { once: true });
+      window.addEventListener('keyup', this.clickDontKnowHandler);
 
       if (!this.model.state.isGameFinished) {
         this.model.setNextWord(this.view.updateBoard);
@@ -122,9 +122,9 @@ export default class AudioCallController {
         wordEl.node.disabled = false;
       });
       if (this.isAnswerView) {
-        window.addEventListener('keyup', this.clickNextHandler, { once: true });
+        window.addEventListener('keyup', this.clickNextHandler);
       } else {
-        window.addEventListener('keyup', this.clickDontKnowHandler, { once: true });
+        window.addEventListener('keyup', this.clickDontKnowHandler);
       }
       this.view.board.btnNext.node.disabled = false;
       this.view.board.btnDontKnow.node.disabled = false;
@@ -137,9 +137,9 @@ export default class AudioCallController {
           wordEl.node.disabled = false;
         });
         if (this.isAnswerView) {
-          window.addEventListener('keyup', this.clickNextHandler, { once: true });
+          window.addEventListener('keyup', this.clickNextHandler);
         } else {
-          window.addEventListener('keyup', this.clickDontKnowHandler, { once: true });
+          window.addEventListener('keyup', this.clickDontKnowHandler);
         }
         this.view.board.btnNext.node.disabled = false;
         this.view.board.btnDontKnow.node.disabled = false;
@@ -162,7 +162,7 @@ export default class AudioCallController {
       this.isAnswerView = true;
 
       window.removeEventListener('keyup', this.clickDontKnowHandler);
-      window.addEventListener('keyup', this.clickNextHandler, { once: true });
+      window.addEventListener('keyup', this.clickNextHandler);
       window.removeEventListener('keyup', this.clickKeyHandler);
       this.model.checkAnswer(this.view.board.showAnswer, 0);
       this.view.board.disableButtons();
