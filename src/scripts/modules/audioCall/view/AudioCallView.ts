@@ -39,6 +39,7 @@ export default class AudioCallView extends ElementTemplate {
 
   showTheEnd = (state: AudioCallState) => {
     this.hints?.delete();
+    this.rules?.delete();
     this.board.delete();
     this.finishWindow.update(state);
     this.node.append(this.finishWindow.node);
