@@ -6,8 +6,6 @@ import stopSvg from './stop.svg';
 export default class FinishWindow extends ElementTemplate {
   btnPlayAgain: ElementTemplate<HTMLButtonElement>;
 
-  isPLaying = false;
-
   audioEl: ElementTemplate[] = [];
 
   audioSrc: HTMLAudioElement[] = [];
