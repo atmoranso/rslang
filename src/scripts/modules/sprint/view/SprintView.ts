@@ -32,11 +32,21 @@ export default class SprintView extends ElementTemplate {
     this.countDownWindow = new CountDownWindow(null);
 
     this.boardContainer = new ElementTemplate(null, 'div', 'sprint__board-container');
-    new ElementTemplate(this.boardContainer.node, 'div', 'rules', '<b>Правила игры:</b><br> игра на время, выберите, соответствует ли перевод предложенному слову');
+    new ElementTemplate(
+      this.boardContainer.node,
+      'div',
+      'rules',
+      '<b>Правила игры:</b><br> игра на время, выберите, соответствует ли перевод предложенному слову',
+    );
     this.score = new ElementTemplate(this.boardContainer.node, 'div', 'sprint__word-count', '0');
     this.board = new Board(this.boardContainer.node);
     this.timer = new ElementTemplate(this.boardContainer.node, 'div', 'sprint__timer', '');
-    new ElementTemplate(this.boardContainer.node, 'div', 'hints', 'Управление с клавиатуры:<br> "Неверно": <b>&#129092;</b>, "Верно": <b>&#129094;</b>');
+    new ElementTemplate(
+      this.boardContainer.node,
+      'div',
+      'hints',
+      'Управление с клавиатуры:<br> "Неверно": <b>&#129092;</b>, "Верно": <b>&#129094;</b>',
+    );
 
     this.finishWindow = new FinishWindow(null);
 
