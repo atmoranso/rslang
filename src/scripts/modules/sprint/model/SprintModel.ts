@@ -30,38 +30,36 @@ export default class SprintModel {
   };
 
   async prepareData(showLoadingPage: () => void) {
-    if (this.state.gameWords.length > 1 && !this.state.isFromTextBook) {
-    } else {
-      showLoadingPage();
-      const promiseArr = [];
-      const randPages: number[] = [];
-      this.state.gameWords = [];
-      if (this.state.isFromTextBook) {
-        const currGroup = this.textBookState.group - 1;
-        const currPage = this.textBookState.page - 1;
-        promiseArr.push(this.getWordsArr(currGroup, currPage));
-        if (currPage > 0) {
-          for (let i = currPage - 1, k = 1; i >= 0; i--, k++) {
-            if (k > 4) break;
-            promiseArr.push(this.getWordsArr(currGroup, i));
-          }
-        }
-      } else {
-        for (let i = 0; i < 5; i++) {
-          const pageNumber = Math.floor(Math.random() * 20);
-          if (!randPages.includes(pageNumber)) promiseArr.push(this.getWordsArr(this.state.group, pageNumber));
-          else i--;
+    showLoadingPage();
+    const promiseArr = [];
+    const randPages: number[] = [];
+    this.state.gameWords = [];
+    if (this.state.isFromTextBook) {
+      const currGroup = this.textBookState.group - 1;
+      const currPage = this.textBookState.page - 1;
+      promiseArr.push(this.getWordsArr(currGroup, currPage));
+      if (currPage > 0) {
+        for (let i = currPage - 1, k = 1; i >= 0; i--, k++) {
+          if (k > 4) break;
+          promiseArr.push(this.getWordsArr(currGroup, i));
         }
       }
-
-      const gameWordsArr = await Promise.all(promiseArr);
-      let allGameWords: Word[] = [];
-      gameWordsArr.forEach((wordsArr) => {
-        allGameWords = allGameWords.concat(wordsArr);
-      });
-      if (this.authorization.isAuth) this.state.gameWords = await this.filterNewWords(allGameWords);
-      else this.state.gameWords = allGameWords;
+    } else {
+      for (let i = 0; i < 5; i++) {
+        const pageNumber = Math.floor(Math.random() * 20);
+        if (!randPages.includes(pageNumber)) promiseArr.push(this.getWordsArr(this.state.group, pageNumber));
+        else i--;
+      }
     }
+
+    const gameWordsArr = await Promise.all(promiseArr);
+    let allGameWords: Word[] = [];
+    gameWordsArr.forEach((wordsArr) => {
+      allGameWords = allGameWords.concat(wordsArr);
+    });
+    if (this.authorization.isAuth) this.state.gameWords = await this.filterNewWords(allGameWords);
+    else this.state.gameWords = allGameWords;
+
     this.resetGameState();
     this.statsHelper.resetUserStat('sprint');
   }
