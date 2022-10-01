@@ -6,6 +6,9 @@ An application for learning 3600 English words. The app includes textbook with 6
 
 ### Deploy:
 https://atmoranso.github.io/rslang/
+
+**!! If you visit for the first time and open textbook or game, you will have to wait some more time (15-40 sec) for loading content !!**
+
 ### Used technologies and tools:
  - **TypeScript** - strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. 
  - **HTML 5.0** - a markup language used for structuring and presenting content on the World Wide Web.
